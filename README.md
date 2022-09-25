@@ -1,10 +1,24 @@
-# My Personal Project
+# **UBC Personal Project**
 
-## A subtitle
+## Tsun Li Nicholas Tam
+## *Student Number: 45695970*
 
-A *bulleted* list:
-- item 1
-- item 2
-- item 3
+### Description
+This project is intended to be used as a management system for shopkeepers and cashiers to keep track of items in a 
+convenience store. It will contain most of the general operations to allow the system to function, such as creating a 
+receipt, keep track of the availability of items, search for specific items, and so on.
 
-An example of text with **bold** and *italic* fonts.  
+### User Stories:
+- As a user, I want to be able to access the properties of each item
+    - As a user, I want to be able to access the quantity of each item in the store
+        - As a user, I want to be able to mark items as available for purchase depending on quantity
+        - As a user, I want to be able to increase or decrease the quantity of each item available for purchase by a 
+certain amount
+    - As a user, I want to be able to access the name of each item
+      - As a user, I want to be able to change the name of each item
+    - As a user, I want to be able to access the ID of each item
+- As a user, I want to be able to view the list of items in the store
+  - As a user, I want to be able to search for a specific item in the list
+  - As a user, I want to be able to add an item to the store list
+  - As a user, I want to be able to remove an item from the store list
+- As a user, I want to be able to obtain a receipt for the customer
