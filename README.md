@@ -4,7 +4,7 @@
 ## *Student Number: 45695970*
 
 ### Description
-This project is intended to be used as a management system for shopkeepers and cashiers to keep track of items in a 
+This project is intended to be used as an inventory system for shopkeepers and cashiers to keep track of items in a 
 convenience store. It will contain most of the general operations to allow the system to function, such as creating a 
 receipt, keep track of the availability of items, search for specific items, and so on.
 
@@ -17,8 +17,10 @@ certain amount
     - As a user, I want to be able to access the name of each item
       - As a user, I want to be able to change the name of each item
     - As a user, I want to be able to access the ID of each item
-- As a user, I want to be able to view the list of items in the store
+- As a user, I want to be able to view the list of items in a store
   - As a user, I want to be able to search for a specific item in the list
   - As a user, I want to be able to add an item to the store list
   - As a user, I want to be able to remove an item from the store list
 - As a user, I want to be able to obtain a receipt for the customer
+- As a user, I want to be able to access multiple stores with their own item lists (e.g. Store A and Store B are from 
+the same company and at different locations)
