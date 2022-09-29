@@ -17,10 +17,12 @@ certain amount
     - As a user, I want to be able to access the name of each item
       - As a user, I want to be able to change the name of each item
     - As a user, I want to be able to access the ID of each item
-- As a user, I want to be able to view the list of items in a store
-  - As a user, I want to be able to search for a specific item in the list
-  - As a user, I want to be able to add an item to the store list
-  - As a user, I want to be able to remove an item from the store list
-- As a user, I want to be able to obtain a receipt for the customer
-- As a user, I want to be able to access multiple stores with their own item lists (e.g. Store A and Store B are from 
-the same company and at different locations)
+- As a user, I want to be able to access multiple stores with their own item lists (e.g. Store A and Store B are from
+    the same company and at different locations)
+  - As a user, I want to be able to view the list of items in a store
+    - As a user, I want to be able to search for a specific item in the list
+    - As a user, I want to be able to add an item to the store list
+    - As a user, I want to be able to remove an item from the store list
+  - As a user, I want to be able to obtain a receipt for the customer
+    - As a user, I want to be able to print out the list of items purchased and their quantities
+    - As a user, I want to be able to output the total price of the items
