@@ -1,29 +1,36 @@
 package model;
 
 public class Item {
-    private final int id;
-    private int quantity;
+    private static int nextAccountId = 1;  // tracks id of next account created
+    private int id;
     private String name;
+    private int quantity;
+    private double price;
 
     // REQUIRES: name has non-zero length
     // MODIFIES: this
     // EFFECTS: Create new item with quantity and name
-    public Item(int id, int quantity, String name) {
-        this.id = id; // Should be changed to be automatically set
-        this.quantity = quantity;
+    public Item(String name, int quantity, double price) {
+        this.id = nextAccountId++; // Should be changed to be automatically set
         this.name = name;
+        this.quantity = quantity;
+        this.price = price;
     }
 
     public int getId() {
         return this.id;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     public int getQuantity() {
         return this.quantity;
     }
 
-    public String getName() {
-        return this.name;
+    public double getPrice() {
+        return price;
     }
 
     // MODIFIES: this
@@ -37,11 +44,5 @@ public class Item {
     // EFFECTS: Changes the quantity of the item by num
     public void changeQuantity(int num) {
         this.quantity += num;
-    }
-
-    // REQUIRES: name is present in ItemList
-    // EFFECTS:
-    public void availableName(String name) {
-
     }
 }
