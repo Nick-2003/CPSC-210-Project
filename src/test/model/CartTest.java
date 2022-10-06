@@ -2,16 +2,17 @@ package model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
-class InventoryTest {
-    Inventory inventory;
+public class CartTest {
+    Cart cart;
 
     @BeforeEach
     public void setUp() {
-        inventory = new Inventory();
+        cart = new Cart();
     }
 
+    @Test
+    public void testChangeQuantity() {
 
-
+    }
 }
