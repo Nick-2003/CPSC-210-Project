@@ -1,32 +1,33 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Collection;
 import java.util.HashSet;
 
 public class Inventory implements ItemList {
 
-//    ArrayList<Item> internalList; // Which one would be more important: Ordering or non-duplicates?
-    Collection<Item> internalList; // Do not need to override
+    //    ArrayList<Item> internalList; // Which one would be more important: Ordering or non-duplicates?
+    private HashSet<Item> internalList; // Do not need to override
 
     public Inventory() {
 //        this.internalList = new ArrayList<Item>();
-        this.internalList = new HashSet();
+        this.internalList = new HashSet<Item>();
     }
 
     // MODIFIES: this
-    // EFFECTS: inserts item into set unless it's already there, in which case add to existing quantity
-    public void insert(Item obj) {
-        if (internalList.contains(obj)) {
-            for (Item obi: internalList) {
-                if (Objects.equals(obi.getName(), obj.getName())) {
-                    obi.changeQuantity(obj.getQuantity());
-                    break;
-                }
+    // EFFECTS: Add to existing quantity of item in list unless it's not there, in which case insert new item to list
+    public void putIntoList(Item obj) {
+        int listSize = internalList.size();
+        boolean listChange = false;
+        for (Item obi: this.internalList) {
+            if (Objects.equals(obi.getName(), obj.getName())) {
+                obi.changeQuantity(obj.getQuantity());
+                listChange = true;
+                break;
             }
-        } else {
-            internalList.add(obj);
+        }
+        if (! listChange) {
+            this.internalList.add(obj);
         }
     }
 
@@ -41,13 +42,18 @@ public class Inventory implements ItemList {
 
     // REQUIRES: obj.getQuantity() > 0
     // MODIFIES: this
-    // EFFECTS: Takes item from set unless it's not in the list or quantity =< 0, in which case return false
-    public boolean take(Item obj) {
+    // EFFECTS: Takes item of given quantity from set unless it's not in the list or quantity =< 0, in which case
+    // return false
+    public boolean takeFromList(Item obj) {
         boolean result = false;
-        if (internalList.contains(obj)) {
-            for (Item obi: internalList) {
-                if (Objects.equals(obi.getName(), obj.getName()) && (obi.getQuantity() >= obj.getQuantity())) {
+        for (Item obi: this.internalList) {
+            if (Objects.equals(obi.getName(), obj.getName())) {
+                if (obi.getQuantity() > obj.getQuantity()) {
                     obi.changeQuantity(- obj.getQuantity());
+                    result = true;
+                    break;
+                } else if (obi.getQuantity() == obj.getQuantity()) {
+                    this.internalList.remove(obi);
                     result = true;
                     break;
                 }
@@ -56,16 +62,38 @@ public class Inventory implements ItemList {
         return result;
     }
 
-    // REQUIRES: name is present in ItemList, quantity =/= 0
-    // EFFECTS: Returns if Item of given name is available for purchase
-    public boolean available(String name) {
-        boolean result = false;
+    // REQUIRES: name is present in ItemList, quantity > 0
+    // EFFECTS: Returns amount of Item of given name
+    public int availableAmount(String name) {
+        int available = 0;
         for (Item obj: internalList) {
-            if ((Objects.equals(obj.getName(), name)) && (obj.getQuantity() > 0)) {
-                result = true;
+            if (Objects.equals(obj.getName(), name)) {
+                available = obj.getQuantity();
                 break;
             }
         }
-        return result;
+        return available;
+    }
+
+    // REQUIRES: name is present in ItemList
+    // EFFECTS: Returns price of Item of given name
+    public double namedPrice(String name) {
+        double cost = 0;
+        for (Item obj: internalList) {
+            if (Objects.equals(obj.getName(), name)) {
+                cost = obj.getPrice();
+                break;
+            }
+        }
+        return cost;
+    }
+
+    // EFFECTS: Clears list of items
+    public void clear() {
+        this.internalList = new HashSet();
+    }
+
+    public HashSet<Item> getInternalList() {
+        return internalList;
     }
 }

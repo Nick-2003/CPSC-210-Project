@@ -15,8 +15,22 @@ public class Store {
         this.cart = new Cart();
     }
 
-    public void itemToCart(Item item) {
-//        if (item )
+    public void itemToCart(String itemName, int itemQuantity) {
+        if (this.inventory.availableAmount(itemName) >= itemQuantity) {
+            double itemPrice = this.inventory.namedPrice(itemName);
+            Item item = new Item(itemName, itemQuantity, itemPrice);
+            this.inventory.takeFromList(item);
+            this.cart.putIntoList(item);
+        }
+    }
+
+    public void itemFromCart(String itemName, int itemQuantity) {
+        if (this.inventory.availableAmount(itemName) >= itemQuantity) {
+            double itemPrice = this.inventory.namedPrice(itemName);
+            Item item = new Item(itemName, itemQuantity, itemPrice);
+            this.cart.takeFromList(item);
+            this.inventory.putIntoList(item);
+        }
     }
 
     public String getName() {

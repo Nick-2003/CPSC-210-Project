@@ -6,7 +6,6 @@ public class Item {
     private String name;
     private int quantity;
     private double price;
-    private boolean sale;
 
     // REQUIRES: name has non-zero length
     // MODIFIES: this
@@ -16,7 +15,7 @@ public class Item {
         this.name = name;
         this.quantity = quantity;
         this.price = price;
-        this.sale = false; // Check if item is on sale or not
+//        this.sale = false; // Check if item is on sale or not
     }
 
     // REQUIRES: quantity - num >= 0
@@ -26,24 +25,28 @@ public class Item {
         this.quantity += num;
     }
 
+    // EFFECTS: Get the id of the item
     public int getId() {
         return this.id;
     }
 
+    // EFFECTS: Get the name of the item
     public String getName() {
         return this.name;
     }
 
+    // EFFECTS: Get the quantity of the item
     public int getQuantity() {
         return this.quantity;
     }
 
+    // EFFECTS: Get the price of the item
     public double getPrice() {
         return this.price;
     }
 
     // MODIFIES: this
-    // EFFECTS: Changes the name of the item to name
+    // EFFECTS: Changes the name of the item to given name
     public void setName(String name) {
         this.name = name;
     }
