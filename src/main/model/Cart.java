@@ -3,10 +3,9 @@ package model;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Objects;
 
 //public class Cart implements ItemList {
-public class Cart extends ItemsList {
+public class Cart extends ItemList {
     public static final double TAX = 0.05;
 //    public static final BigDecimal TAX = BigDecimal.valueOf(0.05);
 
@@ -45,6 +44,7 @@ public class Cart extends ItemsList {
     // EFFECTS: Returns final price for items in list
     public double finalPrice() {
         double finalPrice = totalPrice() + tax();
+        finalPrice = BigDecimal.valueOf(finalPrice).setScale(2, RoundingMode.HALF_UP).doubleValue();
 //        BigDecimal finalPrice = totalPrice().add(tax()).setScale(2, RoundingMode.HALF_UP);
         return finalPrice;
     }

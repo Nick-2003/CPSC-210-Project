@@ -4,10 +4,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.HashSet;
 
 //public class Inventory implements ItemList {
-public class Inventory extends ItemsList {
+public class Inventory extends ItemList {
 
 //    ArrayList<Item> internalList; // Which one would be more important: Ordering or non-duplicates?
 ////    private HashSet<Item> internalList; // Do not need to override
