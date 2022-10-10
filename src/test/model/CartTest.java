@@ -53,6 +53,15 @@ public class CartTest {
     }
 
     @Test
+    public void testPutIntoListNone() {
+        testInitial();
+
+        cart.putIntoList(new Item("White Rice", 0, 8));
+        assertEquals(0, cart.getInternalList().size());
+        assertEquals(0, cart.getNamedAmount("White Rice"));
+    }
+    
+    @Test
     public void testTakeFromList() {
         testInitial();
 
@@ -106,6 +115,19 @@ public class CartTest {
         assertEquals(0, cart.getNamedAmount("Bread"));
     }
 
+    @Test
+    public void testTakeFromListNone() {
+        testInitial();
+
+        cart.putIntoList(rice10);
+        assertEquals(1, cart.getInternalList().size());
+        assertEquals(10, cart.getNamedAmount("White Rice"));
+
+        cart.takeFromList(new Item("White Rice", 0, 8));
+        assertEquals(1, cart.getInternalList().size());
+        assertEquals(10, cart.getNamedAmount("White Rice"));
+    }
+    
     @Test
     public void testGetNamedPrice() {
         testInitial();

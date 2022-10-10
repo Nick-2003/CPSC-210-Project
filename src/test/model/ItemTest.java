@@ -83,4 +83,27 @@ class ItemTest {
         rice10.setPrice(8.125);
         assertEquals(8.13, rice10.getPrice());
     }
+
+    @Test
+    public void testSetName()  {
+        assertEquals("White Rice", rice10.getName());
+        rice10.setName("Rice");
+        assertEquals("Rice", rice10.getName());
+    }
+
+    @Test
+    public void testSetNameMulti()  {
+        assertEquals("White Rice", rice10.getName());
+        rice10.setName("Rice");
+        assertEquals("Rice", rice10.getName());
+        rice10.setName("Brown Rice");
+        assertEquals("Brown Rice", rice10.getName());
+    }
+
+    @Test
+    public void testSetNameBlank()  {
+        assertEquals("White Rice", rice10.getName());
+        rice10.setName("");
+        assertEquals("", rice10.getName());
+    }
 }

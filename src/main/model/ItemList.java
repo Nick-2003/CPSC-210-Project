@@ -12,20 +12,23 @@ public class ItemList {
         this.internalList = new ArrayList<Item>();
     }
 
+    // REQUIRES: obj.getQuantity() > 0
     // MODIFIES: this
     // EFFECTS: Add to existing quantity of item in list unless it's not there, in which case insert new item to list
     public void putIntoList(Item obj) {
 //        int listSize = internalList.size();
-        boolean listChange = false;
-        for (Item obi: this.internalList) {
-            if (Objects.equals(obi.getName(), obj.getName())) {
-                obi.changeQuantity(obj.getAmount());
-                listChange = true;
-                break;
+        if (obj.getAmount() > 0) {
+            boolean listChange = false;
+            for (Item obi : this.internalList) {
+                if (Objects.equals(obi.getName(), obj.getName())) {
+                    obi.changeQuantity(obj.getAmount());
+                    listChange = true;
+                    break;
+                }
             }
-        }
-        if (! listChange) {
-            this.internalList.add(obj);
+            if (!listChange) {
+                this.internalList.add(obj);
+            }
         }
     }
 

@@ -56,6 +56,15 @@ class InventoryTest {
     }
 
     @Test
+    public void testPutIntoListNone() {
+        testInitial();
+
+        inventory.putIntoList(new Item("White Rice", 0, 8));
+        assertEquals(0, inventory.getInternalList().size());
+        assertEquals(0, inventory.getNamedAmount("White Rice"));
+    }
+
+    @Test
     public void testTakeFromList() {
         testInitial();
 
@@ -107,6 +116,19 @@ class InventoryTest {
         assertEquals(1, inventory.getInternalList().size());
         assertEquals(5, inventory.getNamedAmount("White Rice"));
         assertEquals(0, inventory.getNamedAmount("Bread"));
+    }
+
+    @Test
+    public void testTakeFromListNone() {
+        testInitial();
+
+        inventory.putIntoList(rice10);
+        assertEquals(1, inventory.getInternalList().size());
+        assertEquals(10, inventory.getNamedAmount("White Rice"));
+
+        inventory.takeFromList(new Item("White Rice", 0, 8));
+        assertEquals(1, inventory.getInternalList().size());
+        assertEquals(10, inventory.getNamedAmount("White Rice"));
     }
 
     @Test
