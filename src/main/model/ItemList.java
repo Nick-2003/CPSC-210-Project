@@ -81,4 +81,17 @@ public class ItemList {
         }
         return cost;
     }
+
+    // EFFECTS: Clears list of items
+    public void clear() {
+        this.internalList = new ArrayList<Item>();
+//        this.internalList = new HashSet();
+    }
+
+    public ArrayList<Item> getInternalList() {
+        return internalList;
+    }
+//    public HashSet<Item> getInternalList() {
+//        return internalList;
+//    }
 }

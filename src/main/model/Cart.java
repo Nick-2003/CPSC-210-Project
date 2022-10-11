@@ -48,13 +48,4 @@ public class Cart extends ItemList {
 //        BigDecimal finalPrice = totalPrice().add(tax()).setScale(2, RoundingMode.HALF_UP);
         return finalPrice;
     }
-
-    // EFFECTS: Clears list of items
-    public void clear() {
-        this.internalList = new ArrayList<Item>();
-    }
-
-    public ArrayList<Item> getInternalList() {
-        return internalList;
-    }
 }
