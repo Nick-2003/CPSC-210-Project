@@ -21,7 +21,6 @@ public class Inventory extends ItemList {
     public void setNamedPrice(String name, double price) {
         for (Item obj: internalList) {
             if (Objects.equals(obj.getName(), name)) {
-//                obj.setPrice(price);
                 obj.setPrice(BigDecimal.valueOf(price).setScale(2, RoundingMode.HALF_UP).doubleValue());
                 break;
             }

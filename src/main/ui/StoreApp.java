@@ -142,7 +142,7 @@ public class StoreApp {
     // REQUIRES: Cart is not empty
     // EFFECTS: Print the receipt for the customer
     public void payment() {
-        System.out.print("\nReciept: ");
+        System.out.print("\nReceipt: ");
         for (Item obj: this.cart.getInternalList()) {
             System.out.print("\n\t" + obj.getName() + ": $" + obj.getPrice() + " * " + obj.getAmount());
         }

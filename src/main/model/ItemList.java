@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ItemList {
+public abstract class ItemList {
 
     protected ArrayList<Item> internalList; // Which one would be more important: Ordering or non-duplicates?
 //    private HashSet<Item> internalList; // Do not need to override
@@ -58,7 +58,7 @@ public class ItemList {
     // EFFECTS: Returns amount of Item of given name
     public int getNamedAmount(String name) {
         int available = 0;
-        for (Item obj: internalList) {
+        for (Item obj: this.internalList) {
             if (Objects.equals(obj.getName(), name)) {
                 available = obj.getAmount();
                 break;
@@ -72,7 +72,7 @@ public class ItemList {
     public double getNamedPrice(String name) {
         double cost = 0;
 //        BigDecimal cost = BigDecimal.valueOf(0);
-        for (Item obj: internalList) {
+        for (Item obj: this.internalList) {
             if (Objects.equals(obj.getName(), name)) {
                 cost = obj.getPrice();
 //                cost = obj.getPrice().setScale(2, RoundingMode.HALF_UP);
@@ -82,6 +82,7 @@ public class ItemList {
         return cost;
     }
 
+    // MODIFIES: this
     // EFFECTS: Clears list of items
     public void clear() {
         this.internalList = new ArrayList<Item>();
@@ -89,7 +90,7 @@ public class ItemList {
     }
 
     public ArrayList<Item> getInternalList() {
-        return internalList;
+        return this.internalList;
     }
 //    public HashSet<Item> getInternalList() {
 //        return internalList;
