@@ -2,19 +2,19 @@ package model;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.Objects;
 
 //public class Inventory implements ItemList {
 public class Inventory extends ItemList {
 
-//    ArrayList<Item> internalList; // Which one would be more important: Ordering or non-duplicates?
+//    private ArrayList<Item> internalList; // internalList from ItemList used instead
 ////    private HashSet<Item> internalList; // Do not need to override
-//
-//    public Inventory() {
+
+    public Inventory() {
+        super(); // Constructor for ItemList
 //        this.internalList = new ArrayList<Item>();
-////        this.internalList = new HashSet<Item>();
-//    }
+//        this.internalList = new HashSet<Item>();
+    }
 
     // REQUIRES: name is present in ItemList
     // EFFECTS: Change name of Item of given name to newName

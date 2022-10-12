@@ -2,7 +2,6 @@ package model;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 
 //public class Cart implements ItemList {
 public class Cart extends ItemList {
@@ -10,10 +9,11 @@ public class Cart extends ItemList {
 //    public static final BigDecimal TAX = BigDecimal.valueOf(0.05);
 
 //    private ArrayList<Item> internalList; // Which one would be more important: Ordering or non-duplicates?
-//
-//    public Cart() {
+
+    public Cart() {
+        super(); // Constructor for ItemList
 //        this.internalList = new ArrayList<Item>();
-//    }
+    }
 
     // REQUIRES: ItemList is non-empty
     // EFFECTS: Returns total cost of items in list
