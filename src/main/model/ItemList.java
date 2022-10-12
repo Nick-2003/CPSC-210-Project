@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public abstract class ItemList {
+public class ItemList {
 
     protected ArrayList<Item> internalList; // Which one would be more important: Ordering or non-duplicates?
 //    private HashSet<Item> internalList; // Do not need to override
@@ -52,6 +52,19 @@ public abstract class ItemList {
             }
         }
         return result;
+    }
+
+    // REQUIRES: name is present in ItemList
+    // EFFECTS: Returns if Item of given name is in ItemList
+    public boolean getNamed(String name) {
+        boolean inList = false;
+        for (Item obj: this.internalList) {
+            if (Objects.equals(obj.getName(), name)) {
+                inList = true;
+                break;
+            }
+        }
+        return inList;
     }
 
     // REQUIRES: name is present in ItemList, quantity > 0

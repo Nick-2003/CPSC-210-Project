@@ -60,6 +60,8 @@ public class StoreApp {
             addToInventory();
         } else if (command.equals("r")) {
             removeFromInventory();
+//        } else if (command.equals("n")) {
+//            setInventoryItemName();
         } else if (command.equals("s")) {
             setInventoryItemPrice();
         } else if (command.equals("y")) {
@@ -92,6 +94,7 @@ public class StoreApp {
 
         System.out.println("\n\ta -> Add to Inventory");
         System.out.println("\tr -> Remove from Inventory");
+//        System.out.println("\tn -> Set name for Item in Inventory");
         System.out.println("\ts -> Set price for Item in Inventory");
         System.out.println("\ty -> Print Inventory");
         System.out.println("\ti -> Clear Inventory");
@@ -215,6 +218,18 @@ public class StoreApp {
             System.out.print("\n " + itemName + " is not in Inventory \n");
         }
     }
+
+//    // REQUIRES: Item is in Inventory
+//    // MODIFIES: this, Item
+//    // EFFECTS: Set the name of an existing Item in Inventory
+//    public void setInventoryItemName() {
+//        String itemName = inputItemName();
+//
+//        System.out.print("\nNew name for " + itemName + ": ");
+//        String itemNewName = inputItemName();
+//        this.inventory.setNewName(itemName, itemNewName);
+//        System.out.print(itemName + " changed to " + itemNewName);
+//    }
 
     // REQUIRES: Item is in Inventory
     // MODIFIES: this, Item

@@ -17,6 +17,17 @@ public class Inventory extends ItemList {
 //    }
 
     // REQUIRES: name is present in ItemList
+    // EFFECTS: Change name of Item of given name to newName
+    public void setNewName(String name, String newName) {
+        for (Item obj: internalList) {
+            if (Objects.equals(obj.getName(), name)) {
+                obj.setName(newName);
+                break;
+            }
+        }
+    }
+
+    // REQUIRES: name is present in ItemList
     // EFFECTS: Change price of Item of given name
     public void setNamedPrice(String name, double price) {
         for (Item obj: internalList) {
