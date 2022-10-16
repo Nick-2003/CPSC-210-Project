@@ -1,3 +1,6 @@
+// https://docs.oracle.com/javase/8/docs/api/java/math/BigDecimal.html
+// Used BigDecimal to round price value to 2 decimal places
+
 package model;
 
 import java.math.BigDecimal;
