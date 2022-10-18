@@ -27,6 +27,10 @@ certain amount
   - As a user, I want to be able to print out the list of items purchased and their quantities
   - As a user, I want to be able to output the total price of the items and corresponding tax
 
-[//]: # (- As a user, I want to be able to access multiple stores with their own item lists &#40;e.g. Store A and Store B are from)
+- As a user, I want to be able to save separate inventory lists
+- As a user, I want to be able to reload separate inventory lists
+  - As a user, I want to be able to select which inventory list to reload
+  - As a user, I want to be able to switch which inventory list to use at the time
 
+[//]: # (- As a user, I want to be able to access multiple stores with their own item lists &#40;e.g. Store A and Store B are from)
 [//]: # (    the same company and at different locations&#41;)
