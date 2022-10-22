@@ -13,8 +13,9 @@ public class Cart extends ItemList {
 
 //    private ArrayList<Item> internalList; // Which one would be more important: Ordering or non-duplicates?
 
-    public Cart() {
-        super(); // Constructor for ItemList
+    // EFFECTS: Creates new empty Cart
+    public Cart(String name) {
+        super(name); // Constructor for ItemList
 //        this.internalList = new ArrayList<Item>();
     }
 

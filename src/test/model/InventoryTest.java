@@ -15,7 +15,7 @@ class InventoryTest {
 
     @BeforeEach
     public void setUp() {
-        this.list = new Inventory();
+        this.list = new Inventory("List");
     }
 
     //NEW

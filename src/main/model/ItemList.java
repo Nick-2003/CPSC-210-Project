@@ -1,14 +1,21 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ItemList {
+public class ItemList implements Writable {
 
+    protected String name;
     protected ArrayList<Item> internalList; // Which one would be more important: Ordering or non-duplicates?
 //    private HashSet<Item> internalList; // Do not need to override
 
-    public ItemList() {
+    // EFFECTS: Creates new empty ItemList
+    public ItemList(String name) {
+        this.name = name;
         this.internalList = new ArrayList<Item>();
     }
 
@@ -102,10 +109,30 @@ public class ItemList {
 //        this.internalList = new HashSet();
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     public ArrayList<Item> getInternalList() {
         return this.internalList;
     }
-//    public HashSet<Item> getInternalList() {
-//        return internalList;
-//    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("items", itemsToJson());
+        return json;
+    }
+
+    // EFFECTS: returns Items in this ItemList as a JSON array
+    private JSONArray itemsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Item t : this.internalList) {
+            jsonArray.put(t.toJson());
+        }
+
+        return jsonArray;
+    }
 }

@@ -15,7 +15,7 @@ public class CartTest {
 
     @BeforeEach
     public void setUp() {
-        this.list = new Cart();
+        this.list = new Cart("List");
     }
 
     ////

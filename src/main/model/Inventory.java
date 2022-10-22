@@ -13,13 +13,16 @@ public class Inventory extends ItemList {
 //    private ArrayList<Item> internalList; // internalList from ItemList used instead
 ////    private HashSet<Item> internalList; // Do not need to override
 
-    public Inventory() {
-        super(); // Constructor for ItemList
+    // EFFECTS: Creates new empty Inventory
+    public Inventory(String name) {
+        super(name); // Constructor for ItemList
+
 //        this.internalList = new ArrayList<Item>();
 //        this.internalList = new HashSet<Item>();
     }
 
     // REQUIRES: name is present in ItemList
+    // MODIFIES: this, Item
     // EFFECTS: Change name of Item of given name to newName
     public void setNewName(String name, String newName) {
         for (Item obj: internalList) {
@@ -31,6 +34,7 @@ public class Inventory extends ItemList {
     }
 
     // REQUIRES: name is present in ItemList
+    // MODIFIES: this, Item
     // EFFECTS: Change price of Item of given name
     public void setNamedPrice(String name, double price) {
         for (Item obj: internalList) {

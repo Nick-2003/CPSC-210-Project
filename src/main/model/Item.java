@@ -3,10 +3,13 @@
 
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class Item {
+public class Item implements Writable {
 //    private static int nextItemId = 1;  // tracks id of next account created
 //    private int id;
     private String name;
@@ -22,13 +25,6 @@ public class Item {
         this.price = BigDecimal.valueOf(price).setScale(2, RoundingMode.HALF_UP).doubleValue();
 //        this.sale = false; // Check if item is on sale or not
     }
-
-//    public Item(String name, int amount, BigDecimal price) {
-//        this.name = name;
-//        this.amount = amount;
-//        this.price = price.setScale(2, RoundingMode.HALF_UP).doubleValue();
-////        this.sale = false; // Check if item is on sale or not
-//    }
 
     // REQUIRES: quantity - num >= 0
     // MODIFIES: this
@@ -67,5 +63,14 @@ public class Item {
     // EFFECTS: Changes the price of the item to given price
     public void setPrice(double price) {
         this.price = BigDecimal.valueOf(price).setScale(2, RoundingMode.HALF_UP).doubleValue();
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("amount", amount);
+        json.put("price", price);
+        return json;
     }
 }

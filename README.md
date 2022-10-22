@@ -19,8 +19,8 @@ certain amount
 
 - As a user, I want to be able to view the list of items in a store, one for cart and another for inventory
   - As a user, I want to be able to search for a specific item in the list and change its price
-  - As a user, I want to be able to add items to the store list
-  - As a user, I want to be able to remove items from the store list
+  - As a user, I want to be able to add items to the inventory
+  - As a user, I want to be able to remove items from the inventory
   - As a user, I want to be able to move items between cart and inventory lists
 
 - As a user, I want to be able to obtain a receipt for the customer

@@ -12,7 +12,7 @@ public class ItemListTest {
 
     @BeforeEach
     public void setUp() {
-        this.list = new ItemList();
+        this.list = new ItemList("List");
     }
 
     @Test

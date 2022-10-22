@@ -1,22 +1,34 @@
+// https://docs.oracle.com/javase/8/docs/api/java/math/BigDecimal.html
+// Used BigDecimal to round price value to 2 decimal places
+
+// https://github.students.cs.ubc.ca/CPSC210/TellerApp
+// Used as reference for interface
+
 package ui;
 
 import model.Cart;
 import model.Inventory;
 import model.Item;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 // Store application
 public class StoreApp {
 
-//    private String name;
+    private static final String JSON_STORE = "./data/inventory.json";
 
     private Inventory inventory;
     private Cart cart;
     private Scanner input;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: Runs the  application
-    public StoreApp() {
+    public StoreApp() throws FileNotFoundException {
         runApp();
     }
 
@@ -34,6 +46,7 @@ public class StoreApp {
             command = command.toLowerCase();
 
             if (command.equals("q")) {
+                // Add error if cart is not empty
                 keepGoing = false;
             } else {
                 processCommand(command);
@@ -52,22 +65,20 @@ public class StoreApp {
             itemFromCart();
         } else if (command.equals("p")) {
             payment();
-        } else if (command.equals("x")) {
-            printCart();
-        } else if (command.equals("c")) {
-            clearCart();
         } else if (command.equals("a")) {
             addToInventory();
         } else if (command.equals("r")) {
             removeFromInventory();
-//        } else if (command.equals("n")) {
-//            setInventoryItemName();
-        } else if (command.equals("s")) {
+        } else if (command.equals("e")) {
             setInventoryItemPrice();
-        } else if (command.equals("y")) {
-            printInventory();
+        } else if (command.equals("s")) {
+            saveInventory();
+        } else if (command.equals("l")) {
+            loadInventory();
         } else if (command.equals("i")) {
-            clearInventory();
+            printItemList();
+        } else if (command.equals("c")) {
+            clearItemList();
         } else {
             System.out.println("Selection not valid...");
         }
@@ -77,10 +88,12 @@ public class StoreApp {
     // EFFECTS: Initializes system
     private void init() {
 //        name = name;
-        inventory = new Inventory(); // NEED TO FIND WAY TO SAVE INVENTORY LATER
-        cart = new Cart();
+        inventory = new Inventory("Inventory"); // NEED TO FIND WAY TO SAVE INVENTORY LATER
+        cart = new Cart("Cart");
         input = new Scanner(System.in);
         input.useDelimiter("\n");
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
     }
 
     // EFFECTS: Displays menu of options to user
@@ -89,23 +102,23 @@ public class StoreApp {
         System.out.println("\tt -> Item to Cart");
         System.out.println("\tf -> Item from Cart");
         System.out.println("\tp -> Payment");
-        System.out.println("\tx -> Print Cart");
-        System.out.println("\tc -> Clear Cart");
 
         System.out.println("\n\ta -> Add to Inventory");
         System.out.println("\tr -> Remove from Inventory");
 //        System.out.println("\tn -> Set name for Item in Inventory");
-        System.out.println("\ts -> Set price for Item in Inventory");
-        System.out.println("\ty -> Print Inventory");
-        System.out.println("\ti -> Clear Inventory");
+        System.out.println("\te -> Set price for Item in Inventory");
+        System.out.println("\ts -> Save Inventory");
+        System.out.println("\tl -> Load Inventory");
 
-        System.out.println("\n\tq -> Quit");
+        System.out.println("\n\ti -> Print Item List");
+        System.out.println("\tl -> Clear Item List");
+        System.out.println("\tq -> Quit");
     }
 
     // REQUIRES: Inventory contains required Item
     // MODIFIES: this, Item
     // EFFECTS: Move Item from Inventory to Cart
-    public void itemToCart() {
+    private void itemToCart() {
 
         String itemName = inputItemName();
         int itemQuantity = inputItemQuantity();
@@ -116,16 +129,16 @@ public class StoreApp {
             Item item = new Item(itemName, itemQuantity, itemPrice);
             this.inventory.takeFromList(item);
             this.cart.putIntoList(item);
-            System.out.print("Moved " + itemQuantity + " of " + itemName + " to Inventory");
+            System.out.print("Moved " + itemQuantity + " of " + itemName + " to Inventory\n");
         } else {
-            System.out.print("Not enough " + itemName + " in Inventory");
+            System.out.print("Not enough " + itemName + " in Inventory\n");
         }
     }
 
     // REQUIRES: Cart contains required Item
     // MODIFIES: this, Item
     // EFFECTS: Move Item from Cart to Inventory
-    public void itemFromCart() {
+    private void itemFromCart() {
 
         String itemName = inputItemName();
         int itemQuantity = inputItemQuantity();
@@ -136,15 +149,15 @@ public class StoreApp {
             Item item = new Item(itemName, itemQuantity, itemPrice);
             this.cart.takeFromList(item);
             this.inventory.putIntoList(item);
-            System.out.print("Moved " + itemQuantity + " of " + itemName + " to Inventory");
+            System.out.print("Moved " + itemQuantity + " of " + itemName + " to Inventory\n");
         } else {
-            System.out.print("Not enough " + itemName + " in Cart");
+            System.out.print("Not enough " + itemName + " in Cart\n");
         }
     }
 
     // REQUIRES: Cart is not empty
     // EFFECTS: Print the receipt for the customer
-    public void payment() {
+    private void payment() {
         System.out.print("\nReceipt: ");
         for (Item obj: this.cart.getInternalList()) {
             System.out.print("\n\t" + obj.getName() + ": $" + obj.getPrice() + " * " + obj.getAmount());
@@ -154,29 +167,9 @@ public class StoreApp {
         System.out.print("\n\tFinal cost: $" + this.cart.finalPrice() + "\n");
     }
 
-    // EFFECTS: Print current Cart
-    public void printCart() {
-        System.out.print("\nCart Items: ");
-        for (Item obj: this.cart.getInternalList()) {
-            System.out.print("\nName: " + obj.getName());
-            System.out.print("\n\tQuantity: " + obj.getAmount());
-            System.out.print("\n\tPrice: " + obj.getPrice());
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: Clear current Cart
-    public void clearCart() {
-        Boolean shouldClear = inputBool();
-        if (shouldClear) {
-            this.cart.clear();
-            System.out.print("\nCart cleared");
-        }
-    }
-
     // MODIFIES: this, Item
     // EFFECTS: Add Item with given inputs to Inventory; if Item exists, take existing price
-    public void addToInventory() {
+    private void addToInventory() {
 
         String itemName = inputItemName();
         int itemQuantity = inputItemQuantity();
@@ -197,7 +190,7 @@ public class StoreApp {
 
     // MODIFIES: this, Item
     // EFFECTS: Remove Item with given inputs from Inventory; if Item exists, take existing price
-    public void removeFromInventory() {
+    private void removeFromInventory() {
 
         String itemName = inputItemName();
         int itemQuantity = inputItemQuantity();
@@ -222,7 +215,7 @@ public class StoreApp {
 //    // REQUIRES: Item is in Inventory
 //    // MODIFIES: this, Item
 //    // EFFECTS: Set the name of an existing Item in Inventory
-//    public void setInventoryItemName() {
+//    private void setInventoryItemName() {
 //        String itemName = inputItemName();
 //
 //        System.out.print("\nNew name for " + itemName + ": ");
@@ -234,33 +227,72 @@ public class StoreApp {
     // REQUIRES: Item is in Inventory
     // MODIFIES: this, Item
     // EFFECTS: Set the price of an existing Item in Inventory
-    public void setInventoryItemPrice() {
+    private void setInventoryItemPrice() {
         String itemName = inputItemName();
 
         double itemPrice = this.inventory.getNamedPrice(itemName);
         System.out.print("\nCurrent item price: $" + itemPrice);
         itemPrice = inputItemPrice();
         this.inventory.setNamedPrice(itemName, itemPrice);
-        System.out.print("New item price: $" + itemPrice);
+        System.out.print("New item price: $" + itemPrice + "\n");
     }
 
-    // EFFECTS: Print current Inventory
-    public void printInventory() {
-        System.out.print("\nInventory Items: ");
-        for (Item obj: this.inventory.getInternalList()) {
-            System.out.print("\nName: " + obj.getName());
-            System.out.print("\n\tQuantity: " + obj.getAmount());
-            System.out.print("\n\tPrice: " + obj.getPrice());
+    // EFFECTS: saves Inventory to file
+    private void saveInventory() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(inventory);
+            jsonWriter.close();
+            System.out.println("Saved " + inventory.getName() + " to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
         }
     }
 
     // MODIFIES: this
-    // EFFECTS: Clear current Inventory
-    public void clearInventory() {
+    // EFFECTS: loads Inventory from file
+    private void loadInventory() {
+        try {
+            inventory = jsonReader.read();
+            System.out.println("Loaded " + inventory.getName() + " from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+    }
+
+    // EFFECTS: Print current ItemList
+    private void printItemList() {
+        String selectList = inputListString();
+        if (selectList.equals("c")) {
+            System.out.print("\nCart Items: ");
+            for (Item obj: this.cart.getInternalList()) {
+                System.out.print("\nName: " + obj.getName());
+                System.out.print("\n\tQuantity: " + obj.getAmount());
+                System.out.print("\n\tPrice: " + obj.getPrice() + "\n");
+            }
+        } else {
+            System.out.print("\nInventory Items: ");
+            for (Item obj: this.inventory.getInternalList()) {
+                System.out.print("\nName: " + obj.getName());
+                System.out.print("\n\tQuantity: " + obj.getAmount());
+                System.out.print("\n\tPrice: " + obj.getPrice() + "\n");
+            }
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: Clear current ItemList
+    private void clearItemList() {
+        String selectList = inputListString();
         Boolean shouldClear = inputBool();
-        if (shouldClear) {
+        if (!shouldClear) {
+            System.out.print("\nReturning to screen\n");
+        } else if (shouldClear && (selectList.equals("c"))) {
+            this.cart.clear();
+            System.out.print("\nCart cleared\n");
+        } else if (shouldClear && (selectList.equals("i"))) {
             this.inventory.clear();
-            System.out.print("\nInventory cleared");
+            System.out.print("\nInventory cleared\n");
         }
     }
 
@@ -299,11 +331,22 @@ public class StoreApp {
             inputB = input.next();
             inputB = inputB.toLowerCase();
         }
-
         if (inputB.equals("y")) {
             bool = true;
         }
-
         return bool;
+    }
+
+    // EFFECTS: Input String for List
+    private String inputListString() {
+        String inputS = "";
+        System.out.print("\nSelect which list to clear: ");
+        while (!(inputS.equals("c") || inputS.equals("i"))) {
+            System.out.println("\n\tc -> Cart");
+            System.out.println("\n\ti -> Inventory");
+            inputS = input.next();
+            inputS = inputS.toLowerCase();
+        }
+        return inputS;
     }
 }
