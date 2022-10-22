@@ -26,12 +26,12 @@
 //    void testWriterEmptyWorkroom() {
 //        try {
 //            WorkRoom wr = new WorkRoom("My work room");
-//            JsonWriter writer = new JsonWriter("./data/testWriterEmptyWorkroom.json");
+//            JsonWriter writer = new JsonWriter("./data/testWriterEmptyInventory.json");
 //            writer.open();
 //            writer.write(wr);
 //            writer.close();
 //
-//            JsonReader reader = new JsonReader("./data/testWriterEmptyWorkroom.json");
+//            JsonReader reader = new JsonReader("./data/testWriterEmptyInventory.json");
 //            wr = reader.read();
 //            assertEquals("My work room", wr.getName());
 //            assertEquals(0, wr.numThingies());
@@ -46,12 +46,12 @@
 //            WorkRoom wr = new WorkRoom("My work room");
 //            wr.addThingy(new Thingy("saw", Category.METALWORK));
 //            wr.addThingy(new Thingy("needle", Category.STITCHING));
-//            JsonWriter writer = new JsonWriter("./data/testWriterGeneralWorkroom.json");
+//            JsonWriter writer = new JsonWriter("./data/testWriterGeneralInventory.json");
 //            writer.open();
 //            writer.write(wr);
 //            writer.close();
 //
-//            JsonReader reader = new JsonReader("./data/testWriterGeneralWorkroom.json");
+//            JsonReader reader = new JsonReader("./data/testWriterGeneralInventory.json");
 //            wr = reader.read();
 //            assertEquals("My work room", wr.getName());
 //            List<Thingy> thingies = wr.getThingies();

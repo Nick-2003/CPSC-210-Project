@@ -24,7 +24,7 @@
 //
 //    @Test
 //    void testReaderEmptyWorkRoom() {
-//        JsonReader reader = new JsonReader("./data/testReaderEmptyWorkRoom.json");
+//        JsonReader reader = new JsonReader("./data/testReaderEmptyInventory.json");
 //        try {
 //            Inventory inv = reader.read();
 //            assertEquals("My inventory", inv.getName());
@@ -36,7 +36,7 @@
 //
 //    @Test
 //    void testReaderGeneralWorkRoom() {
-//        JsonReader reader = new JsonReader("./data/testReaderGeneralWorkRoom.json");
+//        JsonReader reader = new JsonReader("./data/testReaderGeneralInventory.json");
 //        try {
 //            Inventory inv = reader.read();
 //            assertEquals("My work room", inv.getName());
