@@ -20,12 +20,12 @@ import org.json.*;
 public class JsonReader {
     private String source;
 
-    // EFFECTS: constructs reader to read from source file
+    // EFFECTS: Constructs reader to read from source file
     public JsonReader(String source) {
         this.source = source;
     }
 
-    // EFFECTS: reads ItemList from file and returns it;
+    // EFFECTS: Reads ItemList from file and returns it;
     // throws IOException if an error occurs reading data from file
     public Inventory read() throws IOException, NegativeValueException, NotEnoughItemsException {
         String jsonData = readFile(source);
@@ -33,7 +33,7 @@ public class JsonReader {
         return parseInventory(jsonObject);
     }
 
-    // EFFECTS: reads source file as string and returns it
+    // EFFECTS: Reads source file as string and returns it
     private String readFile(String source) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
 
@@ -44,7 +44,7 @@ public class JsonReader {
         return contentBuilder.toString();
     }
 
-    // EFFECTS: parses ItemList from JSON object and returns it
+    // EFFECTS: Parses ItemList from JSON object and returns it
     private Inventory parseInventory(JSONObject jsonObject) throws NegativeValueException, NotEnoughItemsException {
         String name = jsonObject.getString("name");
         Inventory inv = new Inventory(name);
@@ -52,8 +52,8 @@ public class JsonReader {
         return inv;
     }
 
-    // MODIFIES: itl
-    // EFFECTS: parses Items from JSON object and adds them to ItemList
+    // MODIFIES: inv
+    // EFFECTS: Parses Items from JSON object and adds them to ItemList
     private void addItems(Inventory inv, JSONObject jsonObject) throws NegativeValueException, NotEnoughItemsException {
         JSONArray jsonArray = jsonObject.getJSONArray("items");
         for (Object json : jsonArray) {
@@ -63,7 +63,7 @@ public class JsonReader {
     }
 
     // MODIFIES: inv
-    // EFFECTS: parses Item from JSON object and adds it to workroom
+    // EFFECTS: Parses Item from JSON object and adds it to ItemList
     private void addItem(Inventory inv, JSONObject jsonObject) throws NegativeValueException, NotEnoughItemsException {
         String name = jsonObject.getString("name");
         int amount = jsonObject.getInt("amount");

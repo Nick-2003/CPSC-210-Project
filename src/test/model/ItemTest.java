@@ -22,6 +22,44 @@ class ItemTest {
     }
 
     @Test
+    public void testItemAmountZero() {
+        try {
+            Item time = new Item("Time", 0, 1000000000);
+        } catch (NegativeValueException e) {
+            fail("Items should work");
+        }
+    }
+
+    @Test
+    public void testItemAmountNegative() {
+        try {
+            Item paradox = new Item("Dihydrogen Monoxide", -10, 18);
+            fail("Item should fail");
+        } catch (NegativeValueException e) {
+            // All good
+        }
+    }
+
+    @Test
+    public void testItemPriceZero() {
+        try {
+            Item space = new Item("Space", 1000000000, 0);
+        } catch (NegativeValueException e) {
+            fail("Items should work");
+        }
+    }
+
+    @Test
+    public void testItemPriceNegative() {
+        try {
+            Item paradox = new Item("Dihydrogen Monoxide", 10, -18);
+            fail("Item should fail");
+        } catch (NegativeValueException e) {
+            // All good
+        }
+    }
+
+    @Test
     public void testChangeQuantity() {
         assertEquals(10, rice10.getAmount());
         try {
@@ -57,7 +95,7 @@ class ItemTest {
     }
 
     @Test
-    public void testChangeQuantityNeg() {
+    public void testChangeQuantityNegative() {
         assertEquals(10, rice10.getAmount());
         try {
             rice10.changeQuantity(-15);
@@ -71,45 +109,81 @@ class ItemTest {
     @Test
     public void testSetPrice() {
         assertEquals(8, rice10.getPrice());
-        rice10.setPrice(9);
+        try {
+            rice10.setPrice(9);
+        } catch (NegativeValueException e) {
+            fail("NegativeValueException should not be thrown");
+        }
         assertEquals(9, rice10.getPrice());
     }
 
     @Test
     public void testSetPriceMulti() {
         assertEquals(8, rice10.getPrice());
-        rice10.setPrice(9);
-        assertEquals(9, rice10.getPrice());
-        rice10.setPrice(7);
+        try {
+            rice10.setPrice(9);
+            assertEquals(9, rice10.getPrice());
+            rice10.setPrice(7);
+        } catch (NegativeValueException e) {
+            fail("NegativeValueException should not be thrown");
+        }
         assertEquals(7, rice10.getPrice());
     }
 
     @Test
     public void testSetPriceOneDecimal() {
         assertEquals(8, rice10.getPrice());
-        rice10.setPrice(8.1);
+        try {
+            rice10.setPrice(8.1);
+        } catch (NegativeValueException e) {
+            fail("NegativeValueException should not be thrown");
+        }
         assertEquals(8.1, rice10.getPrice());
     }
 
     @Test
     public void testSetPriceTwoDecimal() {
         assertEquals(8, rice10.getPrice());
-        rice10.setPrice(8.12);
+        try {
+            rice10.setPrice(8.12);
+        } catch (NegativeValueException e) {
+            fail("NegativeValueException should not be thrown");
+        }
         assertEquals(8.12, rice10.getPrice());
     }
 
     @Test
     public void testSetPriceTwoMoreDecimalDown() {
         assertEquals(8, rice10.getPrice());
-        rice10.setPrice(8.124);
+        try {
+            rice10.setPrice(8.124);
+        } catch (NegativeValueException e) {
+            fail("NegativeValueException should not be thrown");
+        }
         assertEquals(8.12, rice10.getPrice());
     }
 
     @Test
     public void testSetPriceTwoMoreDecimalUp() {
         assertEquals(8, rice10.getPrice());
-        rice10.setPrice(8.125);
+        try {
+            rice10.setPrice(8.125);
+        } catch (NegativeValueException e) {
+            fail("NegativeValueException should not be thrown");
+        }
         assertEquals(8.13, rice10.getPrice());
+    }
+
+    @Test
+    public void testSetPriceNegative() {
+        assertEquals(8, rice10.getPrice());
+        try {
+            rice10.setPrice(-8);
+            fail("NegativeValueException should be thrown");
+        } catch (NegativeValueException e) {
+            // All good
+        }
+        assertEquals(8, rice10.getPrice());
     }
 
     @Test

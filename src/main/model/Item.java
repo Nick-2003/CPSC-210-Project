@@ -18,7 +18,7 @@ public class Item implements Writable {
     private int amount;
     private double price;
 
-    // REQUIRES: amount > 0, price >= 0
+    // REQUIRES: amount >= 0, price >= 0
     // MODIFIES: this
     // EFFECTS: Create new item with name, quantity and price to 2 decimal places
     public Item(String name, int amount, double price) throws NegativeValueException {
@@ -64,7 +64,10 @@ public class Item implements Writable {
 
     // MODIFIES: this
     // EFFECTS: Changes the price of the item to given price
-    public void setPrice(double price) {
+    public void setPrice(double price) throws NegativeValueException {
+        if (price < 0) {
+            throw new NegativeValueException();
+        }
         this.price = BigDecimal.valueOf(price).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 

@@ -112,6 +112,22 @@ class InventoryTest {
     }
 
     @Test
+    public void testSetNewNameNull() {
+        testInitial();
+
+        try {
+            list.putIntoList(rice10);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        }
+        assertTrue(list.getNamed("White Rice"));
+
+        list.setNewName("White Rice", "");
+        assertFalse(list.getNamed("White Rice"));
+        assertTrue(list.getNamed(""));
+    }
+
+    @Test
     public void testSetNamedPrice() {
         testInitial();
 
@@ -197,6 +213,23 @@ class InventoryTest {
 
         assertEquals(10.00, list.getNamedPrice("White Rice"));
         assertEquals(5.50, list.getNamedPrice("Bread"));
+    }
+
+    @Test
+    public void testSetNamedPriceNegative() {
+        testInitial();
+
+        try {
+            list.putIntoList(rice10);
+            assertEquals(8.00, list.getNamedPrice("White Rice"));
+            list.setNamedPrice("White Rice", -8);
+            fail("NegativeValueException should be thrown");
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        } catch (NegativeValueException e) {
+
+        }
+        assertEquals(8.00, list.getNamedPrice("White Rice"));
     }
 
     protected void testInitial() {

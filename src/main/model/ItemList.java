@@ -74,7 +74,7 @@ public class ItemList implements Writable {
         return inList;
     }
 
-    // REQUIRES: name is present in ItemList, quantity > 0
+    // REQUIRES: name is present in ItemList
     // EFFECTS: Returns amount of Item of given name
     public int getNamedAmount(String name) {
         int available = 0;
