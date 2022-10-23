@@ -3,8 +3,12 @@
 
 package model;
 
+import exceptions.NegativeValueException;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 //public class Inventory implements ItemList {
@@ -21,6 +25,11 @@ public class Inventory extends ItemList {
 //        this.internalList = new HashSet<Item>();
     }
 
+    // EFFECTS: returns an unmodifiable list of Items in this workroom
+    public List<Item> getItems() {
+        return Collections.unmodifiableList(internalList);
+    }
+
     // REQUIRES: name is present in ItemList
     // MODIFIES: this, Item
     // EFFECTS: Change name of Item of given name to newName
@@ -33,10 +42,13 @@ public class Inventory extends ItemList {
         }
     }
 
-    // REQUIRES: name is present in ItemList
+    // REQUIRES: name is present in ItemList, price >= 0
     // MODIFIES: this, Item
     // EFFECTS: Change price of Item of given name
-    public void setNamedPrice(String name, double price) {
+    public void setNamedPrice(String name, double price) throws NegativeValueException {
+        if (price < 0) {
+            throw new NegativeValueException();
+        }
         for (Item obj: internalList) {
             if (Objects.equals(obj.getName(), name)) {
                 obj.setPrice(BigDecimal.valueOf(price).setScale(2, RoundingMode.HALF_UP).doubleValue());

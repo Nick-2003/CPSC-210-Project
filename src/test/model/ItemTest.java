@@ -1,9 +1,9 @@
 package model;
 
+import exceptions.NegativeValueException;
+import exceptions.NotEnoughItemsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,30 +13,58 @@ class ItemTest {
 
     @BeforeEach
     public void setUp() {
-        rice10 = new Item("White Rice", 10, 8);
-        bread20 = new Item("Bread", 20, 3.5);
+        try {
+            rice10 = new Item("White Rice", 10, 8);
+            bread20 = new Item("Bread", 20, 3.5);
+        } catch (NegativeValueException e) {
+            fail("Items should work");
+        }
     }
 
     @Test
     public void testChangeQuantity() {
         assertEquals(10, rice10.getAmount());
-        rice10.changeQuantity(-5);
+        try {
+            rice10.changeQuantity(-5);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        }
         assertEquals(5, rice10.getAmount());
     }
 
     @Test
     public void testChangeQuantityMulti() {
         assertEquals(10, rice10.getAmount());
-        rice10.changeQuantity(-5);
-        assertEquals(5, rice10.getAmount());
-        rice10.changeQuantity(10);
+        try {
+            rice10.changeQuantity(-5);
+            assertEquals(5, rice10.getAmount());
+            rice10.changeQuantity(10);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        }
         assertEquals(15, rice10.getAmount());
     }
 
     @Test
     public void testChangeQuantityZero() {
         assertEquals(10, rice10.getAmount());
-        rice10.changeQuantity(0);
+        try {
+            rice10.changeQuantity(0);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        }
+        assertEquals(10, rice10.getAmount());
+    }
+
+    @Test
+    public void testChangeQuantityNeg() {
+        assertEquals(10, rice10.getAmount());
+        try {
+            rice10.changeQuantity(-15);
+            fail("NotEnoughItemsException should be thrown");
+        } catch (NotEnoughItemsException e) {
+            // All good
+        }
         assertEquals(10, rice10.getAmount());
     }
 

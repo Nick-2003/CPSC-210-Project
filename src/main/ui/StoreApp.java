@@ -6,6 +6,8 @@
 
 package ui;
 
+import exceptions.NegativeValueException;
+import exceptions.NotEnoughItemsException;
 import model.Cart;
 import model.Inventory;
 import model.Item;
@@ -36,7 +38,7 @@ public class StoreApp {
     // EFFECTS: Process user input
     private void runApp() {
         boolean keepGoing = true;
-        String command = null;
+        String command;
 
         init();
 
@@ -111,7 +113,7 @@ public class StoreApp {
         System.out.println("\tl -> Load Inventory");
 
         System.out.println("\n\ti -> Print Item List");
-        System.out.println("\tl -> Clear Item List");
+        System.out.println("\tc -> Clear Item List");
         System.out.println("\tq -> Quit");
     }
 
@@ -125,10 +127,17 @@ public class StoreApp {
 
         if (this.inventory.getNamedAmount(itemName) >= itemQuantity) {
             double itemPrice = this.inventory.getNamedPrice(itemName);
-//            BigDecimal itemPrice = this.inventory.getNamedPrice(itemName);
-            Item item = new Item(itemName, itemQuantity, itemPrice);
-            this.inventory.takeFromList(item);
-            this.cart.putIntoList(item);
+            Item item;
+            try {
+                item = new Item(itemName, itemQuantity, itemPrice);
+                this.inventory.takeFromList(item);
+                this.cart.putIntoList(item);
+            } catch (NegativeValueException e) {
+                System.out.print("Quantity or price (or both) for input "
+                        + itemName + " is negative; request is invalid");
+            } catch (NotEnoughItemsException e) {
+                System.out.print("Not enough items in inventory to move to cart; request is invalid");
+            }
             System.out.print("Moved " + itemQuantity + " of " + itemName + " to Inventory\n");
         } else {
             System.out.print("Not enough " + itemName + " in Inventory\n");
@@ -145,10 +154,16 @@ public class StoreApp {
 
         if (this.cart.getNamedAmount(itemName) >= itemQuantity) {
             double itemPrice = this.inventory.getNamedPrice(itemName);
-//            BigDecimal itemPrice = this.inventory.getNamedPrice(itemName);
-            Item item = new Item(itemName, itemQuantity, itemPrice);
-            this.cart.takeFromList(item);
-            this.inventory.putIntoList(item);
+            try {
+                Item item = new Item(itemName, itemQuantity, itemPrice);
+                this.cart.takeFromList(item);
+                this.inventory.putIntoList(item);
+            } catch (NegativeValueException e) {
+                System.out.print("Quantity or price (or both) for input "
+                        + itemName + " is negative; request is invalid");
+            } catch (NotEnoughItemsException e) {
+                System.out.print("Not enough items in cart to move to inventory; request is invalid");
+            }
             System.out.print("Moved " + itemQuantity + " of " + itemName + " to Inventory\n");
         } else {
             System.out.print("Not enough " + itemName + " in Cart\n");
@@ -180,8 +195,14 @@ public class StoreApp {
             itemPrice = inputItemPrice();
         }
 
-        Item item = new Item(itemName, itemQuantity, itemPrice);
-        this.inventory.putIntoList(item);
+        try {
+            Item item = new Item(itemName, itemQuantity, itemPrice);
+            this.inventory.putIntoList(item);
+        } catch (NegativeValueException e) {
+            System.out.print("Quantity or price (or both) for input " + itemName + " is negative; request is invalid");
+        } catch (NotEnoughItemsException e) {
+            System.out.print("New quantity for " + itemName + " in inventory is less than 0; request is invalid");
+        }
         System.out.print("\nAdded Item(s): ");
         System.out.print("\n\tName: " + itemName);
         System.out.print("\n\tQuantity: " + itemQuantity);
@@ -201,14 +222,20 @@ public class StoreApp {
             itemPrice = inputItemPrice();
         }
 
-        Item item = new Item(itemName, itemQuantity, itemPrice);
-        if (this.inventory.takeFromList(item)) {
-            System.out.print("\nRemoved Item(s): ");
-            System.out.print("\n\tName: " + itemName);
-            System.out.print("\n\tQuantity: " + itemQuantity);
-            System.out.print("\n\tPrice: " + itemPrice + "\n");
-        } else {
-            System.out.print("\n " + itemName + " is not in Inventory \n");
+        try {
+            Item item = new Item(itemName, itemQuantity, itemPrice);
+            if (this.inventory.takeFromList(item)) {
+                System.out.print("\nRemoved Item(s): ");
+                System.out.print("\n\tName: " + itemName);
+                System.out.print("\n\tQuantity: " + itemQuantity);
+                System.out.print("\n\tPrice: " + itemPrice + "\n");
+            } else {
+                System.out.print("\n " + itemName + " is not in Inventory \n");
+            }
+        } catch (NegativeValueException e) {
+            System.out.print("Quantity or price (or both) for input " + itemName + " is negative; request is invalid");
+        } catch (NotEnoughItemsException e) {
+            System.out.print("New quantity for " + itemName + " in inventory is less than 0; request is invalid");
         }
     }
 
@@ -233,7 +260,11 @@ public class StoreApp {
         double itemPrice = this.inventory.getNamedPrice(itemName);
         System.out.print("\nCurrent item price: $" + itemPrice);
         itemPrice = inputItemPrice();
-        this.inventory.setNamedPrice(itemName, itemPrice);
+        try {
+            this.inventory.setNamedPrice(itemName, itemPrice);
+        } catch (NegativeValueException e) {
+            System.out.print("Price for input " + itemName + " is negative; request is invalid");
+        }
         System.out.print("New item price: $" + itemPrice + "\n");
     }
 
@@ -255,7 +286,7 @@ public class StoreApp {
         try {
             inventory = jsonReader.read();
             System.out.println("Loaded " + inventory.getName() + " from " + JSON_STORE);
-        } catch (IOException e) {
+        } catch (IOException | NegativeValueException | NotEnoughItemsException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
     }
@@ -287,10 +318,10 @@ public class StoreApp {
         Boolean shouldClear = inputBool();
         if (!shouldClear) {
             System.out.print("\nReturning to screen\n");
-        } else if (shouldClear && (selectList.equals("c"))) {
+        } else if (selectList.equals("c")) {
             this.cart.clear();
             System.out.print("\nCart cleared\n");
-        } else if (shouldClear && (selectList.equals("i"))) {
+        } else if (selectList.equals("i")) {
             this.inventory.clear();
             System.out.print("\nInventory cleared\n");
         }
@@ -340,7 +371,7 @@ public class StoreApp {
     // EFFECTS: Input String for List
     private String inputListString() {
         String inputS = "";
-        System.out.print("\nSelect which list to clear: ");
+        System.out.print("\nSelect list: ");
         while (!(inputS.equals("c") || inputS.equals("i"))) {
             System.out.println("\n\tc -> Cart");
             System.out.println("\n\ti -> Inventory");

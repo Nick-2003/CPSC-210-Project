@@ -3,6 +3,8 @@
 
 package model;
 
+import exceptions.NegativeValueException;
+import exceptions.NotEnoughItemsException;
 import org.json.JSONObject;
 import persistence.Writable;
 
@@ -16,10 +18,13 @@ public class Item implements Writable {
     private int amount;
     private double price;
 
-    // REQUIRES: name has non-zero length
+    // REQUIRES: amount > 0, price >= 0
     // MODIFIES: this
     // EFFECTS: Create new item with name, quantity and price to 2 decimal places
-    public Item(String name, int amount, double price) {
+    public Item(String name, int amount, double price) throws NegativeValueException {
+        if (amount < 0 || price < 0) {
+            throw new NegativeValueException();
+        }
         this.name = name;
         this.amount = amount;
         this.price = BigDecimal.valueOf(price).setScale(2, RoundingMode.HALF_UP).doubleValue();
@@ -29,14 +34,12 @@ public class Item implements Writable {
     // REQUIRES: quantity - num >= 0
     // MODIFIES: this
     // EFFECTS: Changes the quantity of the item by num
-    public void changeQuantity(int num) {
-        this.amount += num;
+    public void changeQuantity(int num) throws NotEnoughItemsException {
+        if ((this.amount += num) < 0) {
+            this.amount -= num;
+            throw new NotEnoughItemsException();
+        }
     }
-
-//    // EFFECTS: Get the id of the item
-//    public int getId() {
-//        return this.id;
-//    }
 
     // EFFECTS: Get the name of the item
     public String getName() {

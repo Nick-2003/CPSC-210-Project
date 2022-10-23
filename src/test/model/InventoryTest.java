@@ -1,5 +1,7 @@
 package model;
 
+import exceptions.NegativeValueException;
+import exceptions.NotEnoughItemsException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +15,9 @@ class InventoryTest {
     Item rice10 = new Item("White Rice", 10, 8.00);
     Item bread20 = new Item("Bread", 20, 3.50);
 
+    InventoryTest() throws NegativeValueException {
+    }
+
     @BeforeEach
     public void setUp() {
         this.list = new Inventory("List");
@@ -23,7 +28,11 @@ class InventoryTest {
     public void testSetNewName() {
         testInitial();
 
-        list.putIntoList(rice10);
+        try {
+            list.putIntoList(rice10);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        }
         assertTrue(list.getNamed("White Rice"));
 
         list.setNewName("White Rice", "Brown Rice");
@@ -35,7 +44,11 @@ class InventoryTest {
     public void testSetNewNameMulti() {
         testInitial();
 
-        list.putIntoList(rice10);
+        try {
+            list.putIntoList(rice10);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        }
         assertTrue(list.getNamed("White Rice"));
 
         list.setNewName("White Rice", "Brown Rice");
@@ -52,8 +65,12 @@ class InventoryTest {
     public void testSetNewNames() {
         testInitial();
 
-        list.putIntoList(rice10);
-        list.putIntoList(bread20);
+        try {
+            list.putIntoList(rice10);
+            list.putIntoList(bread20);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        }
         assertTrue(list.getNamed("White Rice"));
         assertTrue(list.getNamed("Bread"));
 
@@ -70,8 +87,12 @@ class InventoryTest {
     public void testSetNewNamesMulti() {
         testInitial();
 
-        list.putIntoList(rice10);
-        list.putIntoList(bread20);
+        try {
+            list.putIntoList(rice10);
+            list.putIntoList(bread20);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        }
         assertTrue(list.getNamed("White Rice"));
         assertTrue(list.getNamed("Bread"));
 
@@ -94,9 +115,15 @@ class InventoryTest {
     public void testSetNamedPrice() {
         testInitial();
 
-        list.putIntoList(rice10);
-        assertEquals(8.00, list.getNamedPrice("White Rice"));
-        list.setNamedPrice("White Rice", 9);
+        try {
+            list.putIntoList(rice10);
+            assertEquals(8.00, list.getNamedPrice("White Rice"));
+            list.setNamedPrice("White Rice", 9);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        } catch (NegativeValueException e) {
+            fail("NegativeValueException should not be thrown");
+        }
         assertEquals(9.00, list.getNamedPrice("White Rice"));
     }
 
@@ -104,13 +131,19 @@ class InventoryTest {
     public void testSetNamedPriceMulti() {
         testInitial();
 
-        list.putIntoList(rice10);
-        assertEquals(8.00, list.getNamedPrice("White Rice"));
+        try {
+            list.putIntoList(rice10);
+            assertEquals(8.00, list.getNamedPrice("White Rice"));
 
-        list.setNamedPrice("White Rice", 9);
-        assertEquals(9.00, list.getNamedPrice("White Rice"));
+            list.setNamedPrice("White Rice", 9);
+            assertEquals(9.00, list.getNamedPrice("White Rice"));
 
-        list.setNamedPrice("White Rice", 10);
+            list.setNamedPrice("White Rice", 10);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        } catch (NegativeValueException e) {
+            fail("NegativeValueException should not be thrown");
+        }
         assertEquals(10.00, list.getNamedPrice("White Rice"));
     }
 
@@ -118,16 +151,23 @@ class InventoryTest {
     public void testSetNamedPrices() {
         testInitial();
 
-        list.putIntoList(rice10);
-        list.putIntoList(bread20);
-        assertEquals(8.00, list.getNamedPrice("White Rice"));
-        assertEquals(3.50, list.getNamedPrice("Bread"));
+        try {
+            list.putIntoList(rice10);
+            list.putIntoList(bread20);
+            assertEquals(8.00, list.getNamedPrice("White Rice"));
+            assertEquals(3.50, list.getNamedPrice("Bread"));
 
-        list.setNamedPrice("White Rice", 9);
-        assertEquals(9.00, list.getNamedPrice("White Rice"));
-        assertEquals(3.50, list.getNamedPrice("Bread"));
+            list.setNamedPrice("White Rice", 9);
+            assertEquals(9.00, list.getNamedPrice("White Rice"));
+            assertEquals(3.50, list.getNamedPrice("Bread"));
 
-        list.setNamedPrice("Bread", 4.5);
+            list.setNamedPrice("Bread", 4.5);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        } catch (NegativeValueException e) {
+            fail("NegativeValueException should not be thrown");
+        }
+
         assertEquals(9.00, list.getNamedPrice("White Rice"));
         assertEquals(4.50, list.getNamedPrice("Bread"));
     }
@@ -136,18 +176,25 @@ class InventoryTest {
     public void testSetNamedPricesMulti() {
         testInitial();
 
-        list.putIntoList(rice10);
-        list.putIntoList(bread20);
-        assertEquals(8.00, list.getNamedPrice("White Rice"));
-        assertEquals(3.50, list.getNamedPrice("Bread"));
+        try {
+            list.putIntoList(rice10);
+            list.putIntoList(bread20);
+            assertEquals(8.00, list.getNamedPrice("White Rice"));
+            assertEquals(3.50, list.getNamedPrice("Bread"));
 
-        list.setNamedPrice("White Rice", 9);
-        list.setNamedPrice("Bread", 4.5);
-        assertEquals(9.00, list.getNamedPrice("White Rice"));
-        assertEquals(4.50, list.getNamedPrice("Bread"));
+            list.setNamedPrice("White Rice", 9);
+            list.setNamedPrice("Bread", 4.5);
+            assertEquals(9.00, list.getNamedPrice("White Rice"));
+            assertEquals(4.50, list.getNamedPrice("Bread"));
 
-        list.setNamedPrice("White Rice", 10);
-        list.setNamedPrice("Bread", 5.5);
+            list.setNamedPrice("White Rice", 10);
+            list.setNamedPrice("Bread", 5.5);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        } catch (NegativeValueException e) {
+            fail("NegativeValueException should not be thrown");
+        }
+
         assertEquals(10.00, list.getNamedPrice("White Rice"));
         assertEquals(5.50, list.getNamedPrice("Bread"));
     }

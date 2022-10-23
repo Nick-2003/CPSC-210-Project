@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.NotEnoughItemsException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
@@ -16,14 +17,12 @@ public class ItemList implements Writable {
     // EFFECTS: Creates new empty ItemList
     public ItemList(String name) {
         this.name = name;
-        this.internalList = new ArrayList<Item>();
+        this.internalList = new ArrayList<>();
     }
 
-    // REQUIRES: obj.getQuantity() > 0
     // MODIFIES: this
     // EFFECTS: Add to existing quantity of item in list unless it's not there, in which case insert new item to list
-    public void putIntoList(Item obj) {
-//        int listSize = internalList.size();
+    public void putIntoList(Item obj) throws NotEnoughItemsException {
         if (obj.getAmount() > 0) {
             boolean listChange = false;
             for (Item obi : this.internalList) {
@@ -39,11 +38,10 @@ public class ItemList implements Writable {
         }
     }
 
-    // REQUIRES: obj.getQuantity() > 0
     // MODIFIES: this
     // EFFECTS: Takes item of given quantity from set unless it's not in the list or quantity =< 0, in which case
     // return false
-    public boolean takeFromList(Item obj) {
+    public boolean takeFromList(Item obj) throws NotEnoughItemsException {
         boolean result = false;
         for (Item obi: this.internalList) {
             if (Objects.equals(obi.getName(), obj.getName())) {
@@ -55,6 +53,8 @@ public class ItemList implements Writable {
                     this.internalList.remove(obi);
                     result = true;
                     break;
+                } else {
+                    throw new NotEnoughItemsException();
                 }
             }
         }
@@ -91,11 +91,9 @@ public class ItemList implements Writable {
     // EFFECTS: Returns price of Item of given name
     public double getNamedPrice(String name) {
         double cost = 0;
-//        BigDecimal cost = BigDecimal.valueOf(0);
         for (Item obj: this.internalList) {
             if (Objects.equals(obj.getName(), name)) {
                 cost = obj.getPrice();
-//                cost = obj.getPrice().setScale(2, RoundingMode.HALF_UP);
                 break;
             }
         }
@@ -105,8 +103,7 @@ public class ItemList implements Writable {
     // MODIFIES: this
     // EFFECTS: Clears list of items
     public void clear() {
-        this.internalList = new ArrayList<Item>();
-//        this.internalList = new HashSet();
+        this.internalList = new ArrayList<>();
     }
 
     public String getName() {

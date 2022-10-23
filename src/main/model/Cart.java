@@ -23,14 +23,10 @@ public class Cart extends ItemList {
     // EFFECTS: Returns total cost of items in list
     public double totalPrice() {
         double totalPrice = 0;
-//        BigDecimal totalPrice = BigDecimal.valueOf(0);
         for (Item obj: this.internalList) {
             double priceTotal = obj.getAmount() * obj.getPrice();
             priceTotal = BigDecimal.valueOf(priceTotal).setScale(2, RoundingMode.HALF_UP).doubleValue();
-//            priceTotal = obj.getPrice().multiply(BigDecimal.valueOf(obj.getAmount()))
-//            .setScale(2, RoundingMode.HALF_UP);
             totalPrice += priceTotal;
-//            totalPrice = totalPrice.add(priceTotal);
         }
         return totalPrice;
     }

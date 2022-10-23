@@ -1,14 +1,21 @@
 package model;
 
+import exceptions.NegativeValueException;
+import exceptions.NotEnoughItemsException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 public class ItemListTest {
     private ItemList list;
     Item rice10 = new Item("White Rice", 10, 8.00);
     Item bread20 = new Item("Bread", 20, 3.50);
+
+    public ItemListTest() throws NegativeValueException {
+    }
 
     @BeforeEach
     public void setUp() {
@@ -19,7 +26,11 @@ public class ItemListTest {
     public void testPutIntoList() {
         testInitial();
 
-        list.putIntoList(rice10);
+        try {
+            list.putIntoList(rice10);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        }
         Assertions.assertEquals(1, list.getInternalList().size());
         Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
     }
@@ -28,11 +39,15 @@ public class ItemListTest {
     public void testPutIntoListMulti() {
         testInitial();
 
-        list.putIntoList(rice10);
-        Assertions.assertEquals(1, list.getInternalList().size());
-        Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
+        try {
+            list.putIntoList(rice10);
+            Assertions.assertEquals(1, list.getInternalList().size());
+            Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
 
-        list.putIntoList(rice10);
+            list.putIntoList(rice10);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        }
         Assertions.assertEquals(1, list.getInternalList().size());
         Assertions.assertEquals(20, list.getNamedAmount("White Rice"));
     }
@@ -41,12 +56,17 @@ public class ItemListTest {
     public void testPutMultiIntoList() {
         testInitial();
 
-        list.putIntoList(rice10);
-        Assertions.assertEquals(1, list.getInternalList().size());
-        Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
-        Assertions.assertEquals(0, list.getNamedAmount("Bread"));
+        try {
+            list.putIntoList(rice10);
+            Assertions.assertEquals(1, list.getInternalList().size());
+            Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
+            Assertions.assertEquals(0, list.getNamedAmount("Bread"));
 
-        list.putIntoList(bread20);
+            list.putIntoList(bread20);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        }
+
         Assertions.assertEquals(2, list.getInternalList().size());
         Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
         Assertions.assertEquals(20, list.getNamedAmount("Bread"));
@@ -56,7 +76,13 @@ public class ItemListTest {
     public void testPutIntoListNone() {
         testInitial();
 
-        list.putIntoList(new Item("White Rice", 0, 8));
+        try {
+            list.putIntoList(new Item("White Rice", 0, 8));
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        } catch (NegativeValueException e) {
+            fail("NegativeValueException should not be thrown");
+        }
         Assertions.assertEquals(0, list.getInternalList().size());
         Assertions.assertEquals(0, list.getNamedAmount("White Rice"));
     }
@@ -65,11 +91,18 @@ public class ItemListTest {
     public void testTakeFromList() {
         testInitial();
 
-        list.putIntoList(rice10);
-        Assertions.assertEquals(1, list.getInternalList().size());
-        Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
+        try {
+            list.putIntoList(rice10);
+            Assertions.assertEquals(1, list.getInternalList().size());
+            Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
 
-        list.takeFromList(new Item("White Rice", 5, 8.00));
+            list.takeFromList(new Item("White Rice", 5, 8.00));
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        } catch (NegativeValueException e) {
+            fail("NegativeValueException should not be thrown");
+        }
+
         Assertions.assertEquals(1, list.getInternalList().size());
         Assertions.assertEquals(5, list.getNamedAmount("White Rice"));
     }
@@ -81,15 +114,21 @@ public class ItemListTest {
         Assertions.assertEquals(0, list.getInternalList().size());
         Assertions.assertEquals(0, list.getNamedAmount("White Rice"));
 
-        list.putIntoList(rice10);
-        Assertions.assertEquals(1, list.getInternalList().size());
-        Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
+        try {
+            list.putIntoList(rice10);
+            Assertions.assertEquals(1, list.getInternalList().size());
+            Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
 
-        list.takeFromList(new Item("White Rice", 5, 8.00));
-        Assertions.assertEquals(1, list.getInternalList().size());
-        Assertions.assertEquals(5, list.getNamedAmount("White Rice"));
+            list.takeFromList(new Item("White Rice", 5, 8.00));
+            Assertions.assertEquals(1, list.getInternalList().size());
+            Assertions.assertEquals(5, list.getNamedAmount("White Rice"));
 
-        list.takeFromList(new Item("White Rice", 5, 8.00));
+            list.takeFromList(new Item("White Rice", 5, 8.00));
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        } catch (NegativeValueException e) {
+            fail("NegativeValueException should not be thrown");
+        }
         Assertions.assertEquals(0, list.getInternalList().size());
         Assertions.assertEquals(0, list.getNamedAmount("White Rice"));
     }
@@ -98,18 +137,25 @@ public class ItemListTest {
     public void testTakeMultiFromList() {
         testInitial();
 
-        list.putIntoList(rice10);
-        list.putIntoList(bread20);
-        Assertions.assertEquals(2, list.getInternalList().size());
-        Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
-        Assertions.assertEquals(20, list.getNamedAmount("Bread"));
+        try {
+            list.putIntoList(rice10);
+            list.putIntoList(bread20);
+            Assertions.assertEquals(2, list.getInternalList().size());
+            Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
+            Assertions.assertEquals(20, list.getNamedAmount("Bread"));
 
-        list.takeFromList(new Item("White Rice", 5, 8.00));
-        Assertions.assertEquals(2, list.getInternalList().size());
-        Assertions.assertEquals(5, list.getNamedAmount("White Rice"));
-        Assertions.assertEquals(20, list.getNamedAmount("Bread"));
+            list.takeFromList(new Item("White Rice", 5, 8.00));
+            Assertions.assertEquals(2, list.getInternalList().size());
+            Assertions.assertEquals(5, list.getNamedAmount("White Rice"));
+            Assertions.assertEquals(20, list.getNamedAmount("Bread"));
 
-        list.takeFromList(bread20);
+            list.takeFromList(bread20);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        } catch (NegativeValueException e) {
+            fail("NegativeValueException should not be thrown");
+        }
+
         Assertions.assertEquals(1, list.getInternalList().size());
         Assertions.assertEquals(5, list.getNamedAmount("White Rice"));
         Assertions.assertEquals(0, list.getNamedAmount("Bread"));
@@ -119,11 +165,17 @@ public class ItemListTest {
     public void testTakeFromListNone() {
         testInitial();
 
-        list.putIntoList(rice10);
-        Assertions.assertEquals(1, list.getInternalList().size());
-        Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
+        try {
+            list.putIntoList(rice10);
+            Assertions.assertEquals(1, list.getInternalList().size());
+            Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
 
-        list.takeFromList(new Item("White Rice", 0, 8));
+            list.takeFromList(new Item("White Rice", 0, 8));
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        } catch (NegativeValueException e) {
+            fail("NegativeValueException should not be thrown");
+        }
         Assertions.assertEquals(1, list.getInternalList().size());
         Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
     }
@@ -132,7 +184,11 @@ public class ItemListTest {
     public void testGetNamed() {
         testInitial();
 
-        list.putIntoList(rice10);
+        try {
+            list.putIntoList(rice10);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        }
         Assertions.assertTrue(list.getNamed("White Rice"));
     }
 
@@ -140,10 +196,14 @@ public class ItemListTest {
     public void testGetNamedMulti() {
         testInitial();
 
-        list.putIntoList(rice10);
-        Assertions.assertTrue(list.getNamed("White Rice"));
-        Assertions.assertFalse(list.getNamed("Bread"));
-        list.putIntoList(bread20);
+        try {
+            list.putIntoList(rice10);
+            Assertions.assertTrue(list.getNamed("White Rice"));
+            Assertions.assertFalse(list.getNamed("Bread"));
+            list.putIntoList(bread20);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        }
         Assertions.assertTrue(list.getNamed("White Rice"));
         Assertions.assertTrue(list.getNamed("Bread"));
     }
@@ -152,7 +212,11 @@ public class ItemListTest {
     public void testGetNamedAmount() {
         testInitial();
 
-        list.putIntoList(rice10);
+        try {
+            list.putIntoList(rice10);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        }
         Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
     }
 
@@ -160,8 +224,12 @@ public class ItemListTest {
     public void testGetNamedAmountMulti() {
         testInitial();
 
-        list.putIntoList(rice10);
-        list.putIntoList(bread20);
+        try {
+            list.putIntoList(rice10);
+            list.putIntoList(bread20);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        }
         Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
         Assertions.assertEquals(20, list.getNamedAmount("Bread"));
     }
@@ -177,7 +245,11 @@ public class ItemListTest {
     public void testGetNamedPrice() {
         testInitial();
 
-        list.putIntoList(rice10);
+        try {
+            list.putIntoList(rice10);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        }
         Assertions.assertEquals(8, list.getNamedPrice("White Rice"));
     }
 
@@ -185,8 +257,12 @@ public class ItemListTest {
     public void testGetNamedPriceMulti() {
         testInitial();
 
-        list.putIntoList(rice10);
-        list.putIntoList(bread20);
+        try {
+            list.putIntoList(rice10);
+            list.putIntoList(bread20);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        }
         Assertions.assertEquals(8, list.getNamedPrice("White Rice"));
         Assertions.assertEquals(3.5, list.getNamedPrice("Bread"));
     }
@@ -202,8 +278,12 @@ public class ItemListTest {
     public void testClear() {
         testInitial();
 
-        list.putIntoList(rice10);
-        list.putIntoList(bread20);
+        try {
+            list.putIntoList(rice10);
+            list.putIntoList(bread20);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        }
         Assertions.assertEquals(2, list.getInternalList().size());
         Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
         Assertions.assertEquals(20, list.getNamedAmount("Bread"));
@@ -216,8 +296,12 @@ public class ItemListTest {
     public void testClearMulti() {
         testInitial();
 
-        list.putIntoList(rice10);
-        list.putIntoList(bread20);
+        try {
+            list.putIntoList(rice10);
+            list.putIntoList(bread20);
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        }
         Assertions.assertEquals(2, list.getInternalList().size());
         Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
         Assertions.assertEquals(20, list.getNamedAmount("Bread"));

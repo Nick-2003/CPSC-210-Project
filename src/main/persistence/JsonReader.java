@@ -3,6 +3,8 @@
 
 package persistence;
 
+import exceptions.NegativeValueException;
+import exceptions.NotEnoughItemsException;
 import model.Inventory;
 import model.Item;
 
@@ -25,7 +27,7 @@ public class JsonReader {
 
     // EFFECTS: reads ItemList from file and returns it;
     // throws IOException if an error occurs reading data from file
-    public Inventory read() throws IOException {
+    public Inventory read() throws IOException, NegativeValueException, NotEnoughItemsException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
         return parseInventory(jsonObject);
@@ -43,7 +45,7 @@ public class JsonReader {
     }
 
     // EFFECTS: parses ItemList from JSON object and returns it
-    private Inventory parseInventory(JSONObject jsonObject) {
+    private Inventory parseInventory(JSONObject jsonObject) throws NegativeValueException, NotEnoughItemsException {
         String name = jsonObject.getString("name");
         Inventory inv = new Inventory(name);
         addItems(inv, jsonObject);
@@ -52,8 +54,8 @@ public class JsonReader {
 
     // MODIFIES: itl
     // EFFECTS: parses Items from JSON object and adds them to ItemList
-    private void addItems(Inventory inv, JSONObject jsonObject) {
-        JSONArray jsonArray = jsonObject.getJSONArray("Items");
+    private void addItems(Inventory inv, JSONObject jsonObject) throws NegativeValueException, NotEnoughItemsException {
+        JSONArray jsonArray = jsonObject.getJSONArray("items");
         for (Object json : jsonArray) {
             JSONObject nextItem = (JSONObject) json;
             addItem(inv, nextItem);
@@ -62,7 +64,7 @@ public class JsonReader {
 
     // MODIFIES: inv
     // EFFECTS: parses Item from JSON object and adds it to workroom
-    private void addItem(Inventory inv, JSONObject jsonObject) {
+    private void addItem(Inventory inv, JSONObject jsonObject) throws NegativeValueException, NotEnoughItemsException {
         String name = jsonObject.getString("name");
         int amount = jsonObject.getInt("amount");
         double price = jsonObject.getDouble("price");

@@ -8,6 +8,6 @@ public class JsonTest {
     protected void checkItem(String name, int amount, double price, Item it) {
         assertEquals(name, it.getName());
         assertEquals(amount, it.getAmount());
-        assertEquals(amount, it.getPrice());
+        assertEquals(price, it.getPrice());
     }
 }

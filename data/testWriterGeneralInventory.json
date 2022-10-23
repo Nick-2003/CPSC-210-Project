@@ -1,0 +1,15 @@
+{
+    "name": "My inventory",
+    "items": [
+        {
+            "amount": 10,
+            "price": 8,
+            "name": "White Rice"
+        },
+        {
+            "amount": 20,
+            "price": 3.5,
+            "name": "Bread"
+        }
+    ]
+}
