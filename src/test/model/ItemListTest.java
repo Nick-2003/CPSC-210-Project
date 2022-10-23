@@ -181,6 +181,26 @@ public class ItemListTest {
     }
 
     @Test
+    public void testTakeFromListNegative() {
+        testInitial();
+
+        try {
+            list.putIntoList(rice10);
+            Assertions.assertEquals(1, list.getInternalList().size());
+            Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
+
+            list.takeFromList(new Item("White Rice", -5, 8.00));
+            fail("NegativeValueException should be thrown");
+        } catch (NotEnoughItemsException e) {
+            fail("NotEnoughItemsException should not be thrown");
+        } catch (NegativeValueException e) {
+            // All clear
+        }
+        Assertions.assertEquals(1, list.getInternalList().size());
+        Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
+    }
+
+    @Test
     public void testGetNamed() {
         testInitial();
 
