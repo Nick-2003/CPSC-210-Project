@@ -27,8 +27,15 @@ certain amount
   - As a user, I want to be able to print out the list of items purchased and their quantities
   - As a user, I want to be able to output the total price of the items and corresponding tax
 
-- As a user, I want to be able to save a single inventory list
-  - As a user, I want to be able to reload an existing inventory list
+- As a user, I want to be able to save a single item list
+  - As a user, I want to be able to reload an existing item list
 
 [//]: # (- As a user, I want to be able to access multiple stores with their own item lists &#40;e.g. Store A and Store B are from)
 [//]: # (    the same company and at different locations&#41;)
+
+### Instructions for Grader
+- You can generate the first required event related to adding Xs to a Y by...
+- You can generate the second required event related to adding Xs to a Y by...
+- You can locate my visual component by ...
+- You can save the state of my application by ...
+- You can reload the state of my application by ...

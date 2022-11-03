@@ -6,7 +6,6 @@ package model;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-//public class Cart implements ItemList {
 public class Cart extends ItemList {
     public static final double TAX = 0.05;
 //    public static final BigDecimal TAX = BigDecimal.valueOf(0.05);

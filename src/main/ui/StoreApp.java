@@ -21,13 +21,17 @@ import java.util.Scanner;
 // Store application
 public class StoreApp {
 
-    private static final String JSON_STORE = "./data/inventory.json";
+    private static final String JSON_INV = "./data/inventory.json";
+    private static final String JSON_CART = "./data/cart.json";
 
     private Inventory inventory;
     private Cart cart;
     private Scanner input;
-    private JsonWriter jsonWriter;
-    private JsonReader jsonReader;
+
+    private JsonWriter jsonWriterInv;
+    private JsonReader jsonReaderInv;
+    private JsonWriter jsonWriterCart;
+    private JsonReader jsonReaderCart;
 
     // EFFECTS: Runs the  application
     public StoreApp() throws FileNotFoundException {
@@ -74,9 +78,9 @@ public class StoreApp {
         } else if (command.equals("e")) {
             setInventoryItemPrice();
         } else if (command.equals("s")) {
-            saveInventory();
+            saveItemList();
         } else if (command.equals("l")) {
-            loadInventory();
+            loadItemList();
         } else if (command.equals("i")) {
             printItemList();
         } else if (command.equals("c")) {
@@ -94,8 +98,10 @@ public class StoreApp {
         cart = new Cart("Cart");
         input = new Scanner(System.in);
         input.useDelimiter("\n");
-        jsonWriter = new JsonWriter(JSON_STORE);
-        jsonReader = new JsonReader(JSON_STORE);
+        jsonWriterInv = new JsonWriter(JSON_INV);
+        jsonReaderInv = new JsonReader(JSON_INV);
+        jsonWriterCart = new JsonWriter(JSON_CART);
+        jsonReaderCart = new JsonReader(JSON_CART);
     }
 
     // EFFECTS: Displays menu of options to user
@@ -109,11 +115,11 @@ public class StoreApp {
         System.out.println("\tr -> Remove from Inventory");
 //        System.out.println("\tn -> Set name for Item in Inventory");
         System.out.println("\te -> Set price for Item in Inventory");
-        System.out.println("\ts -> Save Inventory");
-        System.out.println("\tl -> Load Inventory");
 
-        System.out.println("\n\ti -> Print Item List");
-        System.out.println("\tc -> Clear Item List");
+        System.out.println("\n\ts -> Save Item List (Cart or Inventory)");
+        System.out.println("\tl -> Load Item List (Cart or Inventory)");
+        System.out.println("\ti -> Print Item List (Cart or Inventory)");
+        System.out.println("\tc -> Clear Item List (Cart or Inventory)");
         System.out.println("\tq -> Quit");
     }
 
@@ -268,26 +274,71 @@ public class StoreApp {
         System.out.print("New item price: $" + itemPrice + "\n");
     }
 
-    // EFFECTS: saves Inventory to file
-    private void saveInventory() {
-        try {
-            jsonWriter.open();
-            jsonWriter.write(inventory);
-            jsonWriter.close();
-            System.out.println("Saved " + inventory.getName() + " to " + JSON_STORE);
-        } catch (FileNotFoundException e) {
-            System.out.println("Unable to write to file: " + JSON_STORE);
+//    // EFFECTS: saves Inventory to file
+//    private void saveInventory() {
+//        try {
+//            jsonWriter.open();
+//            jsonWriter.write(inventory);
+//            jsonWriter.close();
+//            System.out.println("Saved " + inventory.getName() + " to " + JSON_STORE);
+//        } catch (FileNotFoundException e) {
+//            System.out.println("Unable to write to file: " + JSON_STORE);
+//        }
+//    }
+
+    // EFFECTS: Save ItemList to file
+    private void saveItemList() {
+        String selectList = inputListString();
+        if (selectList.equals("c")) {
+            try {
+                jsonWriterCart.open();
+                jsonWriterCart.write(cart);
+                jsonWriterCart.close();
+                System.out.println("Saved " + cart.getName() + " to " + JSON_CART);
+            } catch (FileNotFoundException e) {
+                System.out.println("Unable to write to file: " + JSON_CART);
+            }
+        } else {
+            try {
+                jsonWriterInv.open();
+                jsonWriterInv.write(inventory);
+                jsonWriterInv.close();
+                System.out.println("Saved " + inventory.getName() + " to " + JSON_INV);
+            } catch (FileNotFoundException e) {
+                System.out.println("Unable to write to file: " + JSON_INV);
+            }
         }
     }
 
+//    // MODIFIES: this
+//    // EFFECTS: loads Inventory from file
+//    private void loadInventory() {
+//        try {
+//            inventory = jsonReader.read();
+//            System.out.println("Loaded " + inventory.getName() + " from " + JSON_STORE);
+//        } catch (IOException | NegativeValueException | NotEnoughItemsException e) {
+//            System.out.println("Unable to read from file: " + JSON_STORE);
+//        }
+//    }
+
     // MODIFIES: this
-    // EFFECTS: loads Inventory from file
-    private void loadInventory() {
-        try {
-            inventory = jsonReader.read();
-            System.out.println("Loaded " + inventory.getName() + " from " + JSON_STORE);
-        } catch (IOException | NegativeValueException | NotEnoughItemsException e) {
-            System.out.println("Unable to read from file: " + JSON_STORE);
+    // EFFECTS: loads ItemList from file
+    private void loadItemList() {
+        String selectList = inputListString();
+        if (selectList.equals("c")) {
+            try {
+                cart = (Cart) jsonReaderCart.read(); // Make jsonReaderCart.read() a cart for the time being
+                System.out.println("Loaded " + cart.getName() + " from " + JSON_CART);
+            } catch (IOException | NegativeValueException | NotEnoughItemsException e) {
+                System.out.println("Unable to read from file: " + JSON_CART);
+            }
+        } else {
+            try {
+                inventory = (Inventory) jsonReaderInv.read();
+                System.out.println("Loaded " + inventory.getName() + " from " + JSON_INV);
+            } catch (IOException | NegativeValueException | NotEnoughItemsException e) {
+                System.out.println("Unable to read from file: " + JSON_INV);
+            }
         }
     }
 

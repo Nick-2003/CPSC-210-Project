@@ -6,6 +6,8 @@ import org.json.JSONObject;
 import persistence.Writable;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 public class ItemList implements Writable {
@@ -18,6 +20,11 @@ public class ItemList implements Writable {
     public ItemList(String name) {
         this.name = name;
         this.internalList = new ArrayList<>();
+    }
+
+    // EFFECTS: returns an unmodifiable list of Items in this workroom
+    public List<Item> getItems() {
+        return Collections.unmodifiableList(internalList);
     }
 
     // MODIFIES: this

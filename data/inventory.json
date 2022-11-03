@@ -1,4 +1,8 @@
 {
     "name": "Inventory",
-    "items": []
+    "items": [{
+        "amount": 1,
+        "price": 3,
+        "name": "Rice"
+    }]
 }

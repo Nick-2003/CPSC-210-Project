@@ -14,11 +14,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+import model.ItemList;
 import org.json.*;
 
 // Represents a reader that reads workroom from JSON data stored in file
 public class JsonReader {
-    private String source;
+    private final String source;
 
     // EFFECTS: Constructs reader to read from source file
     public JsonReader(String source) {
@@ -27,10 +28,10 @@ public class JsonReader {
 
     // EFFECTS: Reads ItemList from file and returns it;
     // throws IOException if an error occurs reading data from file
-    public Inventory read() throws IOException, NegativeValueException, NotEnoughItemsException {
+    public ItemList read() throws IOException, NegativeValueException, NotEnoughItemsException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
-        return parseInventory(jsonObject);
+        return parseItemList(jsonObject);
     }
 
     // EFFECTS: Reads source file as string and returns it
@@ -45,16 +46,16 @@ public class JsonReader {
     }
 
     // EFFECTS: Parses ItemList from JSON object and returns it
-    private Inventory parseInventory(JSONObject jsonObject) throws NegativeValueException, NotEnoughItemsException {
+    private ItemList parseItemList(JSONObject jsonObject) throws NegativeValueException, NotEnoughItemsException {
         String name = jsonObject.getString("name");
-        Inventory inv = new Inventory(name);
+        ItemList inv = new Inventory(name);
         addItems(inv, jsonObject);
         return inv;
     }
 
     // MODIFIES: inv
     // EFFECTS: Parses Items from JSON object and adds them to ItemList
-    private void addItems(Inventory inv, JSONObject jsonObject) throws NegativeValueException, NotEnoughItemsException {
+    private void addItems(ItemList inv, JSONObject jsonObject) throws NegativeValueException, NotEnoughItemsException {
         JSONArray jsonArray = jsonObject.getJSONArray("items");
         for (Object json : jsonArray) {
             JSONObject nextItem = (JSONObject) json;
@@ -64,11 +65,10 @@ public class JsonReader {
 
     // MODIFIES: inv
     // EFFECTS: Parses Item from JSON object and adds it to ItemList
-    private void addItem(Inventory inv, JSONObject jsonObject) throws NegativeValueException, NotEnoughItemsException {
+    private void addItem(ItemList inv, JSONObject jsonObject) throws NegativeValueException, NotEnoughItemsException {
         String name = jsonObject.getString("name");
         int amount = jsonObject.getInt("amount");
         double price = jsonObject.getDouble("price");
-//        Category category = Category.valueOf(jsonObject.getString("category"));
         Item it = new Item(name, amount, price);
         inv.putIntoList(it);
     }

@@ -7,11 +7,8 @@ import exceptions.NegativeValueException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
-//public class Inventory implements ItemList {
 public class Inventory extends ItemList {
 
 //    private ArrayList<Item> internalList; // internalList from ItemList used instead
@@ -23,11 +20,6 @@ public class Inventory extends ItemList {
 
 //        this.internalList = new ArrayList<Item>();
 //        this.internalList = new HashSet<Item>();
-    }
-
-    // EFFECTS: returns an unmodifiable list of Items in this workroom
-    public List<Item> getItems() {
-        return Collections.unmodifiableList(internalList);
     }
 
     // REQUIRES: name is present in ItemList

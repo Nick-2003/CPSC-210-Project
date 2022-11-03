@@ -3,7 +3,7 @@ package persistence;
 import exceptions.NegativeValueException;
 import exceptions.NotEnoughItemsException;
 import model.Item;
-import model.Inventory;
+import model.ItemList;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -15,7 +15,7 @@ class JsonWriterTest extends JsonTest {
     @Test
     void testWriterInvalidFile() {
         try {
-            Inventory inv = new Inventory("My work room");
+            ItemList inv = new ItemList("My work room");
             JsonWriter writer = new JsonWriter("./data/my\0illegal:fileName.json");
             writer.open();
             fail("IOException was expected");
@@ -27,7 +27,7 @@ class JsonWriterTest extends JsonTest {
     @Test
     void testWriterEmptyWorkroom() {
         try {
-            Inventory inv = new Inventory("My inventory");
+            ItemList inv = new ItemList("My inventory");
             JsonWriter writer = new JsonWriter("./data/testWriterEmptyInventory.json");
             writer.open();
             writer.write(inv);
@@ -49,7 +49,7 @@ class JsonWriterTest extends JsonTest {
     @Test
     void testWriterGeneralWorkroom() {
         try {
-            Inventory inv = new Inventory("My inventory");
+            ItemList inv = new ItemList("My inventory");
             inv.putIntoList(new Item("White Rice", 10, 8.00));
             inv.putIntoList(new Item("Bread", 20, 3.50));
             JsonWriter writer = new JsonWriter("./data/testWriterGeneralInventory.json");
