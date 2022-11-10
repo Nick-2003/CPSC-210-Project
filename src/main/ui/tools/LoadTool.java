@@ -61,20 +61,26 @@ public class LoadTool extends Tool {
                 try {
 //                    cart = (Cart) jsonReaderCart.read(); // Make jsonReaderCart.read() a cart for the time being
                     cart = (Cart) jsonReaderCart.read();
-                    // Update table here
+                    // UPDATE TABLE HERE
                     System.out.println("Loaded " + cart.getName() + " from " + JSON_CART);
+                    showMessageDialog(null, "Loaded " + cart.getName() + " from " + JSON_CART,
+                            "Load successful", INFORMATION_MESSAGE);
                 } catch (IOException | NegativeValueException | NotEnoughItemsException e) {
                     System.out.println("Unable to read from file: " + JSON_CART);
-                    showMessageDialog(null, "Unable to read from file: " + JSON_CART);
+                    showMessageDialog(null, "Unable to read from file: " + JSON_CART,
+                            "Error occurred", ERROR_MESSAGE);
                 }
             } else if (selectList.equals("Inventory")) {
                 try {
                     inventory = (Inventory) jsonReaderInv.read();
-                    // Update table here
+                    // UPDATE TABLE HERE
                     System.out.println("Loaded " + inventory.getName() + " from " + JSON_INV);
+                    showMessageDialog(null, "Loaded " + inventory.getName() + " from " + JSON_INV,
+                            "Load successful", INFORMATION_MESSAGE);
                 } catch (IOException | NegativeValueException | NotEnoughItemsException e) {
                     System.out.println("Unable to read from file: " + JSON_INV);
-                    showMessageDialog(null, "Unable to read from file: " + JSON_INV);
+                    showMessageDialog(null, "Unable to read from file: " + JSON_INV,
+                            "Error occurred", ERROR_MESSAGE);
                 }
             }
         } // SHOULD UPDATE TABLE ACCORDINGLY

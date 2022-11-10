@@ -34,8 +34,20 @@ certain amount
 [//]: # (    the same company and at different locations&#41;)
 
 ### Instructions for Grader
-- You can generate the first required event related to adding Xs to a Y by clikcing on the 
-- You can generate the second required event related to adding Xs to a Y by...
-- You can locate my visual component by ...
-- You can save the state of my application by ...
-- You can reload the state of my application by ...
+- You can add Items to the Inventory by the following steps:
+  1. Click on the "Add to Inventory" button in the middle panel on the left side of the screen
+  2. Input the name, quantity and price of the new Item
+  3. Redo the inputs accordingly for the new Item if an ERROR_MESSAGE pops up; otherwise, close the message
+- You can move Items from Inventory to Cart by the following steps:
+  1. Click on the "Move to Cart" button in the top panel on the left side of the screen
+  2. Input the name and quantity of the Item(s) to be transferred
+  3. Redo the inputs accordingly for the Item to be transferred if an ERROR_MESSAGE pops up; otherwise, close the message
+- You can locate my visual component on the right side of the screen, with the Cart list in the center panel and 
+Inventory list in the right panel
+- You can save the state of my application by the following steps:
+  1. Click on the "Save Item List" button
+  2. Select the ItemList to be saved (Inventory or Cart)
+- You can reload the state of my application by the following steps:
+  1. Click on the "Load Item List" button
+  2. Select the ItemList to be loaded (Inventory or Cart)
+  3. Loaded ItemList should pop up on corresponding screen

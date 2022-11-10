@@ -56,9 +56,9 @@ public class ToCartTool extends Tool {
                     "Name:", name,
                     "Quantity:", quantity
             };
-            int option = JOptionPane.showConfirmDialog(null, message, "Enter Item",
-                    JOptionPane.OK_CANCEL_OPTION);
-            if (option == JOptionPane.OK_OPTION) {
+            int option = showConfirmDialog(null, message, "Enter Item",
+                    OK_CANCEL_OPTION);
+            if (option == OK_OPTION) {
                 itemName = name.getText();
                 itemQuantity = Integer.parseInt(quantity.getText());
             } else {
@@ -78,24 +78,21 @@ public class ToCartTool extends Tool {
                     item = new Item(itemName, itemQuantity, itemPrice);
                     inventory.takeFromList(item);
                     cart.putIntoList(item);
+                    // UPDATE TABLE ACCORDINGLY HERE
                     modifyTable(inventory, inventoryTable);
                     modifyTable(cart, cartTable);
                 } catch (NegativeValueException e) {
-                    System.out.print("Quantity or price (or both) for input " + itemName
-                            + " is negative; request is invalid");
                     showMessageDialog(null, "Quantity or price (or both) for input " + itemName
-                                    + " is negative; request is invalid");
+                                    + " is negative; request is invalid", "NegativeValueException", ERROR_MESSAGE);
                 } catch (NotEnoughItemsException e) {
-                    System.out.print("Not enough items in inventory to move to cart; request is invalid");
-                    showMessageDialog(null,
-                            "Not enough items in inventory to move to cart; request is invalid");
+                    showMessageDialog(null, "Not enough items in inventory to move to cart; "
+                            + "request is invalid", "NotEnoughItemsException", ERROR_MESSAGE);
                 }
-                System.out.print("Moved " + itemQuantity + " of " + itemName + " from Inventory to Cart\n");
-                showMessageDialog(null,
-                        "Moved " + itemQuantity + " of " + itemName + " from Inventory to Cart\n");
+                showMessageDialog(null, "Moved " + itemQuantity + " of " + itemName
+                        + " from Inventory to Cart", "Transfer successful", INFORMATION_MESSAGE);
             } else {
-                System.out.print("Not enough " + itemName + " in Inventory\n");
-                showMessageDialog(null, "Not enough " + itemName + " in Inventory");
+                showMessageDialog(null, "Not enough " + itemName + " in Inventory",
+                        "Transfer failed", ERROR_MESSAGE);
             }
         } // SHOULD UPDATE TABLE ACCORDINGLY
     }

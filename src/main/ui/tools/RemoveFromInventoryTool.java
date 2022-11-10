@@ -75,29 +75,24 @@ public class RemoveFromInventoryTool extends Tool {
             } else {
                 itemPrice = itemPriceInput;
             }
-            Item item;
             try {
-                item = new Item(itemName, itemQuantity, itemPrice);
+                Item item = new Item(itemName, itemQuantity, itemPrice);
                 if (inventory.takeFromList(item)) {
-                    showMessageDialog(null,
-                            new JLabel("<html><p>Removed Item(s): </p> <p>Name: " + itemName
-                                    + "</p> <p>Quantity: " + itemQuantity + "</p> <p>Price: $"
-                                    + itemPrice + "</p> </html>"));
-                    // Modify table here
+                    showMessageDialog(null, new JLabel("<html><p>Name: " + itemName
+                            + "</p> <p>Quantity: " + itemQuantity + "</p> <p>Price: $" + itemPrice + "</p> </html>"),
+                            "Removed Item(s)", INFORMATION_MESSAGE);
+                    // UPDATE TABLE ACCORDINGLY HERE
                 } else {
                     System.out.print("\n " + itemName + " is not in Inventory \n");
                 }
                 modifyTable(inventory, inventoryTable);
             } catch (NegativeValueException e) {
-                System.out.print("Quantity or price (or both) for input " + itemName
-                        + " is negative; request is invalid");
                 showMessageDialog(null, "Quantity or price (or both) for input " + itemName
-                        + " is negative; request is invalid");
+                        + " is negative; request is invalid", "NegativeValueException", ERROR_MESSAGE);
             } catch (NotEnoughItemsException e) {
-                System.out.print("New quantity for " + itemName + " in inventory is less than 0; request is invalid");
-                showMessageDialog(null,
-                        "New quantity for " + itemName + " in inventory is less than 0; request is invalid");
+                showMessageDialog(null, "New quantity for " + itemName + " in inventory is less "
+                        + "than 0; request is invalid", "NotEnoughItemsException", ERROR_MESSAGE);
             }
-        } // SHOULD UPDATE TABLE ACCORDINGLY
+        }
     }
 }

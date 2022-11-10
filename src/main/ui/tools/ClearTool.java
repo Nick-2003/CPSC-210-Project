@@ -53,14 +53,16 @@ public class ClearTool extends Tool {
         private void clearItemList(String selectList) {
             if (selectList.equals("Cart")) {
                 cart.clear();
-                // Update table here
+                // UPDATE TABLE HERE
                 System.out.print("\nCart cleared\n");
-                showMessageDialog(null, "\nCart cleared\n");
+                showMessageDialog(null, "Cart cleared", "Clear successful",
+                        INFORMATION_MESSAGE);
             } else {
                 inventory.clear();
-                // Update table here
+                // UPDATE TABLE HERE
                 System.out.print("\nInventory cleared\n");
-                showMessageDialog(null, "\nInventory cleared\n");
+                showMessageDialog(null, "Inventory cleared", "Clear successful",
+                        INFORMATION_MESSAGE);
             }
         }
     }

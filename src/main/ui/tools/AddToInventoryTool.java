@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import static javax.swing.JOptionPane.showMessageDialog;
+import static javax.swing.JOptionPane.*;
 
 public class AddToInventoryTool extends Tool {
 
@@ -77,20 +77,19 @@ public class AddToInventoryTool extends Tool {
             try {
                 item = new Item(itemName, itemQuantity, itemPrice);
                 inventory.putIntoList(item);
+                showMessageDialog(null, new JLabel("<html><p>Name: " + itemName
+                                + "</p> <p>Quantity: " + itemQuantity + "</p> <p>Price: $" + itemPrice
+                        + "</p> </html>"), "Added Item(s)", INFORMATION_MESSAGE);
+                // UPDATE TABLE ACCORDINGLY HERE
                 modifyTable(inventory, inventoryTable);
             } catch (NegativeValueException e) {
-                System.out.print("Quantity or price (or both) for input " + itemName
-                        + " is negative; request is invalid");
                 showMessageDialog(null, "Quantity or price (or both) for input " + itemName
-                        + " is negative; request is invalid");
+                        + " is negative; request is invalid", "NegativeValueException", ERROR_MESSAGE);
             } catch (NotEnoughItemsException e) {
-                System.out.print("New quantity for " + itemName + " in inventory is less than 0; request is invalid");
-                showMessageDialog(null,
-                        "New quantity for " + itemName + " in inventory is less than 0; request is invalid");
+                showMessageDialog(null, "New quantity for " + itemName + " in inventory is less "
+                        + "than 0; request is invalid", "NotEnoughItemsException", ERROR_MESSAGE);
             }
-            showMessageDialog(null, new JLabel("<html><p>Added Item(s): </p> <p>Name: "
-                    + itemName + "</p> <p>Quantity: " + itemQuantity
-                    + "</p> <p>Price: $" + itemPrice + "</p> </html>"));
-        } // SHOULD UPDATE TABLE ACCORDINGLY
+
+        }
     }
 }

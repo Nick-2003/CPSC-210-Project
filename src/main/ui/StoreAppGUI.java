@@ -23,7 +23,6 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class StoreAppGUI extends JFrame {
 
@@ -33,8 +32,6 @@ public class StoreAppGUI extends JFrame {
 
     public static final String JSON_INV = "./data/inventory.json";
     public static final String JSON_CART = "./data/cart.json";
-
-    private List<Tool> tools;
 
     private JPanel buttonPanel1;
     private JPanel buttonPanel2;
@@ -47,7 +44,6 @@ public class StoreAppGUI extends JFrame {
 
     protected Inventory inventory;
     protected Cart cart;
-    protected Scanner input;
 
     private JsonWriter jsonWriterInv;
     private JsonWriter jsonWriterCart;
@@ -71,13 +67,8 @@ public class StoreAppGUI extends JFrame {
     // MODIFIES: this
     // EFFECTS: Initializes system
     private void initialiseSystem() {
-        tools = new ArrayList<Tool>();
-
-
         inventory = new Inventory("Inventory");
         cart = new Cart("Cart");
-        input = new Scanner(System.in);
-        input.useDelimiter("\n");
         jsonWriterInv = new JsonWriter(JSON_INV);
         jsonReaderInv = new JsonReader(JSON_INV);
         jsonWriterCart = new JsonWriter(JSON_CART);
@@ -85,7 +76,7 @@ public class StoreAppGUI extends JFrame {
     }
 
     // MODIFIES: this
-    // EFFECTS: Draw JFrame window where Store app will operate, and populates the tools to be used to run the system
+    // EFFECTS: Draw JFrame window where Store app will operate
     private void initializeGraphics() {
         setLayout(new BorderLayout());
         setTitle("Store App");
@@ -101,6 +92,16 @@ public class StoreAppGUI extends JFrame {
         setVisible(true);
     }
 
+//    try {
+//        Item rice10 = new Item("White Rice", 10, 8.00);
+//        this.cart.putIntoList(rice10);
+//        this.inventory.putIntoList(rice10);
+//    } catch (NegativeValueException e) {
+//        throw new RuntimeException(e);
+//    } catch (NotEnoughItemsException e) {
+//        throw new RuntimeException(e);
+//    } // FOR TESTING
+
     // MODIFIES: this
     // EFFECTS: Creates panels
     private void createPanels() {
@@ -110,19 +111,8 @@ public class StoreAppGUI extends JFrame {
         panelSetup(this.cartPanel, "Cart", 1, 0, false);
         panelSetup(this.inventoryPanel, "Functions", 2, 0, false);
 
-        try {
-            Item rice10 = new Item("White Rice", 10, 8.00);
-            this.cart.putIntoList(rice10);
-            this.inventory.putIntoList(rice10);
-        } catch (NegativeValueException e) {
-            throw new RuntimeException(e);
-        } catch (NotEnoughItemsException e) {
-            throw new RuntimeException(e);
-        } // FOR TESTING
-
         setUpTables(this.inventory, "Inventory List", this.inventoryPanel, this.inventoryTable, 2);
         setUpTables(this.cart, "Cart List", this.cartPanel, this.cartTable, 1);
-
 
 //        tableInv.setRowHeight(HEIGHT / 50);
 //        JScrollPane js = new JScrollPane(tableInv);

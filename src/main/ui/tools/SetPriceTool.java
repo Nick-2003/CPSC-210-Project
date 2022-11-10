@@ -66,14 +66,17 @@ public class SetPriceTool extends Tool {
             try {
                 inventory.setNamedPrice(itemName, itemPriceInput);
                 modifyTable(inventory, inventoryTable);
+                // SHOULD UPDATE TABLE ACCORDINGLY
+                System.out.print("New item price: $" + itemPriceInput + "\n");
+                showMessageDialog(null, new JLabel("<html><p>New item price: </p> <p>Name: "
+                        + itemName + "</p> <p>Price: " + itemPriceInput + "</p> </html>"),
+                        "Set price successful", INFORMATION_MESSAGE);
             } catch (NegativeValueException e) {
                 System.out.print("Price for input " + itemName + " is negative; request is invalid");
                 showMessageDialog(null, "Price for input " + itemName
-                        + " is negative; request is invalid");
+                        + " is negative; request is invalid", "Transfer failed", ERROR_MESSAGE);
             }
-            System.out.print("New item price: $" + itemPriceInput + "\n");
-            showMessageDialog(null, new JLabel("<html><p>Item Change: </p> <p>Name: "
-                    + itemName + "</p> <p>Price: " + itemPriceInput + "</p> </html>"));
-        } // SHOULD UPDATE TABLE ACCORDINGLY
+
+        }
     }
 }

@@ -58,10 +58,8 @@ public class SaveTool extends Tool {
                     jsonWriterCart.open();
                     jsonWriterCart.write(cart);
                     jsonWriterCart.close();
-                    System.out.println("Saved " + cart.getName() + " to " + JSON_CART);
                     showMessageDialog(null, "Saved " + cart.getName() + " to " + JSON_CART);
                 } catch (FileNotFoundException e) {
-                    System.out.println("Unable to write to file: " + JSON_CART);
                     showMessageDialog(null, "Unable to write to file: " + JSON_CART);
                 }
             } else if (selectList.equals("Inventory")) {
@@ -69,11 +67,11 @@ public class SaveTool extends Tool {
                     jsonWriterInv.open();
                     jsonWriterInv.write(inventory);
                     jsonWriterInv.close();
-                    System.out.println("Saved " + inventory.getName() + " to " + JSON_INV);
-                    showMessageDialog(null, "Saved " + inventory.getName() + " to " + JSON_INV);
+                    showMessageDialog(null, "Saved " + inventory.getName() + " to " + JSON_INV,
+                            "Save successful", INFORMATION_MESSAGE);
                 } catch (FileNotFoundException e) {
-                    System.out.println("Unable to write to file: " + JSON_INV);
-                    showMessageDialog(null, "Unable to write to file: " + JSON_INV);
+                    showMessageDialog(null, "Unable to write to file: " + JSON_INV,
+                            "FileNotFoundException", ERROR_MESSAGE);
                 }
             }
         }

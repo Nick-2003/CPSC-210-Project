@@ -49,10 +49,10 @@ public class PaymentTool extends Tool {
             String[][] itemArray = setUpArray(cart.getInternalList());
             DefaultTableModel model = new DefaultTableModel(itemArray, new String[]{"Name", "Quantity", "Price"});
             JTable table = new JTable(model);
-            showMessageDialog(null, table);
+            showMessageDialog(null, table, "Cart Items", INFORMATION_MESSAGE);
             showMessageDialog(null, new JLabel("<html><p>Payment: </p> <p>Total cost of items: $"
                     + cart.totalPrice() + "</p> <p>Tax: $" + cart.tax() + "</p> <p>Final Cost: $" + cart.finalPrice()
-                    + "</p> </html>"));
+                    + "</p> </html>"), "Final Cost", INFORMATION_MESSAGE);
         }
     }
 }
