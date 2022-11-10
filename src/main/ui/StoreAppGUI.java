@@ -10,6 +10,7 @@ import exceptions.NotEnoughItemsException;
 import model.Cart;
 import model.Inventory;
 import model.Item;
+import model.ItemList;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 import ui.tools.*;
@@ -17,6 +18,7 @@ import ui.tools.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.ArrayList;
@@ -29,8 +31,8 @@ public class StoreAppGUI extends JFrame {
     public static final int HEIGHT = 700;
     public static final int GAP = 10;
 
-    private static final String JSON_INV = "./data/inventory.json";
-    private static final String JSON_CART = "./data/cart.json";
+    public static final String JSON_INV = "./data/inventory.json";
+    public static final String JSON_CART = "./data/cart.json";
 
     private List<Tool> tools;
 
@@ -39,15 +41,17 @@ public class StoreAppGUI extends JFrame {
     private JPanel buttonPanel3;
     private JPanel cartPanel;
     private JPanel inventoryPanel;
-    private JScrollPane myScrollPane;
+//    private JScrollPane myScrollPane;
+    private JTable cartTable;
+    private JTable inventoryTable;
 
-    private Inventory inventory;
-    private Cart cart;
-    private Scanner input;
+    protected Inventory inventory;
+    protected Cart cart;
+    protected Scanner input;
 
     private JsonWriter jsonWriterInv;
-    private JsonReader jsonReaderInv;
     private JsonWriter jsonWriterCart;
+    private JsonReader jsonReaderInv;
     private JsonReader jsonReaderCart;
 
     public StoreAppGUI() {
@@ -58,6 +62,8 @@ public class StoreAppGUI extends JFrame {
         this.buttonPanel3 = new JPanel();
         this.cartPanel = new JPanel();
         this.inventoryPanel = new JPanel();
+        this.cartTable = new JTable();
+        this.inventoryTable = new JTable();
         initialiseSystem();
         initializeGraphics();
     }
@@ -79,8 +85,7 @@ public class StoreAppGUI extends JFrame {
     }
 
     // MODIFIES: this
-    // EFFECTS: Draw JFrame window where this DrawingEditor will operate, and populates the tools to be used to run
-    // the system
+    // EFFECTS: Draw JFrame window where Store app will operate, and populates the tools to be used to run the system
     private void initializeGraphics() {
         setLayout(new BorderLayout());
         setTitle("Store App");
@@ -90,68 +95,64 @@ public class StoreAppGUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         setLocationRelativeTo(null);
+
+        this.cartPanel.setLayout(new BoxLayout(this.cartPanel, BoxLayout.Y_AXIS));
         createPanels();
         setVisible(true);
     }
 
     // MODIFIES: this
-    // EFFECTS: Declares and instantiates all panels
+    // EFFECTS: Creates panels
     private void createPanels() {
         panelSetup(this.buttonPanel1, "Functions for Cart", 0, 0, true);
         panelSetup(this.buttonPanel2, "Functions for Inventory", 0, 1, true);
         panelSetup(this.buttonPanel3, "Functions for Store", 0, 2, true);
         panelSetup(this.cartPanel, "Cart", 1, 0, false);
         panelSetup(this.inventoryPanel, "Functions", 2, 0, false);
-        JLabel label = new JLabel("This is a text field");
-        this.inventoryPanel.add(label);
 
-        ArrayList<Item> lst = new ArrayList<Item>();
-        Item rice10 = null;
         try {
-            rice10 = new Item("White Rice", 10, 8.00);
+            Item rice10 = new Item("White Rice", 10, 8.00);
             this.cart.putIntoList(rice10);
+            this.inventory.putIntoList(rice10);
         } catch (NegativeValueException e) {
             throw new RuntimeException(e);
         } catch (NotEnoughItemsException e) {
             throw new RuntimeException(e);
-        }
-        lst.add(rice10);
-        lst.add(rice10);
+        } // FOR TESTING
 
-        List<String[]> rec = new ArrayList<String[]>();
-        String[][] list1 = setUpArray(lst);
-        String[][] list2 = setUpArray(this.cart.getInternalList());
-        String[] header = { "Name", "Quantity", "Price" };
-        JTable table1 = new JTable(list1, header);
-        JTable table2 = new JTable(list2, header);
-        JTableHeader head = table1.getTableHeader();
-        head.setPreferredSize(new Dimension(WIDTH / 3, HEIGHT / 50));
-        ((DefaultTableCellRenderer) head.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+        setUpTables(this.inventory, "Inventory List", this.inventoryPanel, this.inventoryTable, 2);
+        setUpTables(this.cart, "Cart List", this.cartPanel, this.cartTable, 1);
 
-        table1.setRowHeight(HEIGHT / 50);
-        JScrollPane js = new JScrollPane(table1);
-        js.setVisible(true);
-        add(js);
 
-        ToCartTool toCartTool = new ToCartTool(this, this.buttonPanel1);
-        FromCartTool fromCartTool = new FromCartTool(this, this.buttonPanel1);
-        PaymentTool paymentTool = new PaymentTool(this, this.buttonPanel1);
+//        tableInv.setRowHeight(HEIGHT / 50);
+//        JScrollPane js = new JScrollPane(tableInv);
+//        js.setVisible(true);
+//        add(js);
 
-        AddToInventoryTool addToInventoryTool = new AddToInventoryTool(this, this.buttonPanel2);
-        RemoveFromInventoryTool removeFromInventoryTool = new RemoveFromInventoryTool(this, this.buttonPanel2);
-        SetPriceTool setPriceTool = new SetPriceTool(this, this.buttonPanel2);
+        ToCartTool toCartTool = new ToCartTool(this, this.buttonPanel1, this.inventory, this.inventoryTable,
+                this.cart, this.cartTable);
+        FromCartTool fromCartTool = new FromCartTool(this, this.buttonPanel1, this.inventory, this.inventoryTable,
+                this.cart, this.cartTable);
+        PaymentTool paymentTool = new PaymentTool(this, this.buttonPanel1, this.cart);
 
-        SaveTool saveTool = new SaveTool(this, this.buttonPanel3);
-        LoadTool loadTool = new LoadTool(this, this.buttonPanel3);
-        PrintTool printTool = new PrintTool(this, this.buttonPanel3);
-        ClearTool clearTool = new ClearTool(this, this.buttonPanel3);
+//        AddToInventoryTool addToInventoryTool = new AddToInventoryTool(this, this.buttonPanel2, this.inventory);
+        AddToInventoryTool addToInventoryTool = new AddToInventoryTool(this, this.buttonPanel2, this.inventory,
+                this.inventoryTable);
+        RemoveFromInventoryTool removeFromInventoryTool = new RemoveFromInventoryTool(this, this.buttonPanel2,
+                this.inventory, this.inventoryTable);
+        SetPriceTool setPriceTool = new SetPriceTool(this, this.buttonPanel2, this.inventory, this.inventoryTable);
 
-        this.cartPanel.add(table2, BorderLayout.NORTH);
-
-        this.inventoryPanel.add(head, BorderLayout.NORTH);
-        this.inventoryPanel.add(table1, BorderLayout.NORTH);
+        SaveTool saveTool = new SaveTool(this, this.buttonPanel3, this.inventory, this.cart, this.jsonWriterInv,
+                this.jsonWriterCart);
+        LoadTool loadTool = new LoadTool(this, this.buttonPanel3, this.inventory, this.cart, this.jsonReaderInv,
+                this.jsonReaderCart);
+//        PrintTool printTool = new PrintTool(this, this.buttonPanel3); // NOT SURE IF NECESSARY
+        ClearTool clearTool = new ClearTool(this, this.buttonPanel3, this.inventory, this.inventoryTable,
+                this.cart, this.cartTable);
     }
 
+    // MODIFIES: this
+    // EFFECTS: Creates basic layout for panels
     private void panelSetup(JPanel panel, String title, int partw, int parth, boolean split) {
         Border br = BorderFactory.createLineBorder(Color.black);
         if (split) {
@@ -172,7 +173,9 @@ public class StoreAppGUI extends JFrame {
         c.add(panel, BorderLayout.NORTH);
     }
 
-    private String[][] setUpArray(ArrayList<Item> lst) {
+    // MODIFIES: this
+    // EFFECT: Reformat ArrayList<Item> to string formats for usage in table
+    public static String[][] setUpArray(ArrayList<Item> lst) {
         List<String[]> rec = new ArrayList<String[]>();
         for (Item i : lst) {
             String[] in = new String[]{i.getName(), String.valueOf(i.getAmount()), "$" + i.getPrice()};
@@ -182,61 +185,33 @@ public class StoreAppGUI extends JFrame {
         return rec1;
     }
 
-//    private void addMenu() {
-//        JMenuBar menuBar = new JMenuBar();
-//        JMenu cartMenu = new JMenu("Cart");
-//        cartMenu.setMnemonic('C');
-//        addMenuItem(cartMenu, new AddSensorAction(),
-//                KeyStroke.getKeyStroke("control C"));
-//        menuBar.add(cartMenu);
-//
-//        JMenu codeMenu = new JMenu("Code");
-//        codeMenu.setMnemonic('C');
-////        addMenuItem(codeMenu, new AddCodeAction(), null);
-////        addMenuItem(codeMenu, new RemoveCodeAction(), null);
-//        menuBar.add(codeMenu);
-//
-//        JMenu systemMenu = new JMenu("System");
-//        systemMenu.setMnemonic('y');
-////        addMenuItem(systemMenu, new ArmAction(),
-////                KeyStroke.getKeyStroke("control A"));
-////        addMenuItem(systemMenu, new DisarmAction(),
-////                KeyStroke.getKeyStroke("control D"));
-//        menuBar.add(systemMenu);
-//
-//        setJMenuBar(menuBar);
-//    }
+    private void setUpTables(ItemList itemList, String name, JPanel panel, JTable table, int partw) {
+        String[][] itemArray = setUpArray(itemList.getInternalList());
+        DefaultTableModel model = new DefaultTableModel(itemArray, new String[]{"Name", "Quantity", "Price"});
+        table = new JTable(model);
+//        table.setPreferredSize(new Dimension(WIDTH / 9, HEIGHT * 24 / 25));
+        table.getColumnModel().getColumn(0).setPreferredWidth(WIDTH / 9);
+        table.getColumnModel().getColumn(1).setPreferredWidth(WIDTH / 9);
+        table.getColumnModel().getColumn(2).setPreferredWidth(WIDTH / 9);
+//        JTable table = new JTable(itemArray, header);
 
-//    private void addMenuItem(JMenu theMenu, AbstractAction action, KeyStroke accelerator) {
-//        JMenuItem menuItem = new JMenuItem(action);
-//        menuItem.setMnemonic(menuItem.getText().charAt(0));
-//        menuItem.setAccelerator(accelerator);
-//        theMenu.add(menuItem);
-//    }
+        JTableHeader newTableHead = table.getTableHeader();
+//        JTableHeader newTableHead2 = new JTableHeader(new DefaultTableColumnModel());
+        newTableHead.setPreferredSize(new Dimension(WIDTH / 9, HEIGHT / 25));
+//        newTableHead.setMinimumSize(new Dimension(WIDTH / 3, HEIGHT / 25));
 
-//    private class AddSensorAction extends AbstractAction {
-//
-//        AddSensorAction() {
-//            super("Add Sensor");
-//        }
-//
-//        @Override
-//        public void actionPerformed(ActionEvent evt) {
-//            String sensorLoc = JOptionPane.showInputDialog(null,
-//                    "Item name",
-//                    "Enter sensor location",
-//                    JOptionPane.QUESTION_MESSAGE);
-////            try {
-////                if (sensorLoc != null) {
-////                    Sensor s = new Sensor(sensorLoc, ac);
-////                    desktop.add(new SensorUI(s, AlarmControllerUI.this));
-////                }
-////            } catch (DuplicateSensorException e) {
-////                JOptionPane.showMessageDialog(null, e.getMessage(), "System Error",
-////                        JOptionPane.ERROR_MESSAGE);
-////            }
-//        }
-//    }
+        ((DefaultTableCellRenderer) newTableHead.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+        panel.add(new JLabel(name), BorderLayout.NORTH);
+//        panel.add(newTableHead, BorderLayout.SOUTH);
+        JScrollPane newTable = new JScrollPane(table);
+//        newTable.setBounds((WIDTH * partw / 3) + GAP / 2, GAP / 2,
+//                (WIDTH / 3) - GAP,HEIGHT / 3 - GAP * 5);
+        panel.add(newTable, BorderLayout.CENTER);
+
+//        panel.add(new JLabel(name), BoxLayout.Y_AXIS, -1);
+//        panel.add(newTableHead, BoxLayout.Y_AXIS, -1);
+//        panel.add(table, BoxLayout.Y_AXIS, -1);
+    }
 
     //main method
     public static void main(String[] args) {

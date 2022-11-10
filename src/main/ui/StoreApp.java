@@ -144,7 +144,7 @@ public class StoreApp {
             } catch (NotEnoughItemsException e) {
                 System.out.print("Not enough items in inventory to move to cart; request is invalid");
             }
-            System.out.print("Moved " + itemQuantity + " of " + itemName + " to Inventory\n");
+            System.out.print("Moved " + itemQuantity + " of " + itemName + " to Cart\n");
         } else {
             System.out.print("Not enough " + itemName + " in Inventory\n");
         }
@@ -170,7 +170,7 @@ public class StoreApp {
             } catch (NotEnoughItemsException e) {
                 System.out.print("Not enough items in cart to move to inventory; request is invalid");
             }
-            System.out.print("Moved " + itemQuantity + " of " + itemName + " to Inventory\n");
+            System.out.print("Moved " + itemQuantity + " of " + itemName + " from Cart\n");
         } else {
             System.out.print("Not enough " + itemName + " in Cart\n");
         }
@@ -245,18 +245,6 @@ public class StoreApp {
         }
     }
 
-//    // REQUIRES: Item is in Inventory
-//    // MODIFIES: this, Item
-//    // EFFECTS: Set the name of an existing Item in Inventory
-//    private void setInventoryItemName() {
-//        String itemName = inputItemName();
-//
-//        System.out.print("\nNew name for " + itemName + ": ");
-//        String itemNewName = inputItemName();
-//        this.inventory.setNewName(itemName, itemNewName);
-//        System.out.print(itemName + " changed to " + itemNewName);
-//    }
-
     // REQUIRES: Item is in Inventory
     // MODIFIES: this, Item
     // EFFECTS: Set the price of an existing Item in Inventory
@@ -273,18 +261,6 @@ public class StoreApp {
         }
         System.out.print("New item price: $" + itemPrice + "\n");
     }
-
-//    // EFFECTS: saves Inventory to file
-//    private void saveInventory() {
-//        try {
-//            jsonWriter.open();
-//            jsonWriter.write(inventory);
-//            jsonWriter.close();
-//            System.out.println("Saved " + inventory.getName() + " to " + JSON_STORE);
-//        } catch (FileNotFoundException e) {
-//            System.out.println("Unable to write to file: " + JSON_STORE);
-//        }
-//    }
 
     // EFFECTS: Save ItemList to file
     private void saveItemList() {
@@ -309,17 +285,6 @@ public class StoreApp {
             }
         }
     }
-
-//    // MODIFIES: this
-//    // EFFECTS: loads Inventory from file
-//    private void loadInventory() {
-//        try {
-//            inventory = jsonReader.read();
-//            System.out.println("Loaded " + inventory.getName() + " from " + JSON_STORE);
-//        } catch (IOException | NegativeValueException | NotEnoughItemsException e) {
-//            System.out.println("Unable to read from file: " + JSON_STORE);
-//        }
-//    }
 
     // MODIFIES: this
     // EFFECTS: loads ItemList from file

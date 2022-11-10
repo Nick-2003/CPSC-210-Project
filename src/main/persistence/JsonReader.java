@@ -5,7 +5,6 @@ package persistence;
 
 import exceptions.NegativeValueException;
 import exceptions.NotEnoughItemsException;
-import model.Inventory;
 import model.Item;
 
 import java.io.IOException;
@@ -48,7 +47,11 @@ public class JsonReader {
     // EFFECTS: Parses ItemList from JSON object and returns it
     private ItemList parseItemList(JSONObject jsonObject) throws NegativeValueException, NotEnoughItemsException {
         String name = jsonObject.getString("name");
-        ItemList inv = new Inventory(name);
+        ItemList inv = new ItemList(name); // CANNOT SAVE
+//        ItemList inv = new Inventory(name);
+        // Exception in thread "main" java.lang.ClassCastException:
+        // class model.ItemList cannot be cast to class model.Cart
+        // (model.ItemList and model.Cart are in unnamed module of loader 'app')
         addItems(inv, jsonObject);
         return inv;
     }
