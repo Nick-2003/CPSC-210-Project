@@ -10,7 +10,6 @@ import persistence.Writable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Objects;
 
 public class Item implements Writable {
 //    private static int nextItemId = 1;  // tracks id of next account created
@@ -81,20 +80,20 @@ public class Item implements Writable {
         return json;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Item item = (Item) o;
-        return Double.compare(item.price, price) == 0 && Objects.equals(name, item.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, price);
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) {
+//            return true;
+//        }
+//        if (o == null || getClass() != o.getClass()) {
+//            return false;
+//        }
+//        Item item = (Item) o;
+//        return Double.compare(item.price, price) == 0 && Objects.equals(name, item.name);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(name, price);
+//    }
 }

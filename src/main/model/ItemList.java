@@ -6,15 +6,12 @@ import org.json.JSONObject;
 import persistence.Writable;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 public class ItemList implements Writable {
 
     protected String name;
     protected ArrayList<Item> internalList; // Which one would be more important: Ordering or non-duplicates?
-//    private HashSet<Item> internalList; // Do not need to override
 
     // EFFECTS: Creates new empty ItemList
     public ItemList(String name) {
@@ -23,8 +20,12 @@ public class ItemList implements Writable {
     }
 
     // EFFECTS: returns an unmodifiable list of Items in this workroom
-    public List<Item> getItems() {
-        return Collections.unmodifiableList(internalList);
+//    public List<Item> getItems() {
+//        return Collections.unmodifiableList(internalList);
+//    }
+    public ArrayList<Item> getItems() {
+//        return Collections.unmodifiableList(internalList);
+        return this.internalList;
     }
 
     // MODIFIES: this
@@ -46,7 +47,7 @@ public class ItemList implements Writable {
     }
 
     // MODIFIES: this
-    // EFFECTS: Takes item of given quantity from set unless it's not in the list or quantity =< 0, in which case
+    // EFFECTS: Takes item of given quantity from list unless it's not in the list or quantity =< 0, in which case
     // return false
     public boolean takeFromList(Item obj) throws NotEnoughItemsException {
         boolean result = false;

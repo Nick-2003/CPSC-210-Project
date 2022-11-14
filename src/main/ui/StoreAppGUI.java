@@ -18,7 +18,6 @@ import ui.tools.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.ArrayList;
@@ -80,27 +79,17 @@ public class StoreAppGUI extends JFrame {
     private void initializeGraphics() {
         setLayout(new BorderLayout());
         setTitle("Store App");
+        setResizable(false);
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBounds(100,100,WIDTH, HEIGHT);
-//        setMinimumSize(new Dimension(WIDTH, HEIGHT));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         setLocationRelativeTo(null);
 
-        this.cartPanel.setLayout(new BoxLayout(this.cartPanel, BoxLayout.Y_AXIS));
         createPanels();
+//        this.cartPanel.setLayout(new BoxLayout(this.cartPanel, BoxLayout.Y_AXIS));
         setVisible(true);
     }
-
-//    try {
-//        Item rice10 = new Item("White Rice", 10, 8.00);
-//        this.cart.putIntoList(rice10);
-//        this.inventory.putIntoList(rice10);
-//    } catch (NegativeValueException e) {
-//        throw new RuntimeException(e);
-//    } catch (NotEnoughItemsException e) {
-//        throw new RuntimeException(e);
-//    } // FOR TESTING
 
     // MODIFIES: this
     // EFFECTS: Creates panels
@@ -108,24 +97,35 @@ public class StoreAppGUI extends JFrame {
         panelSetup(this.buttonPanel1, "Functions for Cart", 0, 0, true);
         panelSetup(this.buttonPanel2, "Functions for Inventory", 0, 1, true);
         panelSetup(this.buttonPanel3, "Functions for Store", 0, 2, true);
-        panelSetup(this.cartPanel, "Cart", 1, 0, false);
-        panelSetup(this.inventoryPanel, "Functions", 2, 0, false);
+        panelSetup(this.cartPanel, "Cart List", 1, 0, false);
+        panelSetup(this.inventoryPanel, "Inventory List", 2, 0, false);
 
-        setUpTables(this.inventory, "Inventory List", this.inventoryPanel, this.inventoryTable, 2);
-        setUpTables(this.cart, "Cart List", this.cartPanel, this.cartTable, 1);
+        try {
+//            Item rice10 = new Item("White Rice", 10, 8.00);
+//            this.cart.putIntoList(rice10);
+            for (int i = 0; i < 40; i++) {
+                this.cart.putIntoList(new Item(Integer.toString(i), i + 1, i + 2));
+            }
+//            this.inventory.putIntoList(rice10);
+        } catch (NegativeValueException | NotEnoughItemsException e) {
+            throw new RuntimeException(e);
+        } // FOR TESTING PURPOSES
 
-//        tableInv.setRowHeight(HEIGHT / 50);
-//        JScrollPane js = new JScrollPane(tableInv);
-//        js.setVisible(true);
-//        add(js);
+        setUpTables(this.inventory, this.inventoryPanel, this.inventoryTable);
+        setUpTables(this.cart, this.cartPanel, this.cartTable);
 
+        toolSetUp();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: Creates tools for panels
+    private void toolSetUp() {
         ToCartTool toCartTool = new ToCartTool(this, this.buttonPanel1, this.inventory, this.inventoryTable,
                 this.cart, this.cartTable);
         FromCartTool fromCartTool = new FromCartTool(this, this.buttonPanel1, this.inventory, this.inventoryTable,
                 this.cart, this.cartTable);
         PaymentTool paymentTool = new PaymentTool(this, this.buttonPanel1, this.cart);
 
-//        AddToInventoryTool addToInventoryTool = new AddToInventoryTool(this, this.buttonPanel2, this.inventory);
         AddToInventoryTool addToInventoryTool = new AddToInventoryTool(this, this.buttonPanel2, this.inventory,
                 this.inventoryTable);
         RemoveFromInventoryTool removeFromInventoryTool = new RemoveFromInventoryTool(this, this.buttonPanel2,
@@ -143,7 +143,7 @@ public class StoreAppGUI extends JFrame {
 
     // MODIFIES: this
     // EFFECTS: Creates basic layout for panels
-    private void panelSetup(JPanel panel, String title, int partw, int parth, boolean split) {
+    private void panelSetup(JPanel panel, String name, int partw, int parth, boolean split) {
         Border br = BorderFactory.createLineBorder(Color.black);
         if (split) {
             panel.setLayout(new GridLayout(0,1));
@@ -153,11 +153,15 @@ public class StoreAppGUI extends JFrame {
             panel.setLayout(new FlowLayout());
             panel.setBounds((WIDTH * partw / 3) + GAP / 2, GAP / 2 + (HEIGHT * parth / 3),
                     (WIDTH / 3) - GAP,HEIGHT - GAP * 5);
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         }
+        JLabel listName = new JLabel("<html><h1>" + name + "</h1></html>");
+        listName.setSize(new Dimension(WIDTH / 3, HEIGHT / 25));
+        listName.setHorizontalAlignment(SwingConstants.CENTER);
+        listName.setVerticalAlignment(SwingConstants.CENTER);
+        listName.setFont(new Font("Arial", Font.BOLD, 18));
+        panel.add(listName, BorderLayout.CENTER);
 
-//        panel.setBounds((WIDTH * partw / 3) + GAP / 2, GAP / 2 + (HEIGHT * parth / 3),
-//                (WIDTH / 3) - GAP,HEIGHT * split / 3 - GAP * 5);
-//        panel.setMinimumSize(new Dimension(((WIDTH / 3) - GAP) / 2, (HEIGHT * split / 3 - GAP * 5) / 2));
         panel.setBorder(br);
         Container c = getContentPane();
         c.add(panel, BorderLayout.NORTH);
@@ -166,41 +170,34 @@ public class StoreAppGUI extends JFrame {
     // MODIFIES: this
     // EFFECT: Reformat ArrayList<Item> to string formats for usage in table
     public static String[][] setUpArray(ArrayList<Item> lst) {
-        List<String[]> rec = new ArrayList<String[]>();
+        List<String[]> rec = new ArrayList<>();
         for (Item i : lst) {
             String[] in = new String[]{i.getName(), String.valueOf(i.getAmount()), "$" + i.getPrice()};
             rec.add(in);
         }
-        String[][] rec1 = rec.toArray(new String[0][]);
-        return rec1;
+        return rec.toArray(new String[0][]);
     }
 
-    private void setUpTables(ItemList itemList, String name, JPanel panel, JTable table, int partw) {
-        String[][] itemArray = setUpArray(itemList.getInternalList());
-        DefaultTableModel model = new DefaultTableModel(itemArray, new String[]{"Name", "Quantity", "Price"});
+    // MODIFIES: this
+    // EFFECT: Take ItemList and set up JTable table
+    private void setUpTables(ItemList itemList, JPanel panel, JTable table) {
+        ItemListModel model = new ItemListModel(itemList);
         table = new JTable(model);
-//        table.setPreferredSize(new Dimension(WIDTH / 9, HEIGHT * 24 / 25));
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+
         table.getColumnModel().getColumn(0).setPreferredWidth(WIDTH / 9);
         table.getColumnModel().getColumn(1).setPreferredWidth(WIDTH / 9);
         table.getColumnModel().getColumn(2).setPreferredWidth(WIDTH / 9);
-//        JTable table = new JTable(itemArray, header);
 
         JTableHeader newTableHead = table.getTableHeader();
 //        JTableHeader newTableHead2 = new JTableHeader(new DefaultTableColumnModel());
         newTableHead.setPreferredSize(new Dimension(WIDTH / 9, HEIGHT / 25));
-//        newTableHead.setMinimumSize(new Dimension(WIDTH / 3, HEIGHT / 25));
+        newTableHead.setMaximumSize(new Dimension(WIDTH / 9, HEIGHT / 25));
 
         ((DefaultTableCellRenderer) newTableHead.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
-        panel.add(new JLabel(name), BorderLayout.NORTH);
-//        panel.add(newTableHead, BorderLayout.SOUTH);
-        JScrollPane newTable = new JScrollPane(table);
-//        newTable.setBounds((WIDTH * partw / 3) + GAP / 2, GAP / 2,
-//                (WIDTH / 3) - GAP,HEIGHT / 3 - GAP * 5);
-        panel.add(newTable, BorderLayout.CENTER);
 
-//        panel.add(new JLabel(name), BoxLayout.Y_AXIS, -1);
-//        panel.add(newTableHead, BoxLayout.Y_AXIS, -1);
-//        panel.add(table, BoxLayout.Y_AXIS, -1);
+        JScrollPane newTable = new JScrollPane(table);
+        panel.add(newTable, BorderLayout.CENTER);
     }
 
     //main method

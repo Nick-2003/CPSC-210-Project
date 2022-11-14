@@ -52,6 +52,8 @@ public class JsonReader {
         // Exception in thread "main" java.lang.ClassCastException:
         // class model.ItemList cannot be cast to class model.Cart
         // (model.ItemList and model.Cart are in unnamed module of loader 'app')
+//        Exception in thread "AWT-EventQueue-0" java.lang.ClassCastException: class model.ItemList cannot be cast to
+//        class model.Inventory (model.ItemList and model.Inventory are in unnamed module of loader 'app')
         addItems(inv, jsonObject);
         return inv;
     }

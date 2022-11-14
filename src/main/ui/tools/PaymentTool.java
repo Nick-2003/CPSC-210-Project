@@ -4,14 +4,15 @@
 package ui.tools;
 
 import model.Cart;
+import ui.ItemListModel;
 import ui.StoreAppGUI;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 
 import static javax.swing.JOptionPane.*;
-import static ui.StoreAppGUI.*;
 
 public class PaymentTool extends Tool {
 
@@ -46,10 +47,17 @@ public class PaymentTool extends Tool {
 
         // EFFECTS: Save ItemList to file
         private void payment() {
-            String[][] itemArray = setUpArray(cart.getInternalList());
-            DefaultTableModel model = new DefaultTableModel(itemArray, new String[]{"Name", "Quantity", "Price"});
+//            String[][] itemArray = setUpArray(cart.getInternalList());
+//            DefaultTableModel model = new DefaultTableModel(itemArray, new String[]{"Name", "Quantity", "Price"});
+            ItemListModel model = new ItemListModel(cart);
             JTable table = new JTable(model);
-            showMessageDialog(null, table, "Cart Items", INFORMATION_MESSAGE);
+            JScrollPane newTable = new JScrollPane(table);
+            JTableHeader newTableHead = table.getTableHeader();
+
+            panel.add(newTable, BorderLayout.CENTER);
+            panel.add(newTableHead, BorderLayout.CENTER);
+//            showMessageDialog(null, table, "Cart Items", INFORMATION_MESSAGE);
+            showMessageDialog(null, panel, "Cart Items", INFORMATION_MESSAGE);
             showMessageDialog(null, new JLabel("<html><p>Payment: </p> <p>Total cost of items: $"
                     + cart.totalPrice() + "</p> <p>Tax: $" + cart.tax() + "</p> <p>Final Cost: $" + cart.finalPrice()
                     + "</p> </html>"), "Final Cost", INFORMATION_MESSAGE);
