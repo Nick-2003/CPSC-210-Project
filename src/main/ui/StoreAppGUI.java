@@ -38,6 +38,8 @@ public class StoreAppGUI extends JFrame {
     private JPanel cartPanel;
     private JPanel inventoryPanel;
 //    private JScrollPane myScrollPane;
+    private ItemListModel cartModel;
+    private ItemListModel inventoryModel;
     private JTable cartTable;
     private JTable inventoryTable;
 
@@ -57,8 +59,28 @@ public class StoreAppGUI extends JFrame {
         this.buttonPanel3 = new JPanel();
         this.cartPanel = new JPanel();
         this.inventoryPanel = new JPanel();
+
+        this.cart = new Cart("Cart");
+        this.inventory = new Inventory("Inventory");
+
+        try {
+            this.cart.putIntoList(new Item("White Rice", 10, 8.00));
+//            for (int i = 0; i < 40; i++) {
+////                this.cart.putIntoList(new Item(Integer.toString(i), i + 1, i + 2));
+//                this.cartModel.addItem(new Item(Integer.toString(i), i + 1, i + 2));
+//            }
+//            this.cartModel.addItem(new Item("White Rice", 10, 8.00));
+//            this.inventory.putIntoList(rice10);
+        } catch (NegativeValueException | NotEnoughItemsException e) {
+            throw new RuntimeException(e);
+        } // FOR TESTING PURPOSES // ONLY SHOWS BEFORE SETTING UP MODELS, DOES NOT ACTUALLY SAVE ANYTHING
+
+        this.cartModel = new ItemListModel(this.cart);
+        this.inventoryModel = new ItemListModel(this.inventory);
+
         this.cartTable = new JTable();
         this.inventoryTable = new JTable();
+
         initialiseSystem();
         initializeGraphics();
     }
@@ -100,19 +122,15 @@ public class StoreAppGUI extends JFrame {
         panelSetup(this.cartPanel, "Cart List", 1, 0, false);
         panelSetup(this.inventoryPanel, "Inventory List", 2, 0, false);
 
-        try {
-//            Item rice10 = new Item("White Rice", 10, 8.00);
-//            this.cart.putIntoList(rice10);
-            for (int i = 0; i < 40; i++) {
-                this.cart.putIntoList(new Item(Integer.toString(i), i + 1, i + 2));
-            }
-//            this.inventory.putIntoList(rice10);
-        } catch (NegativeValueException | NotEnoughItemsException e) {
-            throw new RuntimeException(e);
-        } // FOR TESTING PURPOSES
+//        setUpTables(this.inventory, this.inventoryPanel);
+//        setUpTables(this.cart, this.cartPanel);
 
-        setUpTables(this.inventory, this.inventoryPanel, this.inventoryTable);
-        setUpTables(this.cart, this.cartPanel, this.cartTable);
+
+
+        setUpTables(this.inventoryModel, this.inventoryPanel);
+        setUpTables(this.cartModel, this.cartPanel);
+
+
 
         toolSetUp();
     }
@@ -178,11 +196,31 @@ public class StoreAppGUI extends JFrame {
         return rec.toArray(new String[0][]);
     }
 
+//    // MODIFIES: this
+//    // EFFECT: Take ItemList and set up JTable table
+//    private void setUpTables(ItemList itemList, JPanel panel) {
+//        ItemListModel model = new ItemListModel(itemList);
+//        JTable table = new JTable(model);
+//        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+//
+//        table.getColumnModel().getColumn(0).setPreferredWidth(WIDTH / 9);
+//        table.getColumnModel().getColumn(1).setPreferredWidth(WIDTH / 9);
+//        table.getColumnModel().getColumn(2).setPreferredWidth(WIDTH / 9);
+//
+//        JTableHeader newTableHead = table.getTableHeader();
+//        newTableHead.setPreferredSize(new Dimension(WIDTH / 9, HEIGHT / 25));
+//        newTableHead.setMaximumSize(new Dimension(WIDTH / 9, HEIGHT / 25));
+//
+//        ((DefaultTableCellRenderer) newTableHead.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+//
+//        JScrollPane newTable = new JScrollPane(table);
+//        panel.add(newTable, BorderLayout.CENTER);
+//    }
+
     // MODIFIES: this
     // EFFECT: Take ItemList and set up JTable table
-    private void setUpTables(ItemList itemList, JPanel panel, JTable table) {
-        ItemListModel model = new ItemListModel(itemList);
-        table = new JTable(model);
+    private void setUpTables(ItemListModel itemModel, JPanel panel) {
+        JTable table = new JTable(itemModel);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
         table.getColumnModel().getColumn(0).setPreferredWidth(WIDTH / 9);
@@ -190,7 +228,6 @@ public class StoreAppGUI extends JFrame {
         table.getColumnModel().getColumn(2).setPreferredWidth(WIDTH / 9);
 
         JTableHeader newTableHead = table.getTableHeader();
-//        JTableHeader newTableHead2 = new JTableHeader(new DefaultTableColumnModel());
         newTableHead.setPreferredSize(new Dimension(WIDTH / 9, HEIGHT / 25));
         newTableHead.setMaximumSize(new Dimension(WIDTH / 9, HEIGHT / 25));
 

@@ -292,14 +292,16 @@ public class StoreApp {
         String selectList = inputListString();
         if (selectList.equals("c")) {
             try {
-                cart = (Cart) jsonReaderCart.read(); // Make jsonReaderCart.read() a cart for the time being
+//                cart = (Cart) jsonReaderCart.readInv(); // Make jsonReaderCart.read() a cart for the time being
+                cart = jsonReaderCart.readCart();
                 System.out.println("Loaded " + cart.getName() + " from " + JSON_CART);
             } catch (IOException | NegativeValueException | NotEnoughItemsException e) {
                 System.out.println("Unable to read from file: " + JSON_CART);
             }
         } else {
             try {
-                inventory = (Inventory) jsonReaderInv.read();
+//                inventory = (Inventory) jsonReaderInv.readInv();
+                inventory = jsonReaderInv.readInv();
                 System.out.println("Loaded " + inventory.getName() + " from " + JSON_INV);
             } catch (IOException | NegativeValueException | NotEnoughItemsException e) {
                 System.out.println("Unable to read from file: " + JSON_INV);

@@ -5,6 +5,8 @@ package persistence;
 
 import exceptions.NegativeValueException;
 import exceptions.NotEnoughItemsException;
+import model.Cart;
+import model.Inventory;
 import model.Item;
 
 import java.io.IOException;
@@ -27,10 +29,24 @@ public class JsonReader {
 
     // EFFECTS: Reads ItemList from file and returns it;
     // throws IOException if an error occurs reading data from file
-    public ItemList read() throws IOException, NegativeValueException, NotEnoughItemsException {
+    public Cart readCart() throws IOException, NegativeValueException, NotEnoughItemsException {
+        JSONObject jsonObject = getJson();
+        return parseCart(jsonObject);
+    }
+
+    // EFFECTS: Reads ItemList from file and returns it;
+    // throws IOException if an error occurs reading data from file
+    public Inventory readInv() throws IOException, NegativeValueException, NotEnoughItemsException {
+        JSONObject jsonObject = getJson();
+        return parseInventory(jsonObject);
+    }
+
+    // EFFECTS: Get JSONObject for parse function
+    // throws IOException if an error occurs reading data from file
+    private JSONObject getJson() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
-        return parseItemList(jsonObject);
+        return jsonObject;
     }
 
     // EFFECTS: Reads source file as string and returns it
@@ -44,16 +60,18 @@ public class JsonReader {
         return contentBuilder.toString();
     }
 
-    // EFFECTS: Parses ItemList from JSON object and returns it
-    private ItemList parseItemList(JSONObject jsonObject) throws NegativeValueException, NotEnoughItemsException {
+    // EFFECTS: Parses Inventory from JSON object and returns it
+    private Inventory parseInventory(JSONObject jsonObject) throws NegativeValueException, NotEnoughItemsException {
         String name = jsonObject.getString("name");
-        ItemList inv = new ItemList(name); // CANNOT SAVE
-//        ItemList inv = new Inventory(name);
-        // Exception in thread "main" java.lang.ClassCastException:
-        // class model.ItemList cannot be cast to class model.Cart
-        // (model.ItemList and model.Cart are in unnamed module of loader 'app')
-//        Exception in thread "AWT-EventQueue-0" java.lang.ClassCastException: class model.ItemList cannot be cast to
-//        class model.Inventory (model.ItemList and model.Inventory are in unnamed module of loader 'app')
+        Inventory inv = new Inventory(name); // CANNOT SAVE
+        addItems(inv, jsonObject);
+        return inv;
+    }
+
+    // EFFECTS: Parses Cart from JSON object and returns it
+    private Cart parseCart(JSONObject jsonObject) throws NegativeValueException, NotEnoughItemsException {
+        String name = jsonObject.getString("name");
+        Cart inv = new Cart(name); // CANNOT SAVE
         addItems(inv, jsonObject);
         return inv;
     }

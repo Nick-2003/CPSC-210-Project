@@ -1,8 +1,8 @@
 {
     "name": "Inventory",
     "items": [{
-        "amount": 10,
-        "price": 8,
+        "amount": 3,
+        "price": 3,
         "name": "White Rice"
     }]
 }

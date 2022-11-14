@@ -34,7 +34,7 @@ class JsonWriterTest extends JsonTest {
             writer.close();
 
             JsonReader reader = new JsonReader("./data/testWriterEmptyInventory.json");
-            inv = reader.read();
+            inv = reader.readInv();
             assertEquals("My inventory", inv.getName());
             assertEquals(0, inv.getInternalList().size());
         } catch (IOException e) {
@@ -58,7 +58,7 @@ class JsonWriterTest extends JsonTest {
             writer.close();
 
             JsonReader reader = new JsonReader("./data/testWriterGeneralInventory.json");
-            inv = reader.read();
+            inv = reader.readInv();
             assertEquals("My inventory", inv.getName());
             List<Item> items = inv.getItems();
             assertEquals(2, inv.getInternalList().size());

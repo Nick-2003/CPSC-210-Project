@@ -17,7 +17,7 @@ class JsonReaderTest extends JsonTest {
     void testReaderNonExistentFile() {
         JsonReader reader = new JsonReader("./data/noSuchFile.json");
         try {
-            ItemList inv = reader.read();
+            ItemList inv = reader.readInv();
             fail("IOException expected");
         } catch (IOException e) {
             // pass
@@ -32,7 +32,7 @@ class JsonReaderTest extends JsonTest {
     void testReaderEmptyInventory() {
         JsonReader reader = new JsonReader("./data/testReaderEmptyInventory.json");
         try {
-            ItemList inv = reader.read();
+            ItemList inv = reader.readInv();
             assertEquals("My inventory", inv.getName());
             assertEquals(0, inv.getInternalList().size());
         } catch (IOException e) {
@@ -48,7 +48,7 @@ class JsonReaderTest extends JsonTest {
     void testReaderGeneralWorkRoom() {
         JsonReader reader = new JsonReader("./data/testReaderGeneralInventory.json");
         try {
-            ItemList inv = reader.read();
+            ItemList inv = reader.readInv();
             assertEquals("My inventory", inv.getName());
             List<Item> items = inv.getItems();
             assertEquals(2, inv.getInternalList().size());

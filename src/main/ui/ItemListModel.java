@@ -13,7 +13,7 @@ import static ui.StoreAppGUI.setUpArray;
 
 public class ItemListModel extends DefaultTableModel {
 
-//    private ArrayList<Item> internalList;
+    //    private ArrayList<Item> internalList;
     private ItemList itemList;
     private static String[] columnNames = {"Name", "Quantity", "Price"};
 
@@ -67,5 +67,9 @@ public class ItemListModel extends DefaultTableModel {
             }
         }
         return -1;
+    }
+
+    public ItemList getItemList() {
+        return this.itemList;
     }
 }

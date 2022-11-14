@@ -60,26 +60,27 @@ public class LoadTool extends Tool {
             if (selectList.equals("Cart")) {
                 try {
 //                    cart = (Cart) jsonReaderCart.read(); // Make jsonReaderCart.read() a cart for the time being
-                    cart = (Cart) jsonReaderCart.read();
+//                    cart = (Cart) jsonReaderCart.readInv();
+                    cart = jsonReaderCart.readCart();
                     // UPDATE TABLE HERE
-                    System.out.println("Loaded " + cart.getName() + " from " + JSON_CART);
                     showMessageDialog(null, "Loaded " + cart.getName() + " from " + JSON_CART,
                             "Load successful", INFORMATION_MESSAGE);
-                } catch (IOException | NegativeValueException | NotEnoughItemsException e) {
+                } catch (IOException | NegativeValueException | NotEnoughItemsException | RuntimeException e) {
                     System.out.println("Unable to read from file: " + JSON_CART);
-                    showMessageDialog(null, "Unable to read from file: " + JSON_CART,
+                    showMessageDialog(null, new JLabel("<html><p>Unable to read from file: "
+                                    + JSON_CART + "</p> <p>Error: " + e + "</p> </html>"),
                             "Error occurred", ERROR_MESSAGE);
                 }
             } else if (selectList.equals("Inventory")) {
                 try {
-                    inventory = (Inventory) jsonReaderInv.read();
+                    inventory = jsonReaderInv.readInv();
                     // UPDATE TABLE HERE
-                    System.out.println("Loaded " + inventory.getName() + " from " + JSON_INV);
                     showMessageDialog(null, "Loaded " + inventory.getName() + " from " + JSON_INV,
                             "Load successful", INFORMATION_MESSAGE);
-                } catch (IOException | NegativeValueException | NotEnoughItemsException e) {
+                } catch (IOException | NegativeValueException | NotEnoughItemsException | RuntimeException e) {
                     System.out.println("Unable to read from file: " + JSON_INV);
-                    showMessageDialog(null, "Unable to read from file: " + JSON_INV,
+                    showMessageDialog(null, new JLabel("<html><p>Unable to read from file: "
+                                    + JSON_INV + "</p> <p>Error: " + e + "</p> </html>"),
                             "Error occurred", ERROR_MESSAGE);
                 }
             }
