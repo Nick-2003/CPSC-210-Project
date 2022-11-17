@@ -4,8 +4,8 @@ import exceptions.NegativeValueException;
 import exceptions.NotEnoughItemsException;
 import model.Item;
 import persistence.JsonReader;
-import ui.CartModel;
-import ui.InventoryModel;
+import ui.model.CartModel;
+import ui.model.InventoryModel;
 import ui.StoreAppGUI;
 
 import javax.swing.*;
@@ -23,18 +23,14 @@ public class LoadTool extends Tool {
     private CartModel cart;
     private JsonReader jsonReaderInv;
     private JsonReader jsonReaderCart;
-    private JPanel inventoryPanel;
-    private JPanel cartPanel;
 
     public LoadTool(StoreAppGUI store, JComponent parent, InventoryModel inventoryStore, CartModel cartStore,
-                    JsonReader jsonReaderInv, JsonReader jsonReaderCart, JPanel inventoryPanel, JPanel cartPanel) {
+                    JsonReader jsonReaderInv, JsonReader jsonReaderCart) {
         super(store, parent);
         this.inventory = inventoryStore;
         this.cart = cartStore;
         this.jsonReaderInv = jsonReaderInv;
         this.jsonReaderCart = jsonReaderCart;
-        this.inventoryPanel = inventoryPanel;
-        this.cartPanel = cartPanel;
     }
 
     // MODIFIES: this
@@ -51,6 +47,7 @@ public class LoadTool extends Tool {
             super(name); // Button for AbstractAction is now named "Move to Cart"
         }
 
+        // EFFECTS: Runs button action
         public void actionPerformed(ActionEvent a) {
             String[] selectionValues = {"Inventory", "Cart"};
             String initialSelection = "Inventory";
@@ -96,6 +93,7 @@ public class LoadTool extends Tool {
         } // SHOULD UPDATE TABLE ACCORDINGLY
     }
 
+    // EFFECTS: Print item message
     private void loadItemListMessage(String cart, String jsonCart) {
         showMessageDialog(null, "Loaded " + cart + " from " + jsonCart, "Load successful",
                 INFORMATION_MESSAGE);

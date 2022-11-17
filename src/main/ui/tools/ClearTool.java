@@ -1,7 +1,7 @@
 package ui.tools;
 
-import ui.CartModel;
-import ui.InventoryModel;
+import ui.model.CartModel;
+import ui.model.InventoryModel;
 import ui.StoreAppGUI;
 
 import javax.swing.*;
@@ -46,7 +46,7 @@ public class ClearTool extends Tool {
             }
         }
 
-        // MODIFIES: this, cart, inventory
+        // MODIFIES: this
         // EFFECTS: Clear current ItemList
         private void clearItemList(String selectList) {
             if (selectList.equals("Cart")) {

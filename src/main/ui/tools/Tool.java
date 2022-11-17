@@ -1,3 +1,6 @@
+// https://github.students.cs.ubc.ca/CPSC210/SimpleDrawingPlayer-Starter.git
+// Based on SimpleDrawingPlayer-Starter example for CPSC 210; used as reference for buttons in system
+
 package ui.tools;
 
 import ui.StoreAppGUI;
@@ -42,6 +45,7 @@ public abstract class Tool {
             super(name);
         }
 
+        // EFFECTS: Runs button action
         public abstract void actionPerformed(ActionEvent a);
 
 //        // MODIFIES: this, parent

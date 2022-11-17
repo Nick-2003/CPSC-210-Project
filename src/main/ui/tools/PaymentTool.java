@@ -4,7 +4,7 @@
 package ui.tools;
 
 import model.Cart;
-import ui.ItemListModel;
+import ui.model.ItemListModel;
 import ui.StoreAppGUI;
 
 import javax.swing.*;

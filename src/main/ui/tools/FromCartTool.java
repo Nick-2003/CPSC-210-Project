@@ -3,8 +3,8 @@ package ui.tools;
 import exceptions.NegativeValueException;
 import exceptions.NotEnoughItemsException;
 import model.Item;
-import ui.CartModel;
-import ui.InventoryModel;
+import ui.model.CartModel;
+import ui.model.InventoryModel;
 import ui.StoreAppGUI;
 
 import javax.swing.*;
@@ -88,6 +88,6 @@ public class FromCartTool extends Tool {
                 showMessageDialog(null, "Not enough " + itemName + " in Cart",
                         "Transfer failed", ERROR_MESSAGE);
             }
-        } // SHOULD UPDATE TABLE ACCORDINGLY
+        }
     }
 }

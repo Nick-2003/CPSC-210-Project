@@ -1,4 +1,4 @@
-package ui;
+package ui.model;
 
 import exceptions.NegativeValueException;
 import model.Inventory;
@@ -13,6 +13,9 @@ public class InventoryModel extends ItemListModel {
         this.itemList = (Inventory) itemList;
     }
 
+    // REQUIRES: name is present in ItemList, price >= 0
+    // MODIFIES: this, Item
+    // EFFECTS: Change price of Item of given name
     public void setNamedPrice(String name, double price) throws NegativeValueException {
         if (this.itemList.getNamed(name)) {
             this.itemList.setNamedPrice(name, price);
@@ -20,6 +23,7 @@ public class InventoryModel extends ItemListModel {
         }
     }
 
+    // EFFECTS: Return Inventory associated with InventoryModel
     @Override
     public Inventory getItemList() {
         return this.itemList;

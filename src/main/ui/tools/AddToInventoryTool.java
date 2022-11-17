@@ -3,7 +3,7 @@ package ui.tools;
 import exceptions.NegativeValueException;
 import exceptions.NotEnoughItemsException;
 import model.Item;
-import ui.InventoryModel;
+import ui.model.InventoryModel;
 import ui.StoreAppGUI;
 
 import javax.swing.*;

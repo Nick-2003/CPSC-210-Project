@@ -1,4 +1,4 @@
-package ui;
+package ui.model;
 
 import model.Cart;
 import model.ItemList;
@@ -12,6 +12,7 @@ public class CartModel extends ItemListModel {
         this.itemList = (Cart) itemList;
     }
 
+    // EFFECTS: Return Cart associated with CartModel
     @Override
     public Cart getItemList() {
         return this.itemList;

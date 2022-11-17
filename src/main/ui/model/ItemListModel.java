@@ -1,7 +1,7 @@
 // https://tips4java.wordpress.com/2008/11/21/row-table-model/
 // Used as reference for model creation
 
-package ui;
+package ui.model;
 
 import exceptions.NotEnoughItemsException;
 import model.Item;
@@ -52,6 +52,7 @@ public class ItemListModel extends DefaultTableModel {
         return result;
     }
 
+    // EFFECTS: Return ItemList associated with ItemListModel
     public ItemList getItemList() {
         return this.itemList;
     }
@@ -62,11 +63,6 @@ public class ItemListModel extends DefaultTableModel {
         this.itemList.clear();
         setRowCount(0);
     }
-
-//    public void setTableData(ItemList itemList) {
-//        this.itemList = itemList;
-//        fireTableDataChanged();
-//    }
 
     // EFFECT: Get the row number of the Item with itemName
     private int getRowByName(Item item) {

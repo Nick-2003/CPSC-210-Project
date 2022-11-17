@@ -12,6 +12,9 @@ import model.Inventory;
 import model.Item;
 import persistence.JsonReader;
 import persistence.JsonWriter;
+import ui.model.CartModel;
+import ui.model.InventoryModel;
+import ui.model.ItemListModel;
 import ui.tools.*;
 
 import javax.swing.*;
@@ -36,6 +39,7 @@ public class StoreAppGUI extends JFrame {
     private JPanel buttonPanel3;
     private JPanel cartPanel;
     private JPanel inventoryPanel;
+    private JPanel imagePanel;
 
     private CartModel cartModel;
     private InventoryModel inventoryModel;
@@ -53,18 +57,19 @@ public class StoreAppGUI extends JFrame {
         this.buttonPanel3 = new JPanel();
         this.cartPanel = new JPanel();
         this.inventoryPanel = new JPanel();
+        this.imagePanel = new JPanel();
 
         this.cartModel = new CartModel(new Cart("Cart"));
         this.inventoryModel = new InventoryModel(new Inventory("Inventory"));
 
-        try {
-            this.inventoryModel.putIntoList(new Item("White Rice", 10, 8.00));
-//            for (int i = 0; i < 30; i++) {
-//                this.inventoryModel.putIntoList(new Item("" + i + "", i + 1, 8.00));
-//            }
-        } catch (NegativeValueException | NotEnoughItemsException e) {
-            throw new RuntimeException(e);
-        } // FOR TESTING PURPOSES // ONLY SHOWS BEFORE SETTING UP MODELS, DOES NOT ACTUALLY SAVE ANYTHING
+//        try {
+//            this.inventoryModel.putIntoList(new Item("White Rice", 10, 8.00));
+////            for (int i = 0; i < 30; i++) {
+////                this.inventoryModel.putIntoList(new Item("" + i + "", i + 1, 8.00));
+////            }
+//        } catch (NegativeValueException | NotEnoughItemsException e) {
+//            throw new RuntimeException(e);
+//        } // FOR TESTING PURPOSES // ONLY SHOWS BEFORE SETTING UP MODELS, DOES NOT ACTUALLY SAVE ANYTHING
 
         this.jsonWriterInv = new JsonWriter(JSON_INV);
         this.jsonReaderInv = new JsonReader(JSON_INV);
@@ -95,6 +100,8 @@ public class StoreAppGUI extends JFrame {
         panelSetup(this.buttonPanel1, "Functions for Cart", 0, 0, true);
         panelSetup(this.buttonPanel2, "Functions for Inventory", 0, 1, true);
         panelSetup(this.buttonPanel3, "Functions for Store", 0, 2, true);
+        panelSetup(this.imagePanel, "", 0, 3, true);
+
         panelSetup(this.cartPanel, "Cart List", 1, 0, false);
         panelSetup(this.inventoryPanel, "Inventory List", 2, 0, false);
 
@@ -102,6 +109,16 @@ public class StoreAppGUI extends JFrame {
         setUpTables(this.cartModel, this.cartPanel);
 
         toolSetUp();
+
+        this.imagePanel.setLayout(new FlowLayout());
+        ImageIcon myPicture = new ImageIcon("263142.png");
+        Image image = myPicture.getImage(); // transform it
+        Image newImg = image.getScaledInstance(WIDTH / 9, HEIGHT / 6,  java.awt.Image.SCALE_SMOOTH);
+        myPicture = new ImageIcon(newImg);
+        JLabel picLabel = new JLabel(myPicture);
+        picLabel.setVerticalAlignment(SwingConstants.CENTER);
+        picLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        this.imagePanel.add(picLabel);
     }
 
     // MODIFIES: this
@@ -119,7 +136,7 @@ public class StoreAppGUI extends JFrame {
         SaveTool saveTool = new SaveTool(this, this.buttonPanel3, this.inventoryModel, this.cartModel,
                 this.jsonWriterInv, this.jsonWriterCart);
         LoadTool loadTool = new LoadTool(this, this.buttonPanel3, this.inventoryModel, this.cartModel,
-                this.jsonReaderInv, this.jsonReaderCart, this.inventoryPanel, this.cartPanel);
+                this.jsonReaderInv, this.jsonReaderCart);
         ClearTool clearTool = new ClearTool(this, this.buttonPanel3, this.inventoryModel, this.cartModel);
     }
 
@@ -129,8 +146,8 @@ public class StoreAppGUI extends JFrame {
         Border br = BorderFactory.createLineBorder(Color.black);
         if (split) {
             panel.setLayout(new GridLayout(0,1));
-            panel.setBounds((WIDTH * partWidth / 3) + GAP / 2, GAP / 2 + (HEIGHT * partHeight / 3),
-                    (WIDTH / 3) - GAP,HEIGHT / 3 - GAP * 5);
+            panel.setBounds((WIDTH * partWidth / 3) + GAP / 2, GAP / 2 + (HEIGHT * partHeight / 4),
+                    (WIDTH / 3) - GAP,HEIGHT / 4 - GAP * 5);
         } else {
             panel.setLayout(new FlowLayout());
             panel.setBounds((WIDTH * partWidth / 3) + GAP / 2, GAP / 2 + (HEIGHT * partHeight / 3),
@@ -180,7 +197,7 @@ public class StoreAppGUI extends JFrame {
         panel.add(newTable, BorderLayout.CENTER);
     }
 
-    //main method
+    // EFFECT: Start system
     public static void main(String[] args) {
         new StoreAppGUI();
     }

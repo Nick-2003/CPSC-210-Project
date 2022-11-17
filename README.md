@@ -42,8 +42,7 @@ certain amount
   1. Click on the "Move to Cart" button in the top panel on the left side of the screen
   2. Input the name and quantity of the Item(s) to be transferred
   3. Redo the inputs accordingly for the Item to be transferred if an ERROR_MESSAGE pops up; otherwise, close the message
-- You can locate my visual component on the right side of the screen, with the Cart list in the center panel and 
-Inventory list in the right panel
+- You can locate my visual component (a cart image) in the bottom left corner of the screen
 - You can save the state of my application by the following steps:
   1. Click on the "Save Item List" button
   2. Select the ItemList to be saved (Inventory or Cart)

@@ -1,8 +1,8 @@
 package ui.tools;
 
 import persistence.JsonWriter;
-import ui.CartModel;
-import ui.InventoryModel;
+import ui.model.CartModel;
+import ui.model.InventoryModel;
 import ui.StoreAppGUI;
 
 import javax.swing.*;
@@ -45,6 +45,7 @@ public class SaveTool extends Tool {
             super(name); // Button for AbstractAction is now named "Move to Cart"
         }
 
+        // EFFECTS: Runs button action
         public void actionPerformed(ActionEvent a) {
             String[] selectionValues = { "Cart", "Inventory"};
             String initialSelection = "Inventory";
