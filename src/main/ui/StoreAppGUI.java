@@ -1,12 +1,15 @@
 // https://github.students.cs.ubc.ca/CPSC210/AlarmSystem
 // Based on AlarmSystem example for CPSC 210; used as reference for JFrame
+
 // https://github.students.cs.ubc.ca/CPSC210/SimpleDrawingPlayer-Starter.git
 // Based on SimpleDrawingPlayer-Starter example for CPSC 210; used as reference for JFrame
 
+// https://stackoverflow.com/questions/36395762/how-can-i-display-an-image-in-a-jpanel
+// https://stackoverflow.com/questions/6714045/how-to-resize-jlabel-imageicon
+// Used as reference on displaying visual component
+
 package ui;
 
-import exceptions.NegativeValueException;
-import exceptions.NotEnoughItemsException;
 import model.Cart;
 import model.Inventory;
 import model.Item;
