@@ -2,9 +2,10 @@ package ui.tools;
 
 import exceptions.NegativeValueException;
 import exceptions.NotEnoughItemsException;
-import model.Cart;
-import model.Inventory;
+import model.Item;
 import persistence.JsonReader;
+import ui.CartModel;
+import ui.InventoryModel;
 import ui.StoreAppGUI;
 
 import javax.swing.*;
@@ -18,18 +19,22 @@ import static ui.StoreAppGUI.JSON_INV;
 
 public class LoadTool extends Tool {
 
-    private Inventory inventory;
-    private Cart cart;
+    private InventoryModel inventory;
+    private CartModel cart;
     private JsonReader jsonReaderInv;
     private JsonReader jsonReaderCart;
+    private JPanel inventoryPanel;
+    private JPanel cartPanel;
 
-    public LoadTool(StoreAppGUI store, JComponent parent, Inventory inventoryStore, Cart cartStore,
-                    JsonReader jsonReaderInv, JsonReader jsonReaderCart) {
+    public LoadTool(StoreAppGUI store, JComponent parent, InventoryModel inventoryStore, CartModel cartStore,
+                    JsonReader jsonReaderInv, JsonReader jsonReaderCart, JPanel inventoryPanel, JPanel cartPanel) {
         super(store, parent);
         this.inventory = inventoryStore;
         this.cart = cartStore;
         this.jsonReaderInv = jsonReaderInv;
         this.jsonReaderCart = jsonReaderCart;
+        this.inventoryPanel = inventoryPanel;
+        this.cartPanel = cartPanel;
     }
 
     // MODIFIES: this
@@ -49,41 +54,50 @@ public class LoadTool extends Tool {
         public void actionPerformed(ActionEvent a) {
             String[] selectionValues = {"Inventory", "Cart"};
             String initialSelection = "Inventory";
-            Object selectList = showInputDialog(null, "Select an ItemList to save: ",
+            Object selectList = showInputDialog(null, "Select an ItemList to load: ",
                     "Select ItemList", QUESTION_MESSAGE, null, selectionValues, initialSelection);
-            loadItemList((String) selectList);
-        } // Modify to change table accordingly
+            if (selectList != null) {
+                loadItemList((String) selectList);
+            }
+        }
 
         // MODIFIES: this
-        // EFFECTS: loads ItemList from file
+        // EFFECTS: Loads ItemList from file
         private void loadItemList(String selectList) {
             if (selectList.equals("Cart")) {
                 try {
-//                    cart = (Cart) jsonReaderCart.read(); // Make jsonReaderCart.read() a cart for the time being
-//                    cart = (Cart) jsonReaderCart.readInv();
-                    cart = jsonReaderCart.readCart();
-                    // UPDATE TABLE HERE
-                    showMessageDialog(null, "Loaded " + cart.getName() + " from " + JSON_CART,
-                            "Load successful", INFORMATION_MESSAGE);
+//                    cart = new CartModel(jsonReaderCart.readCart()); // Replace list
+//                    store.setUpTables(cart, cartPanel);
+                    cart.clear();
+                    for (Item i: jsonReaderCart.readCart().getInternalList()) {
+                        cart.putIntoList(i);
+                    }
+                    loadItemListMessage(cart.getItemList().getName(), JSON_CART);
                 } catch (IOException | NegativeValueException | NotEnoughItemsException | RuntimeException e) {
-                    System.out.println("Unable to read from file: " + JSON_CART);
-                    showMessageDialog(null, new JLabel("<html><p>Unable to read from file: "
-                                    + JSON_CART + "</p> <p>Error: " + e + "</p> </html>"),
-                            "Error occurred", ERROR_MESSAGE);
+                    showMessageDialog(null, new JLabel("<html><p>Unable to read from file: " + JSON_CART
+                            + "</p> <p>Error: " + e + "</p> </html>"), "Error occurred", ERROR_MESSAGE);
                 }
             } else if (selectList.equals("Inventory")) {
                 try {
-                    inventory = jsonReaderInv.readInv();
-                    // UPDATE TABLE HERE
-                    showMessageDialog(null, "Loaded " + inventory.getName() + " from " + JSON_INV,
-                            "Load successful", INFORMATION_MESSAGE);
+//                    inventory = new InventoryModel(jsonReaderInv.readInv()); // Original does not change here
+//                    System.out.println(inventory.getItemList().getInternalList().size());
+//                    store.setUpTables(inventory, inventoryPanel);
+//                    inventory.setTableData(jsonReaderInv.readInv());
+                    inventory.clear();
+                    for (Item i: jsonReaderInv.readInv().getInternalList()) {
+                        inventory.putIntoList(i);
+                    }
+                    loadItemListMessage(inventory.getItemList().getName(), JSON_INV);
                 } catch (IOException | NegativeValueException | NotEnoughItemsException | RuntimeException e) {
-                    System.out.println("Unable to read from file: " + JSON_INV);
-                    showMessageDialog(null, new JLabel("<html><p>Unable to read from file: "
-                                    + JSON_INV + "</p> <p>Error: " + e + "</p> </html>"),
-                            "Error occurred", ERROR_MESSAGE);
+                    showMessageDialog(null, new JLabel("<html><p>Unable to read from file: " + JSON_INV
+                            + "</p> <p>Error: " + e + "</p> </html>"), "Error occurred", ERROR_MESSAGE);
                 }
             }
         } // SHOULD UPDATE TABLE ACCORDINGLY
+    }
+
+    private void loadItemListMessage(String cart, String jsonCart) {
+        showMessageDialog(null, "Loaded " + cart + " from " + jsonCart, "Load successful",
+                INFORMATION_MESSAGE);
     }
 }

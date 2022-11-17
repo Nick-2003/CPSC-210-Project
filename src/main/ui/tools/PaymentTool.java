@@ -38,17 +38,16 @@ public class PaymentTool extends Tool {
     private class ToolAction extends Tool.ToolAction {
 
         public ToolAction(String name) {
-            super(name); // Button for AbstractAction is now named "Move to Cart"
+            super(name);
         }
 
+        // EFFECTS: Runs button action
         public void actionPerformed(ActionEvent a) {
             payment();
-        } // Modify to change table accordingly
+        }
 
         // EFFECTS: Save ItemList to file
         private void payment() {
-//            String[][] itemArray = setUpArray(cart.getInternalList());
-//            DefaultTableModel model = new DefaultTableModel(itemArray, new String[]{"Name", "Quantity", "Price"});
             ItemListModel model = new ItemListModel(cart);
             JTable table = new JTable(model);
             JScrollPane newTable = new JScrollPane(table);
@@ -56,7 +55,6 @@ public class PaymentTool extends Tool {
 
             panel.add(newTable, BorderLayout.CENTER);
             panel.add(newTableHead, BorderLayout.CENTER);
-//            showMessageDialog(null, table, "Cart Items", INFORMATION_MESSAGE);
             showMessageDialog(null, panel, "Cart Items", INFORMATION_MESSAGE);
             showMessageDialog(null, new JLabel("<html><p>Payment: </p> <p>Total cost of items: $"
                     + cart.totalPrice() + "</p> <p>Tax: $" + cart.tax() + "</p> <p>Final Cost: $" + cart.finalPrice()

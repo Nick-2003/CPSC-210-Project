@@ -15,7 +15,6 @@ public class Cart extends ItemList {
     // EFFECTS: Creates new empty Cart
     public Cart(String name) {
         super(name); // Constructor for ItemList
-//        this.internalList = new ArrayList<Item>();
     }
 
     // REQUIRES: ItemList is non-empty

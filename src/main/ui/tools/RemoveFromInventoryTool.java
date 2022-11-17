@@ -2,8 +2,8 @@ package ui.tools;
 
 import exceptions.NegativeValueException;
 import exceptions.NotEnoughItemsException;
-import model.Inventory;
 import model.Item;
+import ui.InventoryModel;
 import ui.StoreAppGUI;
 
 import javax.swing.*;
@@ -15,14 +15,11 @@ import static javax.swing.JOptionPane.*;
 
 public class RemoveFromInventoryTool extends Tool {
 
-    private Inventory inventory;
-    private JTable inventoryTable;
+    private InventoryModel inventory;
 
-    public RemoveFromInventoryTool(StoreAppGUI store, JComponent parent, Inventory inventoryStore,
-                                   JTable inventoryTable) {
+    public RemoveFromInventoryTool(StoreAppGUI store, JComponent parent, InventoryModel inventoryStore) {
         super(store, parent);
         this.inventory = inventoryStore;
-        this.inventoryTable = inventoryTable;
     }
 
     // MODIFIES: this
@@ -39,39 +36,38 @@ public class RemoveFromInventoryTool extends Tool {
             super(name); // Button for AbstractAction is now named "Move to Cart"
         }
 
+        // EFFECTS: Runs button action
         public void actionPerformed(ActionEvent a) {
-            String itemName = null;
-            int itemQuantity = 0;
-            double itemPriceInput = 0;
-
+            String itemName;
+            int itemQuantity;
+            double itemPriceInput;
             JTextField name = new JTextField();
             JTextField quantity = new JTextField();
             JTextField price = new JTextField();
-            Object[] message = {
-                    "Name:", name,
-                    "Quantity:", quantity,
-                    "Price:", price
-            };
-            int option = showConfirmDialog(null, message, "Enter Item",
-                    OK_CANCEL_OPTION);
+            Object[] message = {"Name:", name, "Quantity:", quantity, "Price:", price};
+            int option = showConfirmDialog(null, message, "Enter Item", OK_CANCEL_OPTION);
             if (option == OK_OPTION) {
                 itemName = name.getText();
-                itemQuantity = Integer.parseInt(quantity.getText());
-                itemPriceInput = BigDecimal.valueOf(Double.parseDouble(price.getText()))
-                        .setScale(2, RoundingMode.HALF_UP).doubleValue();
+                try {
+                    itemQuantity = Integer.parseInt(quantity.getText());
+                    itemPriceInput = BigDecimal.valueOf(Double.parseDouble(price.getText()))
+                            .setScale(2, RoundingMode.HALF_UP).doubleValue();
+                    removeFromInventory(itemName, itemQuantity, itemPriceInput);
+                } catch (NumberFormatException e) {
+                    showMessageDialog(null, new JLabel("Entry is blank"), "Entry is blank", INFORMATION_MESSAGE);
+                }
             } else {
-                System.out.println("Entry canceled");
+                showMessageDialog(null, new JLabel("Entry canceled"), "Entry canceled", INFORMATION_MESSAGE);
             }
-            removeFromInventory(itemName, itemQuantity, itemPriceInput);
-        } // Modify to change table accordingly
+        }
 
         // REQUIRES: Inventory contains required Item
-        // MODIFIES: this, store
+        // MODIFIES: this
         // EFFECTS: Move Item from Inventory to Cart
         private void removeFromInventory(String itemName, int itemQuantity, double itemPriceInput) {
             double itemPrice;
-            if (inventory.getNamedAmount(itemName) > 0) {
-                itemPrice = inventory.getNamedPrice(itemName);
+            if (inventory.getItemList().getNamedAmount(itemName) > 0) {
+                itemPrice = inventory.getItemList().getNamedPrice(itemName);
             } else {
                 itemPrice = itemPriceInput;
             }
@@ -81,11 +77,11 @@ public class RemoveFromInventoryTool extends Tool {
                     showMessageDialog(null, new JLabel("<html><p>Name: " + itemName
                             + "</p> <p>Quantity: " + itemQuantity + "</p> <p>Price: $" + itemPrice + "</p> </html>"),
                             "Removed Item(s)", INFORMATION_MESSAGE);
-                    // UPDATE TABLE ACCORDINGLY HERE
                 } else {
-                    System.out.print("\n " + itemName + " is not in Inventory \n");
+                    showMessageDialog(null, itemName + " is not in Inventory ",
+                            "Transfer failed", ERROR_MESSAGE);
                 }
-                modifyTable(inventory, inventoryTable);
+//                modifyTable(inventory, inventoryTable);
             } catch (NegativeValueException e) {
                 showMessageDialog(null, "Quantity or price (or both) for input " + itemName
                         + " is negative; request is invalid", "NegativeValueException", ERROR_MESSAGE);

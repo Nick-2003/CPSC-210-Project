@@ -1,7 +1,7 @@
 package ui.tools;
 
 import exceptions.NegativeValueException;
-import model.Inventory;
+import ui.InventoryModel;
 import ui.StoreAppGUI;
 
 import javax.swing.*;
@@ -13,14 +13,11 @@ import static javax.swing.JOptionPane.*;
 
 public class SetPriceTool extends Tool {
 
-    private Inventory inventory;
-    private JTable inventoryTable;
+    private InventoryModel inventory;
 
-    public SetPriceTool(StoreAppGUI store, JComponent parent, Inventory inventoryStore,
-                        JTable inventoryTable) {
+    public SetPriceTool(StoreAppGUI store, JComponent parent, InventoryModel inventoryStore) {
         super(store, parent);
         this.inventory = inventoryStore;
-        this.inventoryTable = inventoryTable;
     }
 
     // MODIFIES: this
@@ -37,27 +34,29 @@ public class SetPriceTool extends Tool {
             super(name); // Button for AbstractAction is now named "Move to Cart"
         }
 
+        // EFFECTS: Runs button action
         public void actionPerformed(ActionEvent a) {
-            String itemName = null;
-            double itemPriceInput = 0;
+            String itemName;
+            double itemPriceInput;
 
             JTextField name = new JTextField();
             JTextField price = new JTextField();
-            Object[] message = {
-                    "Name:", name,
-                    "Price:", price
-            };
+            Object[] message = {"Name:", name, "Price:", price};
             int option = showConfirmDialog(null, message, "Enter Item",
                     OK_CANCEL_OPTION);
             if (option == OK_OPTION) {
                 itemName = name.getText();
-                itemPriceInput = BigDecimal.valueOf(Double.parseDouble(price.getText()))
-                        .setScale(2, RoundingMode.HALF_UP).doubleValue();
+                try {
+                    itemPriceInput = BigDecimal.valueOf(Double.parseDouble(price.getText()))
+                            .setScale(2, RoundingMode.HALF_UP).doubleValue();
+                    setInventoryItemPrice(itemName, itemPriceInput);
+                } catch (NumberFormatException e) {
+                    showMessageDialog(null, new JLabel("Entry is blank"), "Entry is blank", INFORMATION_MESSAGE);
+                }
             } else {
-                System.out.println("Entry canceled");
+                showMessageDialog(null, new JLabel("Entry canceled"), "Entry canceled", INFORMATION_MESSAGE);
             }
-            setInventoryItemPrice(itemName, itemPriceInput);
-        } // Modify to change table accordingly
+        }
 
         // REQUIRES: Item is in Inventory
         // MODIFIES: this, Item
@@ -65,14 +64,10 @@ public class SetPriceTool extends Tool {
         private void setInventoryItemPrice(String itemName, double itemPriceInput) {
             try {
                 inventory.setNamedPrice(itemName, itemPriceInput);
-                modifyTable(inventory, inventoryTable);
-                // SHOULD UPDATE TABLE ACCORDINGLY
-                System.out.print("New item price: $" + itemPriceInput + "\n");
                 showMessageDialog(null, new JLabel("<html><p>New item price: </p> <p>Name: "
-                        + itemName + "</p> <p>Price: " + itemPriceInput + "</p> </html>"),
+                        + itemName + "</p> <p>Price: $" + itemPriceInput + "</p> </html>"),
                         "Set price successful", INFORMATION_MESSAGE);
             } catch (NegativeValueException e) {
-                System.out.print("Price for input " + itemName + " is negative; request is invalid");
                 showMessageDialog(null, "Price for input " + itemName
                         + " is negative; request is invalid", "Transfer failed", ERROR_MESSAGE);
             }

@@ -2,8 +2,8 @@ package ui.tools;
 
 import exceptions.NegativeValueException;
 import exceptions.NotEnoughItemsException;
-import model.Inventory;
 import model.Item;
+import ui.InventoryModel;
 import ui.StoreAppGUI;
 
 import javax.swing.*;
@@ -15,13 +15,11 @@ import static javax.swing.JOptionPane.*;
 
 public class AddToInventoryTool extends Tool {
 
-    private Inventory inventory;
-    private JTable inventoryTable;
+    private InventoryModel inventory;
 
-    public AddToInventoryTool(StoreAppGUI store, JComponent parent, Inventory inventoryStore, JTable inventoryTable) {
+    public AddToInventoryTool(StoreAppGUI store, JComponent parent, InventoryModel inventoryStore) {
         super(store, parent);
         this.inventory = inventoryStore;
-        this.inventoryTable = inventoryTable;
     }
 
     // MODIFIES: this
@@ -35,41 +33,40 @@ public class AddToInventoryTool extends Tool {
     private class ToolAction extends Tool.ToolAction {
 
         public ToolAction(String name) {
-            super(name); // Button for AbstractAction is now named "Move to Cart"
+            super(name);
         }
 
+        // EFFECTS: Runs button action
         public void actionPerformed(ActionEvent a) {
-            String itemName = null;
-            int itemQuantity = 0;
-            double itemPriceInput = 0;
-
+            String itemName;
+            int itemQuantity;
+            double itemPriceInput;
             JTextField name = new JTextField();
             JTextField quantity = new JTextField();
             JTextField price = new JTextField();
-            Object[] message = {
-                    "Name:", name,
-                    "Quantity:", quantity,
-                    "Price:", price
-            };
-            int option = JOptionPane.showConfirmDialog(null, message, "Enter Item",
-                    JOptionPane.OK_CANCEL_OPTION);
-            if (option == JOptionPane.OK_OPTION) {
+            Object[] message = {"Name:", name, "Quantity:", quantity, "Price:", price};
+            int option = showConfirmDialog(null, message, "Enter Item", OK_CANCEL_OPTION);
+            if (option == OK_OPTION) {
                 itemName = name.getText();
-                itemQuantity = Integer.parseInt(quantity.getText());
-                itemPriceInput = BigDecimal.valueOf(Double.parseDouble(price.getText()))
-                        .setScale(2, RoundingMode.HALF_UP).doubleValue();
+                try {
+                    itemQuantity = Integer.parseInt(quantity.getText());
+                    itemPriceInput = BigDecimal.valueOf(Double.parseDouble(price.getText()))
+                            .setScale(2, RoundingMode.HALF_UP).doubleValue();
+                    addToInventory(itemName, itemQuantity, itemPriceInput);
+                } catch (NumberFormatException e) {
+                    showMessageDialog(null, new JLabel("Entry is blank"), "Entry is blank", INFORMATION_MESSAGE);
+                }
             } else {
-                System.out.println("Entry canceled");
+                showMessageDialog(null, new JLabel("Entry canceled"), "Entry canceled", INFORMATION_MESSAGE);
             }
-            addToInventory(itemName, itemQuantity, itemPriceInput);
-        } // Modify to change table accordingly
+        }
 
-        // MODIFIES: this, Item
+        // MODIFIES: this
         // EFFECTS: Add Item with given inputs to Inventory; if Item exists, take existing price
         private void addToInventory(String itemName, int itemQuantity, double itemPriceInput) {
             double itemPrice;
-            if (inventory.getNamedAmount(itemName) > 0) {
-                itemPrice = inventory.getNamedPrice(itemName);
+            if (inventory.getItemList().getNamedAmount(itemName) > 0) {
+                itemPrice = inventory.getItemList().getNamedPrice(itemName);
             } else {
                 itemPrice = itemPriceInput;
             }
@@ -80,8 +77,6 @@ public class AddToInventoryTool extends Tool {
                 showMessageDialog(null, new JLabel("<html><p>Name: " + itemName
                                 + "</p> <p>Quantity: " + itemQuantity + "</p> <p>Price: $" + itemPrice
                         + "</p> </html>"), "Added Item(s)", INFORMATION_MESSAGE);
-                // UPDATE TABLE ACCORDINGLY HERE
-                modifyTable(inventory, inventoryTable);
             } catch (NegativeValueException e) {
                 showMessageDialog(null, "Quantity or price (or both) for input " + itemName
                         + " is negative; request is invalid", "NegativeValueException", ERROR_MESSAGE);

@@ -1,4 +1,8 @@
 {
     "name": "Cart",
-    "items": []
+    "items": [{
+        "amount": 5,
+        "price": 8,
+        "name": "White Rice"
+    }]
 }

@@ -14,7 +14,7 @@ import static ui.StoreAppGUI.setUpArray;
 public class ItemListModel extends DefaultTableModel {
 
     //    private ArrayList<Item> internalList;
-    private ItemList itemList;
+    protected ItemList itemList;
     private static String[] columnNames = {"Name", "Quantity", "Price"};
 
     public ItemListModel(ItemList itemList) {
@@ -24,27 +24,49 @@ public class ItemListModel extends DefaultTableModel {
 
     // MODIFIES: this
     // EFFECT: If item is already in itemList, update ItemListModel table, otherwise insert into end of table
-    public void addItem(Item item) throws NotEnoughItemsException {
+    public void putIntoList(Item item) throws NotEnoughItemsException {
         if (this.itemList.getNamed(item.getName())) {
-            itemList.putIntoList(item);
-            fireTableRowsUpdated(getRowByName(item), getRowByName(item));
+            this.itemList.putIntoList(item);
+            setValueAt(this.itemList.getNamedAmount(item.getName()), getRowByName(item), 1);
         } else {
-            itemList.putIntoList(item);
-            fireTableRowsInserted(getRowByName(item), getRowByName(item));
+            this.itemList.putIntoList(item);
+            String[] itemProperty = new String[]{item.getName(), String.valueOf(item.getAmount()),
+                    String.valueOf(item.getPrice())};
+            addRow(itemProperty);
         }
     }
 
     // MODIFIES: this
     // EFFECT: Takes item of given quantity from list; if item is not removed from itemList, update ItemListModel table,
     // otherwise remove from end of table
-    public void removeItem(Item item) throws NotEnoughItemsException {
-        itemList.takeFromList(item);
-        if (this.itemList.getNamed(item.getName())) {
-            fireTableRowsUpdated(getRowByName(item), getRowByName(item));
-        } else {
-            fireTableRowsDeleted(getRowByName(item), getRowByName(item));
+    public boolean takeFromList(Item item) throws NotEnoughItemsException {
+        boolean result = false;
+        if (this.itemList.takeFromList(item)) {
+            result = true;
+            if (this.itemList.getNamed(item.getName())) {
+                setValueAt(this.itemList.getNamedAmount(item.getName()), getRowByName(item), 1);
+            } else {
+                removeRow(getRowByName(item));
+            }
         }
+        return result;
     }
+
+    public ItemList getItemList() {
+        return this.itemList;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: Clears list of items and corresponding table
+    public void clear() {
+        this.itemList.clear();
+        setRowCount(0);
+    }
+
+//    public void setTableData(ItemList itemList) {
+//        this.itemList = itemList;
+//        fireTableDataChanged();
+//    }
 
     // EFFECT: Get the row number of the Item with itemName
     private int getRowByName(Item item) {
@@ -59,7 +81,7 @@ public class ItemListModel extends DefaultTableModel {
     }
 
     // EFFECT: Get the row number of the Item with itemName
-    private int getRowByName(String itemName) {
+    protected int getRowByName(String itemName) {
         for (int i = getRowCount() - 1; i >= 0; --i) {
             if (getValueAt(i, 0).equals(itemName)) {
                 // what if value is not unique?
@@ -67,9 +89,5 @@ public class ItemListModel extends DefaultTableModel {
             }
         }
         return -1;
-    }
-
-    public ItemList getItemList() {
-        return this.itemList;
     }
 }

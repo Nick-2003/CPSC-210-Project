@@ -10,7 +10,6 @@ import exceptions.NotEnoughItemsException;
 import model.Cart;
 import model.Inventory;
 import model.Item;
-import model.ItemList;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 import ui.tools.*;
@@ -37,14 +36,9 @@ public class StoreAppGUI extends JFrame {
     private JPanel buttonPanel3;
     private JPanel cartPanel;
     private JPanel inventoryPanel;
-//    private JScrollPane myScrollPane;
-    private ItemListModel cartModel;
-    private ItemListModel inventoryModel;
-    private JTable cartTable;
-    private JTable inventoryTable;
 
-    protected Inventory inventory;
-    protected Cart cart;
+    private CartModel cartModel;
+    private InventoryModel inventoryModel;
 
     private JsonWriter jsonWriterInv;
     private JsonWriter jsonWriterCart;
@@ -60,40 +54,23 @@ public class StoreAppGUI extends JFrame {
         this.cartPanel = new JPanel();
         this.inventoryPanel = new JPanel();
 
-        this.cart = new Cart("Cart");
-        this.inventory = new Inventory("Inventory");
+        this.cartModel = new CartModel(new Cart("Cart"));
+        this.inventoryModel = new InventoryModel(new Inventory("Inventory"));
 
         try {
-            this.cart.putIntoList(new Item("White Rice", 10, 8.00));
-//            for (int i = 0; i < 40; i++) {
-////                this.cart.putIntoList(new Item(Integer.toString(i), i + 1, i + 2));
-//                this.cartModel.addItem(new Item(Integer.toString(i), i + 1, i + 2));
+            this.inventoryModel.putIntoList(new Item("White Rice", 10, 8.00));
+//            for (int i = 0; i < 30; i++) {
+//                this.inventoryModel.putIntoList(new Item("" + i + "", i + 1, 8.00));
 //            }
-//            this.cartModel.addItem(new Item("White Rice", 10, 8.00));
-//            this.inventory.putIntoList(rice10);
         } catch (NegativeValueException | NotEnoughItemsException e) {
             throw new RuntimeException(e);
         } // FOR TESTING PURPOSES // ONLY SHOWS BEFORE SETTING UP MODELS, DOES NOT ACTUALLY SAVE ANYTHING
 
-        this.cartModel = new ItemListModel(this.cart);
-        this.inventoryModel = new ItemListModel(this.inventory);
-
-        this.cartTable = new JTable();
-        this.inventoryTable = new JTable();
-
-        initialiseSystem();
+        this.jsonWriterInv = new JsonWriter(JSON_INV);
+        this.jsonReaderInv = new JsonReader(JSON_INV);
+        this.jsonWriterCart = new JsonWriter(JSON_CART);
+        this.jsonReaderCart = new JsonReader(JSON_CART);
         initializeGraphics();
-    }
-
-    // MODIFIES: this
-    // EFFECTS: Initializes system
-    private void initialiseSystem() {
-        inventory = new Inventory("Inventory");
-        cart = new Cart("Cart");
-        jsonWriterInv = new JsonWriter(JSON_INV);
-        jsonReaderInv = new JsonReader(JSON_INV);
-        jsonWriterCart = new JsonWriter(JSON_CART);
-        jsonReaderCart = new JsonReader(JSON_CART);
     }
 
     // MODIFIES: this
@@ -109,7 +86,6 @@ public class StoreAppGUI extends JFrame {
         setLocationRelativeTo(null);
 
         createPanels();
-//        this.cartPanel.setLayout(new BoxLayout(this.cartPanel, BoxLayout.Y_AXIS));
         setVisible(true);
     }
 
@@ -122,15 +98,8 @@ public class StoreAppGUI extends JFrame {
         panelSetup(this.cartPanel, "Cart List", 1, 0, false);
         panelSetup(this.inventoryPanel, "Inventory List", 2, 0, false);
 
-//        setUpTables(this.inventory, this.inventoryPanel);
-//        setUpTables(this.cart, this.cartPanel);
-
-
-
         setUpTables(this.inventoryModel, this.inventoryPanel);
         setUpTables(this.cartModel, this.cartPanel);
-
-
 
         toolSetUp();
     }
@@ -138,38 +107,33 @@ public class StoreAppGUI extends JFrame {
     // MODIFIES: this
     // EFFECTS: Creates tools for panels
     private void toolSetUp() {
-        ToCartTool toCartTool = new ToCartTool(this, this.buttonPanel1, this.inventory, this.inventoryTable,
-                this.cart, this.cartTable);
-        FromCartTool fromCartTool = new FromCartTool(this, this.buttonPanel1, this.inventory, this.inventoryTable,
-                this.cart, this.cartTable);
-        PaymentTool paymentTool = new PaymentTool(this, this.buttonPanel1, this.cart);
-
-        AddToInventoryTool addToInventoryTool = new AddToInventoryTool(this, this.buttonPanel2, this.inventory,
-                this.inventoryTable);
+        ToCartTool toCartTool = new ToCartTool(this, this.buttonPanel1, this.inventoryModel, this.cartModel);
+        FromCartTool fromCartTool = new FromCartTool(this, this.buttonPanel1, this.inventoryModel, this.cartModel);
+        PaymentTool paymentTool = new PaymentTool(this, this.buttonPanel1,
+                this.cartModel.getItemList());
+        AddToInventoryTool addToInventoryTool = new AddToInventoryTool(this, this.buttonPanel2,
+                this.inventoryModel);
         RemoveFromInventoryTool removeFromInventoryTool = new RemoveFromInventoryTool(this, this.buttonPanel2,
-                this.inventory, this.inventoryTable);
-        SetPriceTool setPriceTool = new SetPriceTool(this, this.buttonPanel2, this.inventory, this.inventoryTable);
-
-        SaveTool saveTool = new SaveTool(this, this.buttonPanel3, this.inventory, this.cart, this.jsonWriterInv,
-                this.jsonWriterCart);
-        LoadTool loadTool = new LoadTool(this, this.buttonPanel3, this.inventory, this.cart, this.jsonReaderInv,
-                this.jsonReaderCart);
-//        PrintTool printTool = new PrintTool(this, this.buttonPanel3); // NOT SURE IF NECESSARY
-        ClearTool clearTool = new ClearTool(this, this.buttonPanel3, this.inventory, this.inventoryTable,
-                this.cart, this.cartTable);
+                this.inventoryModel);
+        SetPriceTool setPriceTool = new SetPriceTool(this, this.buttonPanel2, this.inventoryModel);
+        SaveTool saveTool = new SaveTool(this, this.buttonPanel3, this.inventoryModel, this.cartModel,
+                this.jsonWriterInv, this.jsonWriterCart);
+        LoadTool loadTool = new LoadTool(this, this.buttonPanel3, this.inventoryModel, this.cartModel,
+                this.jsonReaderInv, this.jsonReaderCart, this.inventoryPanel, this.cartPanel);
+        ClearTool clearTool = new ClearTool(this, this.buttonPanel3, this.inventoryModel, this.cartModel);
     }
 
     // MODIFIES: this
     // EFFECTS: Creates basic layout for panels
-    private void panelSetup(JPanel panel, String name, int partw, int parth, boolean split) {
+    private void panelSetup(JPanel panel, String name, int partWidth, int partHeight, boolean split) {
         Border br = BorderFactory.createLineBorder(Color.black);
         if (split) {
             panel.setLayout(new GridLayout(0,1));
-            panel.setBounds((WIDTH * partw / 3) + GAP / 2, GAP / 2 + (HEIGHT * parth / 3),
+            panel.setBounds((WIDTH * partWidth / 3) + GAP / 2, GAP / 2 + (HEIGHT * partHeight / 3),
                     (WIDTH / 3) - GAP,HEIGHT / 3 - GAP * 5);
         } else {
             panel.setLayout(new FlowLayout());
-            panel.setBounds((WIDTH * partw / 3) + GAP / 2, GAP / 2 + (HEIGHT * parth / 3),
+            panel.setBounds((WIDTH * partWidth / 3) + GAP / 2, GAP / 2 + (HEIGHT * partHeight / 3),
                     (WIDTH / 3) - GAP,HEIGHT - GAP * 5);
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         }
@@ -196,30 +160,9 @@ public class StoreAppGUI extends JFrame {
         return rec.toArray(new String[0][]);
     }
 
-//    // MODIFIES: this
-//    // EFFECT: Take ItemList and set up JTable table
-//    private void setUpTables(ItemList itemList, JPanel panel) {
-//        ItemListModel model = new ItemListModel(itemList);
-//        JTable table = new JTable(model);
-//        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-//
-//        table.getColumnModel().getColumn(0).setPreferredWidth(WIDTH / 9);
-//        table.getColumnModel().getColumn(1).setPreferredWidth(WIDTH / 9);
-//        table.getColumnModel().getColumn(2).setPreferredWidth(WIDTH / 9);
-//
-//        JTableHeader newTableHead = table.getTableHeader();
-//        newTableHead.setPreferredSize(new Dimension(WIDTH / 9, HEIGHT / 25));
-//        newTableHead.setMaximumSize(new Dimension(WIDTH / 9, HEIGHT / 25));
-//
-//        ((DefaultTableCellRenderer) newTableHead.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
-//
-//        JScrollPane newTable = new JScrollPane(table);
-//        panel.add(newTable, BorderLayout.CENTER);
-//    }
-
     // MODIFIES: this
     // EFFECT: Take ItemList and set up JTable table
-    private void setUpTables(ItemListModel itemModel, JPanel panel) {
+    public void setUpTables(ItemListModel itemModel, JPanel panel) {
         JTable table = new JTable(itemModel);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 

@@ -1,10 +1,8 @@
 package ui.tools;
 
-import model.ItemList;
 import ui.StoreAppGUI;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 
 public abstract class Tool {
@@ -46,12 +44,12 @@ public abstract class Tool {
 
         public abstract void actionPerformed(ActionEvent a);
 
-        // MODIFIES: this, parent
-        // EFFECTS: Applies changes to table
-        protected void modifyTable(ItemList itemList, JTable table) {
-            String[][] itemArray = StoreAppGUI.setUpArray(itemList.getInternalList());
-            DefaultTableModel model = new DefaultTableModel(itemArray, new String[]{"Name", "Quantity", "Price"});
-            table.setModel(model);
-        }
+//        // MODIFIES: this, parent
+//        // EFFECTS: Applies changes to table
+//        protected void modifyTable(ItemList itemList, JTable table) {
+//            String[][] itemArray = StoreAppGUI.setUpArray(itemList.getInternalList());
+//            DefaultTableModel model = new DefaultTableModel(itemArray, new String[]{"Name", "Quantity", "Price"});
+//            table.setModel(model);
+//        }
     }
 }

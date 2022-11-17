@@ -41,12 +41,11 @@ public class JsonReader {
         return parseInventory(jsonObject);
     }
 
-    // EFFECTS: Get JSONObject for parse function
+    // EFFECTS: Get JSONObject for parse function;
     // throws IOException if an error occurs reading data from file
     private JSONObject getJson() throws IOException {
         String jsonData = readFile(source);
-        JSONObject jsonObject = new JSONObject(jsonData);
-        return jsonObject;
+        return new JSONObject(jsonData);
     }
 
     // EFFECTS: Reads source file as string and returns it

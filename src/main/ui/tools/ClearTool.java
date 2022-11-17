@@ -1,7 +1,7 @@
 package ui.tools;
 
-import model.Cart;
-import model.Inventory;
+import ui.CartModel;
+import ui.InventoryModel;
 import ui.StoreAppGUI;
 
 import javax.swing.*;
@@ -12,18 +12,13 @@ import static javax.swing.JOptionPane.showMessageDialog;
 
 public class ClearTool extends Tool {
 
-    private Inventory inventory;
-    private JTable inventoryTable;
-    private Cart cart;
-    private JTable cartTable;
+    private InventoryModel inventory;
+    private CartModel cart;
 
-    public ClearTool(StoreAppGUI store, JComponent parent, Inventory inventoryStore, JTable inventoryTable,
-                     Cart cartStore, JTable cartTable) {
+    public ClearTool(StoreAppGUI store, JComponent parent, InventoryModel inventoryStore, CartModel cartStore) {
         super(store, parent);
         this.inventory = inventoryStore;
-        this.inventoryTable = inventoryTable;
         this.cart = cartStore;
-        this.cartTable = cartTable;
     }
 
     // MODIFIES: this
@@ -37,30 +32,29 @@ public class ClearTool extends Tool {
     private class ToolAction extends Tool.ToolAction {
 
         public ToolAction(String name) {
-            super(name); // Button for AbstractAction is now named "Move to Cart"
+            super(name);
         }
 
+        // EFFECTS: Runs button action
         public void actionPerformed(ActionEvent a) {
             String[] selectionValues = { "Cart", "Inventory"};
             String initialSelection = "Inventory";
             Object selectList = showInputDialog(null, "Select an ItemList to save: ",
                     "Select ItemList", QUESTION_MESSAGE, null, selectionValues, initialSelection);
-            clearItemList((String) selectList);
-        } // Modify to change table accordingly
+            if (selectList != null) {
+                clearItemList((String) selectList);
+            }
+        }
 
-        // MODIFIES: this,
+        // MODIFIES: this, cart, inventory
         // EFFECTS: Clear current ItemList
         private void clearItemList(String selectList) {
             if (selectList.equals("Cart")) {
                 cart.clear();
-                // UPDATE TABLE HERE
-                System.out.print("\nCart cleared\n");
                 showMessageDialog(null, "Cart cleared", "Clear successful",
                         INFORMATION_MESSAGE);
             } else {
                 inventory.clear();
-                // UPDATE TABLE HERE
-                System.out.print("\nInventory cleared\n");
                 showMessageDialog(null, "Inventory cleared", "Clear successful",
                         INFORMATION_MESSAGE);
             }

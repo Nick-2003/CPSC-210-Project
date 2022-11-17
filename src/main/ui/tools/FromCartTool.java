@@ -2,9 +2,9 @@ package ui.tools;
 
 import exceptions.NegativeValueException;
 import exceptions.NotEnoughItemsException;
-import model.Cart;
-import model.Inventory;
 import model.Item;
+import ui.CartModel;
+import ui.InventoryModel;
 import ui.StoreAppGUI;
 
 import javax.swing.*;
@@ -13,18 +13,15 @@ import static javax.swing.JOptionPane.*;
 
 public class FromCartTool extends Tool {
 
-    private Inventory inventory;
-    private JTable inventoryTable;
-    private Cart cart;
-    private JTable cartTable;
+    private InventoryModel inventory;
+    private CartModel cart;
 
-    public FromCartTool(StoreAppGUI store, JComponent parent, Inventory inventoryStore, JTable inventoryTable,
-                        Cart cartStore, JTable cartTable) {
+    public FromCartTool(StoreAppGUI store, JComponent parent, InventoryModel inventoryStore, CartModel cartStore) {
         super(store, parent);
         this.inventory = inventoryStore;
-        this.inventoryTable = inventoryTable;
+//        this.inventoryTable = inventoryTable;
         this.cart = cartStore;
-        this.cartTable = cartTable;
+//        this.cartTable = cartTable;
     }
 
     // MODIFIES: this
@@ -41,9 +38,10 @@ public class FromCartTool extends Tool {
             super(name); // Button for AbstractAction is now named "Move to Cart"
         }
 
+        // EFFECTS: Runs button action
         public void actionPerformed(ActionEvent a) {
-            String itemName = null;
-            int itemQuantity = 0;
+            String itemName;
+            int itemQuantity;
 
             JTextField name = new JTextField();
             JTextField quantity = new JTextField();
@@ -55,26 +53,28 @@ public class FromCartTool extends Tool {
                     OK_CANCEL_OPTION);
             if (option == OK_OPTION) {
                 itemName = name.getText();
-                itemQuantity = Integer.parseInt(quantity.getText());
+                try {
+                    itemQuantity = Integer.parseInt(quantity.getText());
+                    itemFromCart(itemName, itemQuantity);
+                } catch (NumberFormatException e) {
+                    showMessageDialog(null, new JLabel("Entry is blank"), "Entry is blank", INFORMATION_MESSAGE);
+                }
             } else {
-                System.out.println("Entry canceled");
+                showMessageDialog(null, new JLabel("Entry canceled"), "Entry canceled", INFORMATION_MESSAGE);
             }
-            itemFromCart(itemName, itemQuantity);
+
         }
 
         // REQUIRES: Inventory contains required Item
-        // MODIFIES: this, store
+        // MODIFIES: this
         // EFFECTS: Move Item from Cart to Inventory
         private void itemFromCart(String itemName, int itemQuantity) {
-            if (cart.getNamedAmount(itemName) >= itemQuantity) {
-                double itemPrice = inventory.getNamedPrice(itemName);
+            if (cart.getItemList().getNamedAmount(itemName) >= itemQuantity) {
+                double itemPrice = cart.getItemList().getNamedPrice(itemName);
                 try {
                     Item item = new Item(itemName, itemQuantity, itemPrice);
                     cart.takeFromList(item);
                     inventory.putIntoList(item);
-                    // UPDATE TABLE ACCORDINGLY HERE
-                    modifyTable(inventory, inventoryTable);
-                    modifyTable(cart, cartTable);
                 } catch (NegativeValueException e) {
                     showMessageDialog(null, "Quantity or price (or both) for input " + itemName
                             + " is negative; request is invalid", "NegativeValueException", ERROR_MESSAGE);
