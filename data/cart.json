@@ -1,8 +1,15 @@
 {
     "name": "Cart",
-    "items": [{
-        "amount": 5,
-        "price": 8,
-        "name": "White Rice"
-    }]
+    "items": [
+        {
+            "amount": 5,
+            "price": 2,
+            "name": "Apple"
+        },
+        {
+            "amount": 10,
+            "price": 3,
+            "name": "Orange"
+        }
+    ]
 }

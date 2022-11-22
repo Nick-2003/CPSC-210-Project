@@ -1,8 +1,8 @@
 package ui.tools;
 
 import persistence.JsonWriter;
-import ui.model.CartModel;
-import ui.model.InventoryModel;
+import ui.models.CartModel;
+import ui.models.InventoryModel;
 import ui.StoreAppGUI;
 
 import javax.swing.*;
@@ -47,7 +47,7 @@ public class SaveTool extends Tool {
 
         // EFFECTS: Runs button action
         public void actionPerformed(ActionEvent a) {
-            String[] selectionValues = { "Cart", "Inventory"};
+            String[] selectionValues = {"Inventory", "Cart"};
             String initialSelection = "Inventory";
             Object selectList = showInputDialog(null, "Select an ItemList to save: ",
                     "Select ItemList", QUESTION_MESSAGE, null, selectionValues, initialSelection);

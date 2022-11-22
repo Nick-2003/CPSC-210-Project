@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.fail;
 
 
@@ -20,6 +23,8 @@ public class ItemListTest {
     @BeforeEach
     public void setUp() {
         this.list = new ItemList("List");
+        EventLog el = EventLog.getInstance();
+        el.clear();
     }
 
     @Test
@@ -33,6 +38,17 @@ public class ItemListTest {
         }
         Assertions.assertEquals(1, list.getInternalList().size());
         Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
+
+        List<Event> l = new ArrayList<>();
+        EventLog el = EventLog.getInstance();
+        for (Event next : el) {
+            l.add(next);
+        }
+//        Assertions.assertTrue(l.contains(new Event("10 White Rice put into List")));
+//        Assertions.assertFalse(l.contains(new Event("0 Bread put into List")));
+
+        Assertions.assertTrue(containsDescription(l, "10 White Rice put into List"));
+        Assertions.assertFalse(containsDescription(l, "0 Bread put into List"));
     }
 
     @Test
@@ -50,6 +66,17 @@ public class ItemListTest {
         }
         Assertions.assertEquals(1, list.getInternalList().size());
         Assertions.assertEquals(20, list.getNamedAmount("White Rice"));
+
+        List<Event> l = new ArrayList<>();
+        EventLog el = EventLog.getInstance();
+        for (Event next : el) {
+            l.add(next);
+        }
+//        Assertions.assertTrue(l.contains(new Event("10 White Rice put into List")));
+//        Assertions.assertFalse(l.contains(new Event("0 Bread put into List")));
+
+        Assertions.assertTrue(containsDescription(l, "10 White Rice put into List"));
+        Assertions.assertFalse(containsDescription(l, "0 Bread put into List"));
     }
 
     @Test
@@ -70,6 +97,17 @@ public class ItemListTest {
         Assertions.assertEquals(2, list.getInternalList().size());
         Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
         Assertions.assertEquals(20, list.getNamedAmount("Bread"));
+
+        List<Event> l = new ArrayList<>();
+        EventLog el = EventLog.getInstance();
+        for (Event next : el) {
+            l.add(next);
+        }
+//        Assertions.assertTrue(l.contains(new Event("10 White Rice put into List")));
+//        Assertions.assertTrue(l.contains(new Event("20 Bread put into List")));
+
+        Assertions.assertTrue(containsDescription(l, "10 White Rice put into List"));
+        Assertions.assertTrue(containsDescription(l, "20 Bread put into List"));
     }
 
     @Test
@@ -85,6 +123,17 @@ public class ItemListTest {
         }
         Assertions.assertEquals(0, list.getInternalList().size());
         Assertions.assertEquals(0, list.getNamedAmount("White Rice"));
+
+        List<Event> l = new ArrayList<>();
+        EventLog el = EventLog.getInstance();
+        for (Event next : el) {
+            l.add(next);
+        }
+//        Assertions.assertFalse(l.contains(new Event("0 White Rice put into List")));
+//        Assertions.assertFalse(l.contains(new Event("0 Bread put into List")));
+
+        Assertions.assertFalse(containsDescription(l, "0 White Rice put into List"));
+        Assertions.assertFalse(containsDescription(l, "0 Bread put into List"));
     }
 
     @Test
@@ -105,6 +154,17 @@ public class ItemListTest {
 
         Assertions.assertEquals(1, list.getInternalList().size());
         Assertions.assertEquals(5, list.getNamedAmount("White Rice"));
+
+        List<Event> l = new ArrayList<>();
+        EventLog el = EventLog.getInstance();
+        for (Event next : el) {
+            l.add(next);
+        }
+//        Assertions.assertTrue(l.contains(new Event("5 White Rice taken from List")));
+//        Assertions.assertFalse(l.contains(new Event("0 Bread taken from List")));
+
+        Assertions.assertTrue(containsDescription(l, "5 White Rice taken from List"));
+        Assertions.assertFalse(containsDescription(l, "0 Bread taken from List"));
     }
 
     @Test
@@ -131,6 +191,17 @@ public class ItemListTest {
         }
         Assertions.assertEquals(0, list.getInternalList().size());
         Assertions.assertEquals(0, list.getNamedAmount("White Rice"));
+
+        List<Event> l = new ArrayList<>();
+        EventLog el = EventLog.getInstance();
+        for (Event next : el) {
+            l.add(next);
+        }
+//        Assertions.assertTrue(l.contains(new Event("5 White Rice taken from List")));
+//        Assertions.assertFalse(l.contains(new Event("0 Bread taken from List")));
+
+        Assertions.assertTrue(containsDescription(l, "5 White Rice taken from List"));
+        Assertions.assertFalse(containsDescription(l, "0 Bread taken from List"));
     }
 
     @Test
@@ -159,6 +230,17 @@ public class ItemListTest {
         Assertions.assertEquals(1, list.getInternalList().size());
         Assertions.assertEquals(5, list.getNamedAmount("White Rice"));
         Assertions.assertEquals(0, list.getNamedAmount("Bread"));
+
+        List<Event> l = new ArrayList<>();
+        EventLog el = EventLog.getInstance();
+        for (Event next : el) {
+            l.add(next);
+        }
+//        Assertions.assertTrue(l.contains(new Event("5 White Rice taken from List")));
+//        Assertions.assertTrue(l.contains(new Event("20 Bread taken from List")));
+
+        Assertions.assertTrue(containsDescription(l, "5 White Rice taken from List"));
+        Assertions.assertTrue(containsDescription(l, "20 Bread taken from List"));
     }
 
     @Test
@@ -178,6 +260,17 @@ public class ItemListTest {
         }
         Assertions.assertEquals(1, list.getInternalList().size());
         Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
+
+        List<Event> l = new ArrayList<>();
+        EventLog el = EventLog.getInstance();
+        for (Event next : el) {
+            l.add(next);
+        }
+//        Assertions.assertFalse(l.contains(new Event("0 White Rice taken from List")));
+//        Assertions.assertFalse(l.contains(new Event("0 Bread taken from List")));
+
+        Assertions.assertFalse(containsDescription(l, "0 White Rice taken from List"));
+        Assertions.assertFalse(containsDescription(l, "0 Bread taken from List"));
     }
 
     @Test
@@ -198,6 +291,17 @@ public class ItemListTest {
         }
         Assertions.assertEquals(1, list.getInternalList().size());
         Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
+
+        List<Event> l = new ArrayList<>();
+        EventLog el = EventLog.getInstance();
+        for (Event next : el) {
+            l.add(next);
+        }
+//        Assertions.assertFalse(l.contains(new Event("-5 White Rice taken from List")));
+//        Assertions.assertFalse(l.contains(new Event("Bread taken from List")));
+
+        Assertions.assertFalse(containsDescription(l, "-5 White Rice taken from List"));
+        Assertions.assertFalse(containsDescription(l, "0 Bread taken from List"));
     }
 
     @Test
@@ -218,6 +322,17 @@ public class ItemListTest {
         }
         Assertions.assertEquals(1, list.getInternalList().size());
         Assertions.assertEquals(10, list.getNamedAmount("White Rice"));
+
+        List<Event> l = new ArrayList<>();
+        EventLog el = EventLog.getInstance();
+        for (Event next : el) {
+            l.add(next);
+        }
+//        Assertions.assertFalse(l.contains(new Event("15 White Rice taken from List")));
+//        Assertions.assertFalse(l.contains(new Event("0 Bread taken from List")));
+
+        Assertions.assertFalse(containsDescription(l, "15 White Rice taken from List"));
+        Assertions.assertFalse(containsDescription(l, "0 Bread taken from List"));
     }
 
     @Test
@@ -330,6 +445,15 @@ public class ItemListTest {
 
         list.clear();
         testInitial();
+
+        List<Event> l = new ArrayList<>();
+        EventLog el = EventLog.getInstance();
+        for (Event next : el) {
+            l.add(next);
+        }
+//        Assertions.assertTrue(l.contains(new Event("List cleared")));
+
+        Assertions.assertTrue(containsDescription(l, "List cleared"));
     }
 
     @Test
@@ -351,11 +475,31 @@ public class ItemListTest {
 
         list.clear();
         testInitial();
+
+        List<Event> l = new ArrayList<>();
+        EventLog el = EventLog.getInstance();
+        for (Event next : el) {
+            l.add(next);
+        }
+//        Assertions.assertTrue(l.contains(new Event("List cleared")));
+
+        Assertions.assertTrue(containsDescription(l, "List cleared"));
     }
 
     protected void testInitial() {
         Assertions.assertEquals(0, list.getInternalList().size());
         Assertions.assertFalse(list.getNamed("White Rice"));
         Assertions.assertFalse(list.getNamed("Bread"));
+    }
+
+    public boolean containsDescription(List<Event> l, String description) {
+        boolean result = false;
+        for (Event next : l) {
+            result = next.getDescription().equals(description);
+            if (result) {
+                break;
+            }
+        }
+        return result;
     }
 }

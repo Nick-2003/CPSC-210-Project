@@ -11,15 +11,9 @@ import java.util.Objects;
 
 public class Inventory extends ItemList {
 
-//    private ArrayList<Item> internalList; // internalList from ItemList used instead
-////    private HashSet<Item> internalList; // Do not need to override
-
     // EFFECTS: Creates new empty Inventory
     public Inventory(String name) {
         super(name); // Constructor for ItemList
-
-//        this.internalList = new ArrayList<Item>();
-//        this.internalList = new HashSet<Item>();
     }
 
     // REQUIRES: name is present in ItemList
@@ -44,6 +38,8 @@ public class Inventory extends ItemList {
         for (Item obj: internalList) {
             if (Objects.equals(obj.getName(), name)) {
                 obj.setPrice(BigDecimal.valueOf(price).setScale(2, RoundingMode.HALF_UP).doubleValue());
+                EventLog.getInstance().logEvent(new Event(obj.getName()
+                        + " price changed to " + obj.getPrice() + " in " + this.getName()));
                 break;
             }
         }

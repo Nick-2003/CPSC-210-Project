@@ -43,6 +43,8 @@ public class ItemList implements Writable {
             if (!listChange) {
                 this.internalList.add(obj);
             }
+            EventLog.getInstance().logEvent(new Event(obj.getAmount() + " " + obj.getName()
+                    + " put into " + this.name));
         }
     }
 
@@ -54,10 +56,12 @@ public class ItemList implements Writable {
         for (Item obi: this.internalList) {
             if (Objects.equals(obi.getName(), obj.getName())) {
                 if (obi.getAmount() > obj.getAmount()) {
+                    moreThanZero(obj);
                     obi.changeQuantity(- obj.getAmount());
                     result = true;
                     break;
                 } else if (obi.getAmount() == obj.getAmount()) {
+                    moreThanZero(obj);
                     this.internalList.remove(obi);
                     result = true;
                     break;
@@ -67,6 +71,13 @@ public class ItemList implements Writable {
             }
         }
         return result;
+    }
+
+    private void moreThanZero(Item obj) {
+        if (obj.getAmount() > 0) {
+            EventLog.getInstance().logEvent(new Event(obj.getAmount() + " " + obj.getName()
+                    + " taken from " + this.name));
+        }
     }
 
     // REQUIRES: name is present in ItemList
@@ -112,6 +123,7 @@ public class ItemList implements Writable {
     // EFFECTS: Clears list of items
     public void clear() {
         this.internalList = new ArrayList<>();
+        EventLog.getInstance().logEvent(new Event(this.name + " cleared"));
     }
 
     public String getName() {
@@ -127,6 +139,7 @@ public class ItemList implements Writable {
         JSONObject json = new JSONObject();
         json.put("name", name);
         json.put("items", itemsToJson());
+        EventLog.getInstance().logEvent(new Event(this.name + " has items saved"));
         return json;
     }
 
@@ -137,7 +150,6 @@ public class ItemList implements Writable {
         for (Item t : this.internalList) {
             jsonArray.put(t.toJson());
         }
-
         return jsonArray;
     }
 }

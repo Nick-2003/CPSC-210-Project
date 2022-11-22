@@ -1,7 +1,7 @@
 // https://tips4java.wordpress.com/2008/11/21/row-table-model/
 // Used as reference for model creation
 
-package ui.model;
+package ui.models;
 
 import exceptions.NotEnoughItemsException;
 import model.Item;

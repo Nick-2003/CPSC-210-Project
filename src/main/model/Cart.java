@@ -8,9 +8,6 @@ import java.math.RoundingMode;
 
 public class Cart extends ItemList {
     public static final double TAX = 0.05;
-//    public static final BigDecimal TAX = BigDecimal.valueOf(0.05);
-
-//    private ArrayList<Item> internalList; // Which one would be more important: Ordering or non-duplicates?
 
     // EFFECTS: Creates new empty Cart
     public Cart(String name) {

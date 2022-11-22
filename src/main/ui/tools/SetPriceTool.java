@@ -1,7 +1,7 @@
 package ui.tools;
 
 import exceptions.NegativeValueException;
-import ui.model.InventoryModel;
+import ui.models.InventoryModel;
 import ui.StoreAppGUI;
 
 import javax.swing.*;

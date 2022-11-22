@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 //class InventoryTest extends ItemListTest {
@@ -21,6 +24,8 @@ class InventoryTest {
     @BeforeEach
     public void setUp() {
         this.list = new Inventory("List");
+        EventLog el = EventLog.getInstance();
+        el.clear();
     }
 
     //NEW
@@ -141,6 +146,17 @@ class InventoryTest {
             fail("NegativeValueException should not be thrown");
         }
         assertEquals(9.00, list.getNamedPrice("White Rice"));
+
+        List<Event> l = new ArrayList<>();
+        EventLog el = EventLog.getInstance();
+        for (Event next : el) {
+            l.add(next);
+        }
+//        Assertions.assertTrue(l.contains(new Event("White Rice price changed to 9.0 in List")));
+//        Assertions.assertFalse(l.contains(new Event("Bread price changed to 4.5 in List")));
+
+        Assertions.assertTrue(containsDescription(l, "White Rice price changed to 9.0 in List"));
+        Assertions.assertFalse(containsDescription(l, "Bread price changed to 4.5 in List"));
     }
 
     @Test
@@ -161,6 +177,19 @@ class InventoryTest {
             fail("NegativeValueException should not be thrown");
         }
         assertEquals(10.00, list.getNamedPrice("White Rice"));
+
+        List<Event> l = new ArrayList<>();
+        EventLog el = EventLog.getInstance();
+        for (Event next : el) {
+            l.add(next);
+        }
+//        Assertions.assertTrue(l.contains(new Event("White Rice price changed to 9.0 in List")));
+//        Assertions.assertTrue(l.contains(new Event("White Rice price changed to 10.0 in List")));
+//        Assertions.assertFalse(l.contains(new Event("Bread price changed to 4.5 in List")));
+
+        Assertions.assertTrue(containsDescription(l, "White Rice price changed to 9.0 in List"));
+        Assertions.assertTrue(containsDescription(l, "White Rice price changed to 10.0 in List"));
+        Assertions.assertFalse(containsDescription(l, "Bread price changed to 4.5 in List"));
     }
 
     @Test
@@ -186,6 +215,17 @@ class InventoryTest {
 
         assertEquals(9.00, list.getNamedPrice("White Rice"));
         assertEquals(4.50, list.getNamedPrice("Bread"));
+
+        List<Event> l = new ArrayList<>();
+        EventLog el = EventLog.getInstance();
+        for (Event next : el) {
+            l.add(next);
+        }
+//        Assertions.assertTrue(l.contains(new Event("White Rice price changed to 9.0 in List")));
+//        Assertions.assertTrue(l.contains(new Event("Bread price changed to 4.5 in List")));
+
+        Assertions.assertTrue(containsDescription(l, "White Rice price changed to 9.0 in List"));
+        Assertions.assertTrue(containsDescription(l, "Bread price changed to 4.5 in List"));
     }
 
     @Test
@@ -213,6 +253,21 @@ class InventoryTest {
 
         assertEquals(10.00, list.getNamedPrice("White Rice"));
         assertEquals(5.50, list.getNamedPrice("Bread"));
+
+        List<Event> l = new ArrayList<>();
+        EventLog el = EventLog.getInstance();
+        for (Event next : el) {
+            l.add(next);
+        }
+//        Assertions.assertTrue(l.contains(new Event("White Rice price changed to 9.0 in List")));
+//        Assertions.assertTrue(l.contains(new Event("White Rice price changed to 10.0 in List")));
+//        Assertions.assertTrue(l.contains(new Event("Bread price changed to 4.5 in List")));
+//        Assertions.assertTrue(l.contains(new Event("Bread price changed to 5.5 in List")));
+
+        Assertions.assertTrue(containsDescription(l, "White Rice price changed to 9.0 in List"));
+        Assertions.assertTrue(containsDescription(l, "White Rice price changed to 10.0 in List"));
+        Assertions.assertTrue(containsDescription(l, "Bread price changed to 4.5 in List"));
+        Assertions.assertTrue(containsDescription(l, "Bread price changed to 5.5 in List"));
     }
 
     @Test
@@ -227,14 +282,35 @@ class InventoryTest {
         } catch (NotEnoughItemsException e) {
             fail("NotEnoughItemsException should not be thrown");
         } catch (NegativeValueException e) {
-
+            // All clear
         }
         assertEquals(8.00, list.getNamedPrice("White Rice"));
+        List<Event> l = new ArrayList<>();
+        EventLog el = EventLog.getInstance();
+        for (Event next : el) {
+            l.add(next);
+        }
+//        Assertions.assertFalse(l.contains(new Event("White Rice price changed to -8.0 in List")));
+//        Assertions.assertFalse(l.contains(new Event("Bread price changed to 4.5 in List")));
+
+        Assertions.assertFalse(containsDescription(l, "White Rice price changed to -8.0 in List"));
+        Assertions.assertFalse(containsDescription(l, "Bread price changed to 4.5 in List"));
     }
 
     protected void testInitial() {
         Assertions.assertEquals(0, list.getInternalList().size());
         Assertions.assertEquals(0, list.getNamedAmount("White Rice"));
         Assertions.assertEquals(0, list.getNamedAmount("Bread"));
+    }
+
+    public boolean containsDescription(List<Event> l, String description) {
+        boolean result = false;
+        for (Event next : l) {
+            result = next.getDescription().equals(description);
+            if (result) {
+                break;
+            }
+        }
+        return result;
     }
 }

@@ -11,13 +11,15 @@
 package ui;
 
 import model.Cart;
+import model.Event;
+import model.EventLog;
 import model.Inventory;
 import model.Item;
 import persistence.JsonReader;
 import persistence.JsonWriter;
-import ui.model.CartModel;
-import ui.model.InventoryModel;
-import ui.model.ItemListModel;
+import ui.models.CartModel;
+import ui.models.InventoryModel;
+import ui.models.ItemListModel;
 import ui.tools.*;
 
 import javax.swing.*;
@@ -66,10 +68,10 @@ public class StoreAppGUI extends JFrame {
         this.inventoryModel = new InventoryModel(new Inventory("Inventory"));
 
 //        try {
-//            this.inventoryModel.putIntoList(new Item("White Rice", 10, 8.00));
-////            for (int i = 0; i < 30; i++) {
-////                this.inventoryModel.putIntoList(new Item("" + i + "", i + 1, 8.00));
-////            }
+////            this.inventoryModel.putIntoList(new Item("White Rice", 10, 8.00));
+//            for (int i = 0; i < 50; i++) {
+//                this.inventoryModel.putIntoList(new Item("" + i + "", i + 1, 8.00));
+//            }
 //        } catch (NegativeValueException | NotEnoughItemsException e) {
 //            throw new RuntimeException(e);
 //        } // FOR TESTING PURPOSES // ONLY SHOWS BEFORE SETTING UP MODELS, DOES NOT ACTUALLY SAVE ANYTHING
@@ -92,6 +94,17 @@ public class StoreAppGUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         setLocationRelativeTo(null);
+
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // Do not close immediately
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+//                System.out.println("GUI has been closed");
+                printLog(EventLog.getInstance());
+                //THEN you can exit the program
+                System.exit(0);
+            }
+        });
 
         createPanels();
         setVisible(true);
@@ -198,6 +211,15 @@ public class StoreAppGUI extends JFrame {
 
         JScrollPane newTable = new JScrollPane(table);
         panel.add(newTable, BorderLayout.CENTER);
+    }
+
+    // EFFECT: Prints the log
+    public void printLog(EventLog el) {
+        for (Event next : el) {
+//            logArea.setText(logArea.getText() + next.toString() + "\n\n");
+            System.out.println(next.toString());
+        }
+//        repaint();
     }
 
     // EFFECT: Start system

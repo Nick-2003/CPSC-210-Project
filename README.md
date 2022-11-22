@@ -50,3 +50,75 @@ certain amount
   1. Click on the "Load Item List" button
   2. Select the ItemList to be loaded (Inventory or Cart)
   3. Loaded ItemList should pop up on corresponding screen
+
+### Phase 4: Task 2
+- Sample of events
+  - Moving Items from Inventory to Cart consists of takeFromList and putIntoList
+  - Moving Items from Cart to Inventory consists of takeFromList and putIntoList
+  - Loading state consists of clear and putIntoList; putIntoList prints twice 
+
+Tue Nov 22 12:55:02 PST 2022
+10 Apple put into Inventory
+
+Tue Nov 22 12:55:10 PST 2022
+5 Apple taken from Inventory
+
+Tue Nov 22 12:55:18 PST 2022
+Apple price changed to 3.0 in Inventory
+
+Tue Nov 22 12:55:33 PST 2022
+3 Apple taken from Inventory
+
+Tue Nov 22 12:55:33 PST 2022
+3 Apple put into Cart
+
+Tue Nov 22 12:55:38 PST 2022
+1 Apple taken from Cart
+
+Tue Nov 22 12:55:38 PST 2022
+1 Apple put into Inventory
+
+Tue Nov 22 12:55:49 PST 2022
+Inventory cleared
+
+Tue Nov 22 12:55:49 PST 2022
+5 Apple put into Inventory
+
+Tue Nov 22 12:55:49 PST 2022
+6 Orange put into Inventory
+
+Tue Nov 22 12:55:49 PST 2022
+5 Apple put into Inventory
+
+Tue Nov 22 12:55:49 PST 2022
+6 Orange put into Inventory
+
+Tue Nov 22 12:55:53 PST 2022
+Cart cleared
+
+Tue Nov 22 12:55:53 PST 2022
+5 Apple put into Cart
+
+Tue Nov 22 12:55:53 PST 2022
+10 Orange put into Cart
+
+Tue Nov 22 12:55:53 PST 2022
+5 Apple put into Cart
+
+Tue Nov 22 12:55:53 PST 2022
+10 Orange put into Cart
+
+Tue Nov 22 12:55:56 PST 2022
+Inventory has items saved
+
+Tue Nov 22 12:55:59 PST 2022
+Cart has items saved
+
+Tue Nov 22 12:56:01 PST 2022
+Inventory cleared
+
+Tue Nov 22 12:56:05 PST 2022
+Cart cleared
+
+### Phase 4: Task 3
+- 

@@ -1,4 +1,4 @@
-package ui.model;
+package ui.models;
 
 import exceptions.NegativeValueException;
 import model.Inventory;
