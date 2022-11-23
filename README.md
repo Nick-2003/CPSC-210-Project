@@ -55,69 +55,72 @@ certain amount
 - Sample of events
   - Moving Items from Inventory to Cart consists of takeFromList and putIntoList
   - Moving Items from Cart to Inventory consists of takeFromList and putIntoList
-  - Loading state consists of clear and putIntoList; putIntoList prints twice 
+  - Loading state consists of clear and putIntoList
 
-Tue Nov 22 12:55:02 PST 2022
+Tue Nov 22 18:22:55 PST 2022
 10 Apple put into Inventory
 
-Tue Nov 22 12:55:10 PST 2022
+Tue Nov 22 18:23:01 PST 2022
 5 Apple taken from Inventory
 
-Tue Nov 22 12:55:18 PST 2022
+Tue Nov 22 18:23:07 PST 2022
 Apple price changed to 3.0 in Inventory
 
-Tue Nov 22 12:55:33 PST 2022
+Tue Nov 22 18:23:18 PST 2022
 3 Apple taken from Inventory
 
-Tue Nov 22 12:55:33 PST 2022
+Tue Nov 22 18:23:18 PST 2022
 3 Apple put into Cart
 
-Tue Nov 22 12:55:38 PST 2022
+Tue Nov 22 18:23:24 PST 2022
 1 Apple taken from Cart
 
-Tue Nov 22 12:55:38 PST 2022
+Tue Nov 22 18:23:24 PST 2022
 1 Apple put into Inventory
 
-Tue Nov 22 12:55:49 PST 2022
+Tue Nov 22 18:23:31 PST 2022
 Inventory cleared
 
-Tue Nov 22 12:55:49 PST 2022
+Tue Nov 22 18:23:38 PST 2022
+Inventory cleared
+
+Tue Nov 22 18:23:38 PST 2022
+5 Apple put into SAVED_INVENTORY
+
+Tue Nov 22 18:23:38 PST 2022
+6 Orange put into SAVED_INVENTORY
+
+Tue Nov 22 18:23:38 PST 2022
 5 Apple put into Inventory
 
-Tue Nov 22 12:55:49 PST 2022
+Tue Nov 22 18:23:38 PST 2022
 6 Orange put into Inventory
 
-Tue Nov 22 12:55:49 PST 2022
-5 Apple put into Inventory
-
-Tue Nov 22 12:55:49 PST 2022
-6 Orange put into Inventory
-
-Tue Nov 22 12:55:53 PST 2022
+Tue Nov 22 18:23:49 PST 2022
 Cart cleared
 
-Tue Nov 22 12:55:53 PST 2022
+Tue Nov 22 18:23:49 PST 2022
+5 Apple put into SAVED_CART
+
+Tue Nov 22 18:23:49 PST 2022
+10 Orange put into SAVED_CART
+
+Tue Nov 22 18:23:49 PST 2022
 5 Apple put into Cart
 
-Tue Nov 22 12:55:53 PST 2022
+Tue Nov 22 18:23:49 PST 2022
 10 Orange put into Cart
 
-Tue Nov 22 12:55:53 PST 2022
-5 Apple put into Cart
-
-Tue Nov 22 12:55:53 PST 2022
-10 Orange put into Cart
-
-Tue Nov 22 12:55:56 PST 2022
+Tue Nov 22 18:23:54 PST 2022
 Inventory has items saved
 
-Tue Nov 22 12:55:59 PST 2022
+Tue Nov 22 18:23:58 PST 2022
 Cart has items saved
 
-Tue Nov 22 12:56:01 PST 2022
+Tue Nov 22 18:24:01 PST 2022
 Inventory cleared
 
-Tue Nov 22 12:56:05 PST 2022
+Tue Nov 22 18:24:05 PST 2022
 Cart cleared
 
 ### Phase 4: Task 3

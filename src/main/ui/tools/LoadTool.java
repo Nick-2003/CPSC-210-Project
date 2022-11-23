@@ -63,10 +63,9 @@ public class LoadTool extends Tool {
         private void loadItemList(String selectList) {
             if (selectList.equals("Cart")) {
                 try {
-//                    cart = new CartModel(jsonReaderCart.readCart()); // Replace list
-//                    store.setUpTables(cart, cartPanel);
                     cart.clear();
                     for (Item i: jsonReaderCart.readCart().getInternalList()) {
+                        // ITEMS ARE ADDED EVEN BEFORE BEING PUT INTO LIST
                         cart.putIntoList(i);
                     }
                     loadItemListMessage(cart.getItemList().getName(), JSON_CART);
@@ -76,10 +75,6 @@ public class LoadTool extends Tool {
                 }
             } else if (selectList.equals("Inventory")) {
                 try {
-//                    inventory = new InventoryModel(jsonReaderInv.readInv()); // Original does not change here
-//                    System.out.println(inventory.getItemList().getInternalList().size());
-//                    store.setUpTables(inventory, inventoryPanel);
-//                    inventory.setTableData(jsonReaderInv.readInv());
                     inventory.clear();
                     for (Item i: jsonReaderInv.readInv().getInternalList()) {
                         inventory.putIntoList(i);
