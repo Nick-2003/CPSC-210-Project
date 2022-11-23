@@ -52,76 +52,75 @@ certain amount
   3. Loaded ItemList should pop up on corresponding screen
 
 ### Phase 4: Task 2
-- Sample of events
-  - Moving Items from Inventory to Cart consists of takeFromList and putIntoList
-  - Moving Items from Cart to Inventory consists of takeFromList and putIntoList
-  - Loading state consists of clear and putIntoList
+Sample of events
+- Moving Items from Inventory to Cart consists of takeFromList and putIntoList
+- Moving Items from Cart to Inventory consists of takeFromList and putIntoList
+- Loading state consists of clear and putIntoList
+  - putIntoList events print once for ItemList in .json file and once for ItemList in system, both with the same name 
+  due to how JsonWriter is structured
 
-Tue Nov 22 18:22:55 PST 2022
+Tue Nov 22 18:32:42 PST 2022
 10 Apple put into Inventory
 
-Tue Nov 22 18:23:01 PST 2022
+Tue Nov 22 18:32:48 PST 2022
 5 Apple taken from Inventory
 
-Tue Nov 22 18:23:07 PST 2022
+Tue Nov 22 18:32:52 PST 2022
 Apple price changed to 3.0 in Inventory
 
-Tue Nov 22 18:23:18 PST 2022
+Tue Nov 22 18:32:56 PST 2022
 3 Apple taken from Inventory
 
-Tue Nov 22 18:23:18 PST 2022
+Tue Nov 22 18:32:56 PST 2022
 3 Apple put into Cart
 
-Tue Nov 22 18:23:24 PST 2022
-1 Apple taken from Cart
+Tue Nov 22 18:33:05 PST 2022
+2 Apple taken from Cart
 
-Tue Nov 22 18:23:24 PST 2022
-1 Apple put into Inventory
+Tue Nov 22 18:33:05 PST 2022
+2 Apple put into Inventory
 
-Tue Nov 22 18:23:31 PST 2022
+Tue Nov 22 18:33:10 PST 2022
 Inventory cleared
 
-Tue Nov 22 18:23:38 PST 2022
-Inventory cleared
-
-Tue Nov 22 18:23:38 PST 2022
-5 Apple put into SAVED_INVENTORY
-
-Tue Nov 22 18:23:38 PST 2022
-6 Orange put into SAVED_INVENTORY
-
-Tue Nov 22 18:23:38 PST 2022
+Tue Nov 22 18:33:10 PST 2022
 5 Apple put into Inventory
 
-Tue Nov 22 18:23:38 PST 2022
+Tue Nov 22 18:33:10 PST 2022
 6 Orange put into Inventory
 
-Tue Nov 22 18:23:49 PST 2022
+Tue Nov 22 18:33:10 PST 2022
+5 Apple put into Inventory
+
+Tue Nov 22 18:33:10 PST 2022
+6 Orange put into Inventory
+
+Tue Nov 22 18:33:15 PST 2022
 Cart cleared
 
-Tue Nov 22 18:23:49 PST 2022
-5 Apple put into SAVED_CART
-
-Tue Nov 22 18:23:49 PST 2022
-10 Orange put into SAVED_CART
-
-Tue Nov 22 18:23:49 PST 2022
+Tue Nov 22 18:33:15 PST 2022
 5 Apple put into Cart
 
-Tue Nov 22 18:23:49 PST 2022
+Tue Nov 22 18:33:15 PST 2022
 10 Orange put into Cart
 
-Tue Nov 22 18:23:54 PST 2022
+Tue Nov 22 18:33:15 PST 2022
+5 Apple put into Cart
+
+Tue Nov 22 18:33:15 PST 2022
+10 Orange put into Cart
+
+Tue Nov 22 18:33:19 PST 2022
 Inventory has items saved
 
-Tue Nov 22 18:23:58 PST 2022
+Tue Nov 22 18:33:21 PST 2022
 Cart has items saved
 
-Tue Nov 22 18:24:01 PST 2022
+Tue Nov 22 18:33:24 PST 2022
 Inventory cleared
 
-Tue Nov 22 18:24:05 PST 2022
+Tue Nov 22 18:33:27 PST 2022
 Cart cleared
 
 ### Phase 4: Task 3
-- 
+- UML Diagram
