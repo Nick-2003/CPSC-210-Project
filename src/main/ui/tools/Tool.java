@@ -8,6 +8,7 @@ import ui.StoreAppGUI;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
+// Represents a tool button to be added to the StoreAppGUI
 public abstract class Tool {
     protected JButton button;
     protected StoreAppGUI store;
@@ -16,15 +17,6 @@ public abstract class Tool {
         this.store = store;
         createButton(parent);
         addToParent(parent);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: Customizes the button used for this tool
-    protected JButton customizeButton(JButton button) {
-        button.setBorderPainted(true);
-        button.setFocusPainted(true);
-        button.setContentAreaFilled(true);
-        return button;
     }
 
     // MODIFIES: this
@@ -48,12 +40,5 @@ public abstract class Tool {
         // EFFECTS: Runs button action
         public abstract void actionPerformed(ActionEvent a);
 
-//        // MODIFIES: this, parent
-//        // EFFECTS: Applies changes to table
-//        protected void modifyTable(ItemList itemList, JTable table) {
-//            String[][] itemArray = StoreAppGUI.setUpArray(itemList.getInternalList());
-//            DefaultTableModel model = new DefaultTableModel(itemArray, new String[]{"Name", "Quantity", "Price"});
-//            table.setModel(model);
-//        }
     }
 }

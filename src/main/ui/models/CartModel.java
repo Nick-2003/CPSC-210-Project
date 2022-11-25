@@ -3,9 +3,10 @@ package ui.models;
 import model.Cart;
 import model.ItemList;
 
+// Represents a table model for Cart
 public class CartModel extends ItemListModel {
 
-    private Cart itemList;
+    private final Cart itemList;
 
     public CartModel(ItemList itemList) {
         super(itemList);

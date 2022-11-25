@@ -3,7 +3,7 @@
 
 package ui.tools;
 
-import model.Cart;
+import ui.models.CartModel;
 import ui.models.ItemListModel;
 import ui.StoreAppGUI;
 
@@ -14,17 +14,16 @@ import java.awt.event.ActionEvent;
 
 import static javax.swing.JOptionPane.*;
 
+// Represents a tool for the StoreAppGUI to produce the receipt
 public class PaymentTool extends Tool {
 
-    private Cart cart;
-    private JPanel panel;
-    private JFrame frame;
+    private final CartModel cart;
+    private final JPanel panel;
 
-    public PaymentTool(StoreAppGUI store, JComponent parent, Cart cartStore) {
+    public PaymentTool(StoreAppGUI store, JComponent parent, CartModel cartStore) {
         super(store, parent);
         this.cart = cartStore;
         this.panel = new JPanel();
-        this.frame = new JFrame("Receipt for Payment");
     }
 
     // MODIFIES: this
@@ -48,7 +47,7 @@ public class PaymentTool extends Tool {
 
         // EFFECTS: Save ItemList to file
         private void payment() {
-            ItemListModel model = new ItemListModel(cart);
+            ItemListModel model = new ItemListModel(cart.getItemList());
             JTable table = new JTable(model);
             JScrollPane newTable = new JScrollPane(table);
             JTableHeader newTableHead = table.getTableHeader();
@@ -57,8 +56,9 @@ public class PaymentTool extends Tool {
             panel.add(newTableHead, BorderLayout.CENTER);
             showMessageDialog(null, panel, "Cart Items", INFORMATION_MESSAGE);
             showMessageDialog(null, new JLabel("<html><p>Payment: </p> <p>Total cost of items: $"
-                    + cart.totalPrice() + "</p> <p>Tax: $" + cart.tax() + "</p> <p>Final Cost: $" + cart.finalPrice()
-                    + "</p> </html>"), "Final Cost", INFORMATION_MESSAGE);
+                    + cart.getItemList().totalPrice() + "</p> <p>Tax: $" + cart.getItemList().tax()
+                    + "</p> <p>Final Cost: $" + cart.getItemList().finalPrice() + "</p> </html>"),
+                    "Final Cost", INFORMATION_MESSAGE);
         }
     }
 }

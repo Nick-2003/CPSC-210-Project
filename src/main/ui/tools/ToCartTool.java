@@ -15,10 +15,11 @@ import java.awt.event.ActionEvent;
 
 import static javax.swing.JOptionPane.*;
 
+// Represents a tool for the StoreAppGUI to move an item from the inventory to the cart
 public class ToCartTool extends Tool {
 
-    private InventoryModel inventory;
-    private CartModel cart;
+    private final InventoryModel inventory;
+    private final CartModel cart;
 
     public ToCartTool(StoreAppGUI store, JComponent parent, InventoryModel inventoryStore, CartModel cartStore) {
         super(store, parent);

@@ -11,9 +11,10 @@ import java.awt.event.ActionEvent;
 
 import static javax.swing.JOptionPane.*;
 
+// Represents a tool for the StoreAppGUI to remove an item from the inventory
 public class RemoveFromInventoryTool extends Tool {
 
-    private InventoryModel inventory;
+    private final InventoryModel inventory;
 
     public RemoveFromInventoryTool(StoreAppGUI store, JComponent parent, InventoryModel inventoryStore) {
         super(store, parent);
@@ -38,20 +39,14 @@ public class RemoveFromInventoryTool extends Tool {
         public void actionPerformed(ActionEvent a) {
             String itemName;
             int itemQuantity;
-//            double itemPriceInput;
             JTextField name = new JTextField();
             JTextField quantity = new JTextField();
-//            JTextField price = new JTextField();
-//            Object[] message = {"Name:", name, "Quantity:", quantity, "Price:", price};
             Object[] message = {"Name:", name, "Quantity:", quantity};
             int option = showConfirmDialog(null, message, "Enter Item", OK_CANCEL_OPTION);
             if (option == OK_OPTION) {
                 itemName = name.getText();
                 try {
                     itemQuantity = Integer.parseInt(quantity.getText());
-//                    itemPriceInput = BigDecimal.valueOf(Double.parseDouble(price.getText()))
-//                            .setScale(2, RoundingMode.HALF_UP).doubleValue();
-//                    removeFromInventory(itemName, itemQuantity, itemPriceInput);
                     removeFromInventory(itemName, itemQuantity);
                 } catch (NumberFormatException e) {
                     showMessageDialog(null, new JLabel("Entry is blank"), "Entry is blank", INFORMATION_MESSAGE);
@@ -66,12 +61,6 @@ public class RemoveFromInventoryTool extends Tool {
         // EFFECTS: Move Item from Inventory to Cart
 //        private void removeFromInventory(String itemName, int itemQuantity, double itemPriceInput) {
         private void removeFromInventory(String itemName, int itemQuantity) {
-//            double itemPrice;
-//            if (inventory.getItemList().getNamedAmount(itemName) > 0) {
-//                itemPrice = inventory.getItemList().getNamedPrice(itemName);
-//            } else {
-//                itemPrice = itemPriceInput;
-//            }
             double itemPrice = inventory.getItemList().getNamedPrice(itemName);
             try {
                 Item item = new Item(itemName, itemQuantity, itemPrice);
@@ -83,7 +72,6 @@ public class RemoveFromInventoryTool extends Tool {
                     showMessageDialog(null, itemName + " is not in Inventory ",
                             "Transfer failed", ERROR_MESSAGE);
                 }
-//                modifyTable(inventory, inventoryTable);
             } catch (NegativeValueException e) {
                 showMessageDialog(null, "Quantity or price (or both) for input " + itemName
                         + " is negative; request is invalid", "NegativeValueException", ERROR_MESSAGE);

@@ -17,12 +17,13 @@ import static javax.swing.JOptionPane.showMessageDialog;
 import static ui.StoreAppGUI.JSON_CART;
 import static ui.StoreAppGUI.JSON_INV;
 
+// Represents a tool for the StoreAppGUI to load an item list to one of the models
 public class LoadTool extends Tool {
 
-    private InventoryModel inventory;
-    private CartModel cart;
-    private JsonReader jsonReaderInv;
-    private JsonReader jsonReaderCart;
+    private final InventoryModel inventory;
+    private final CartModel cart;
+    private final JsonReader jsonReaderInv;
+    private final JsonReader jsonReaderCart;
 
     public LoadTool(StoreAppGUI store, JComponent parent, InventoryModel inventoryStore, CartModel cartStore,
                     JsonReader jsonReaderInv, JsonReader jsonReaderCart) {

@@ -11,9 +11,8 @@ import persistence.Writable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+// Represents an item with a name, a positive amount and a positive price
 public class Item implements Writable {
-//    private static int nextItemId = 1;  // tracks id of next account created
-//    private int id;
     private String name;
     private int amount;
     private double price;
@@ -28,7 +27,6 @@ public class Item implements Writable {
         this.name = name;
         this.amount = amount;
         this.price = BigDecimal.valueOf(price).setScale(2, RoundingMode.HALF_UP).doubleValue();
-//        this.sale = false; // Check if item is on sale or not
     }
 
     // REQUIRES: quantity - num >= 0
@@ -79,21 +77,4 @@ public class Item implements Writable {
         json.put("price", price);
         return json;
     }
-
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) {
-//            return true;
-//        }
-//        if (o == null || getClass() != o.getClass()) {
-//            return false;
-//        }
-//        Item item = (Item) o;
-//        return Double.compare(item.price, price) == 0 && Objects.equals(name, item.name);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(name, price);
-//    }
 }

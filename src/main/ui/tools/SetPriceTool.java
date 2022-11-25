@@ -11,9 +11,10 @@ import java.math.RoundingMode;
 
 import static javax.swing.JOptionPane.*;
 
+// Represents a tool for the StoreAppGUI to set the price of an item in the inventory
 public class SetPriceTool extends Tool {
 
-    private InventoryModel inventory;
+    private final InventoryModel inventory;
 
     public SetPriceTool(StoreAppGUI store, JComponent parent, InventoryModel inventoryStore) {
         super(store, parent);

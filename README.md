@@ -123,4 +123,7 @@ Tue Nov 22 18:33:27 PST 2022
 Cart cleared
 
 ### Phase 4: Task 3
-- UML Diagram
+- Could have changed the loading function to not rely on the putIntoList method, which would minimise confusion from 
+the EventLog
+- More efficient way to create tool functions in system
+- Reformat the panel creation in StoreAppGUI to allow changes in screen size (Currently only works with fixed size) 

@@ -8,6 +8,7 @@ import persistence.Writable;
 import java.util.ArrayList;
 import java.util.Objects;
 
+// Represents a list of items with a given name
 public class ItemList implements Writable {
 
     protected String name;
@@ -20,9 +21,6 @@ public class ItemList implements Writable {
     }
 
     // EFFECTS: returns an unmodifiable list of Items in this workroom
-//    public List<Item> getItems() {
-//        return Collections.unmodifiableList(internalList);
-//    }
     public ArrayList<Item> getItems() {
 //        return Collections.unmodifiableList(internalList);
         return this.internalList;

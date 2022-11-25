@@ -4,9 +4,10 @@ import exceptions.NegativeValueException;
 import model.Inventory;
 import model.ItemList;
 
+// Represents a table model for Inventory
 public class InventoryModel extends ItemListModel {
 
-    private Inventory itemList;
+    private final Inventory itemList;
 
     public InventoryModel(ItemList itemList) {
         super(itemList);

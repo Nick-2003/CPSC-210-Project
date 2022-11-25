@@ -30,6 +30,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+// Represents the GUI for an app to run a store storage system
 public class StoreAppGUI extends JFrame {
 
     public static final int WIDTH = 1000;
@@ -39,20 +40,20 @@ public class StoreAppGUI extends JFrame {
     public static final String JSON_INV = "./data/inventory.json";
     public static final String JSON_CART = "./data/cart.json";
 
-    private JPanel buttonPanel1;
-    private JPanel buttonPanel2;
-    private JPanel buttonPanel3;
-    private JPanel cartPanel;
-    private JPanel inventoryPanel;
-    private JPanel imagePanel;
+    private final JPanel buttonPanel1;
+    private final JPanel buttonPanel2;
+    private final JPanel buttonPanel3;
+    private final JPanel cartPanel;
+    private final JPanel inventoryPanel;
+    private final JPanel imagePanel;
 
-    private CartModel cartModel;
-    private InventoryModel inventoryModel;
+    private final InventoryModel inventoryModel;
+    private final CartModel cartModel;
 
-    private JsonWriter jsonWriterInv;
-    private JsonWriter jsonWriterCart;
-    private JsonReader jsonReaderInv;
-    private JsonReader jsonReaderCart;
+    private final JsonWriter jsonWriterInv;
+    private final JsonWriter jsonWriterCart;
+    private final JsonReader jsonReaderInv;
+    private final JsonReader jsonReaderCart;
 
     public StoreAppGUI() {
         //this is the constructor
@@ -66,15 +67,6 @@ public class StoreAppGUI extends JFrame {
 
         this.cartModel = new CartModel(new Cart("Cart"));
         this.inventoryModel = new InventoryModel(new Inventory("Inventory"));
-
-//        try {
-////            this.inventoryModel.putIntoList(new Item("White Rice", 10, 8.00));
-//            for (int i = 0; i < 50; i++) {
-//                this.inventoryModel.putIntoList(new Item("" + i + "", i + 1, 8.00));
-//            }
-//        } catch (NegativeValueException | NotEnoughItemsException e) {
-//            throw new RuntimeException(e);
-//        } // FOR TESTING PURPOSES // ONLY SHOWS BEFORE SETTING UP MODELS, DOES NOT ACTUALLY SAVE ANYTHING
 
         this.jsonWriterInv = new JsonWriter(JSON_INV);
         this.jsonReaderInv = new JsonReader(JSON_INV);
@@ -143,7 +135,7 @@ public class StoreAppGUI extends JFrame {
         ToCartTool toCartTool = new ToCartTool(this, this.buttonPanel1, this.inventoryModel, this.cartModel);
         FromCartTool fromCartTool = new FromCartTool(this, this.buttonPanel1, this.inventoryModel, this.cartModel);
         PaymentTool paymentTool = new PaymentTool(this, this.buttonPanel1,
-                this.cartModel.getItemList());
+                this.cartModel);
         AddToInventoryTool addToInventoryTool = new AddToInventoryTool(this, this.buttonPanel2,
                 this.inventoryModel);
         RemoveFromInventoryTool removeFromInventoryTool = new RemoveFromInventoryTool(this, this.buttonPanel2,

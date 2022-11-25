@@ -13,9 +13,10 @@ import java.math.RoundingMode;
 
 import static javax.swing.JOptionPane.*;
 
+// Represents a tool for the StoreAppGUI to add an item to the inventory
 public class AddToInventoryTool extends Tool {
 
-    private InventoryModel inventory;
+    private final InventoryModel inventory;
 
     public AddToInventoryTool(StoreAppGUI store, JComponent parent, InventoryModel inventoryStore) {
         super(store, parent);

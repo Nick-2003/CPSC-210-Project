@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
 
+// Represents a named inventory that contains a list of items
 public class Inventory extends ItemList {
 
     // EFFECTS: Creates new empty Inventory

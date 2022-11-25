@@ -6,6 +6,7 @@ package model;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+// Represents a named cart that contains a list of items
 public class Cart extends ItemList {
     public static final double TAX = 0.05;
 

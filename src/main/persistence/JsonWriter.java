@@ -12,7 +12,7 @@ import java.io.*;
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
-    private String destination;
+    private final String destination;
 
     // EFFECTS: Constructs writer to write to destination file
     public JsonWriter(String destination) {
@@ -23,7 +23,7 @@ public class JsonWriter {
     // EFFECTS: Opens writer; throws FileNotFoundException if destination file cannot
     // be opened for writing
     public void open() throws FileNotFoundException {
-        writer = new PrintWriter(new File(destination));
+        writer = new PrintWriter(destination);
     }
 
     // MODIFIES: this

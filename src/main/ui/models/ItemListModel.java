@@ -11,11 +11,11 @@ import javax.swing.table.DefaultTableModel;
 
 import static ui.StoreAppGUI.setUpArray;
 
+// Represents a table model for ItemList
 public class ItemListModel extends DefaultTableModel {
 
-    //    private ArrayList<Item> internalList;
     protected ItemList itemList;
-    private static String[] columnNames = {"Name", "Quantity", "Price"};
+    private static final String[] columnNames = {"Name", "Quantity", "Price"};
 
     public ItemListModel(ItemList itemList) {
         super(setUpArray(itemList.getInternalList()), columnNames);
@@ -65,7 +65,7 @@ public class ItemListModel extends DefaultTableModel {
     }
 
     // EFFECT: Get the row number of the Item with itemName
-    private int getRowByName(Item item) {
+    protected int getRowByName(Item item) {
         String itemName = item.getName();
         for (int i = getRowCount() - 1; i >= 0; --i) {
             if (getValueAt(i, 0).equals(itemName)) {

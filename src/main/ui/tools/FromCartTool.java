@@ -11,10 +11,11 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import static javax.swing.JOptionPane.*;
 
+// Represents a tool for the StoreAppGUI to move an item from the cart to the inventory
 public class FromCartTool extends Tool {
 
-    private InventoryModel inventory;
-    private CartModel cart;
+    private final InventoryModel inventory;
+    private final CartModel cart;
 
     public FromCartTool(StoreAppGUI store, JComponent parent, InventoryModel inventoryStore, CartModel cartStore) {
         super(store, parent);

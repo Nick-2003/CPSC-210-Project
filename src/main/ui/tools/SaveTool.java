@@ -13,15 +13,14 @@ import static javax.swing.JOptionPane.*;
 import static ui.StoreAppGUI.JSON_CART;
 import static ui.StoreAppGUI.JSON_INV;
 
+// Represents a tool for the StoreAppGUI to save an item list from one of the models
 public class SaveTool extends Tool {
 
-    private InventoryModel inventory;
-    private CartModel cart;
-    private JsonWriter jsonWriterInv;
-    private JsonWriter jsonWriterCart;
+    private final InventoryModel inventory;
+    private final CartModel cart;
+    private final JsonWriter jsonWriterInv;
+    private final JsonWriter jsonWriterCart;
 
-//    public SaveTool(StoreAppGUI store, JComponent parent, Inventory inventoryStore, Cart cartStore,
-//                    JsonWriter jsonWriterInv, JsonWriter jsonWriterCart) {
     public SaveTool(StoreAppGUI store, JComponent parent, InventoryModel inventoryStore, CartModel cartStore,
                     JsonWriter jsonWriterInv, JsonWriter jsonWriterCart) {
         super(store, parent);

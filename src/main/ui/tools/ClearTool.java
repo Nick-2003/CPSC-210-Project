@@ -10,10 +10,11 @@ import java.awt.event.ActionEvent;
 import static javax.swing.JOptionPane.*;
 import static javax.swing.JOptionPane.showMessageDialog;
 
+// Represents a tool for the StoreAppGUI to clear a table
 public class ClearTool extends Tool {
 
-    private InventoryModel inventory;
-    private CartModel cart;
+    private final InventoryModel inventory;
+    private final CartModel cart;
 
     public ClearTool(StoreAppGUI store, JComponent parent, InventoryModel inventoryStore, CartModel cartStore) {
         super(store, parent);
