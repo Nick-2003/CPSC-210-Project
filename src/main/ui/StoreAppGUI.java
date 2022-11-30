@@ -8,6 +8,9 @@
 // https://stackoverflow.com/questions/6714045/how-to-resize-jlabel-imageicon
 // Used as reference on displaying visual component
 
+// https://stackoverflow.com/questions/60516720/java-how-to-print-message-when-a-jframe-is-closed
+// Used as reference for printing event log
+
 package ui;
 
 import model.Cart;
@@ -208,10 +211,8 @@ public class StoreAppGUI extends JFrame {
     // EFFECT: Prints the log
     public void printLog(EventLog el) {
         for (Event next : el) {
-//            logArea.setText(logArea.getText() + next.toString() + "\n\n");
             System.out.println(next.toString());
         }
-//        repaint();
     }
 
     // EFFECT: Start system

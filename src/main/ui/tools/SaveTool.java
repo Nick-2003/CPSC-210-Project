@@ -57,7 +57,6 @@ public class SaveTool extends Tool {
 
         // EFFECTS: Save ItemList to file
         private void saveItemList(String selectList) {
-
             if (selectList.equals("Cart")) {
                 try {
                     jsonWriterCart.open();

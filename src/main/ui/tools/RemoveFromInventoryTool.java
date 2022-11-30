@@ -59,7 +59,6 @@ public class RemoveFromInventoryTool extends Tool {
         // REQUIRES: Inventory contains required Item
         // MODIFIES: this
         // EFFECTS: Move Item from Inventory to Cart
-//        private void removeFromInventory(String itemName, int itemQuantity, double itemPriceInput) {
         private void removeFromInventory(String itemName, int itemQuantity) {
             double itemPrice = inventory.getItemList().getNamedPrice(itemName);
             try {

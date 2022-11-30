@@ -20,9 +20,7 @@ public class FromCartTool extends Tool {
     public FromCartTool(StoreAppGUI store, JComponent parent, InventoryModel inventoryStore, CartModel cartStore) {
         super(store, parent);
         this.inventory = inventoryStore;
-//        this.inventoryTable = inventoryTable;
         this.cart = cartStore;
-//        this.cartTable = cartTable;
     }
 
     // MODIFIES: this

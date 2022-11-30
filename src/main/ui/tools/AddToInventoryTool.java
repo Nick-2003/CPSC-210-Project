@@ -85,7 +85,6 @@ public class AddToInventoryTool extends Tool {
                 showMessageDialog(null, "New quantity for " + itemName + " in inventory is less "
                         + "than 0; request is invalid", "NotEnoughItemsException", ERROR_MESSAGE);
             }
-
         }
     }
 }
