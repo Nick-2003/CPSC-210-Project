@@ -1,15 +1,4 @@
 {
     "name": "Inventory",
-    "items": [
-        {
-            "amount": 5,
-            "price": 2,
-            "name": "Apple"
-        },
-        {
-            "amount": 6,
-            "price": 3,
-            "name": "Orange"
-        }
-    ]
+    "items": []
 }
