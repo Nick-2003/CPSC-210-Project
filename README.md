@@ -8,6 +8,8 @@ This project is intended to be used as an inventory system for shopkeepers and c
 convenience store. It will contain most of the general operations to allow the system to function, such as creating a 
 receipt, keep track of the availability of items, search for specific items, and so on.
 
+![Interface](interface.png)
+
 ### User Stories:
 - As a user, I want to be able to access the properties of each item
     - As a user, I want to be able to access the quantity of each item in the store
