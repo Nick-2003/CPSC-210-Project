@@ -61,6 +61,7 @@ Sample of events
   - putIntoList events print once for ItemList in .json file and once for ItemList in system, both with the same name 
   due to how JsonWriter is structured
 
+```
 Tue Nov 22 18:32:42 PST 2022
 10 Apple put into Inventory
 
@@ -123,6 +124,7 @@ Inventory cleared
 
 Tue Nov 22 18:33:27 PST 2022
 Cart cleared
+```
 
 ### Phase 4: Task 3
 - Could have changed the loading function to not rely on the putIntoList method, which would minimise confusion from 
